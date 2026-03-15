@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PresentAR — Estadísticas</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c26;
+  --border:#2a2a3a;--accent:#e8192c;--accent2:#ff4d5e;
+  --gold:#f0a500;--white:#fff;--gray:#9090a8;--text:#e8e8f0;
+  --success:#22c55e;--blue:#3b82f6;--purple:#8b5cf6;
+}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 15% 15%,rgba(232,25,44,0.05) 0%,transparent 50%),radial-gradient(circle at 85% 85%,rgba(59,130,246,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(10,10,15,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100}
+.nav-brand{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
+.nav-brand span{color:var(--accent)}
+.nav-center{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray)}
+.nav-actions{display:flex;gap:8px;align-items:center}
+.nav-btn{padding:8px 16px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s}
+.nb-ghost{background:transparent;color:var(--gray);border:1px solid var(--border)}
+.nb-ghost:hover{background:var(--surface2);color:var(--white)}
+.nb-red{background:var(--accent);color:white}
+.nb-red:hover{background:var(--accent2);transform:translateY(-1px)}
+.nb-green{background:rgba(34,197,94,.15);color:var(--success);border:1px solid rgba(34,197,94,.3)}
+.nb-green:hover{background:rgba(34,197,94,.25)}
+
+/* LAYOUT */
+.page-wrap{max-width:1200px;margin:0 auto;padding:80px 24px 40px;position:relative;z-index:1}
+
+/* HEADER */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+.page-title{font-family:'Rajdhani',sans-serif;font-size:32px;font-weight:700;color:var(--white);text-transform:uppercase}
+.page-sub{font-size:13px;color:var(--gray);margin-top:4px}
+
+/* PERIOD SELECTOR */
+.period-tabs{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;gap:4px}
+.period-tab{padding:7px 16px;border-radius:7px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;color:var(--gray);transition:all .2s;border:none;background:transparent}
+.period-tab.active{background:var(--accent);color:white}
+.period-tab:hover:not(.active){background:var(--surface2);color:var(--white)}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .2s}
+.kpi-card:hover{border-color:rgba(232,25,44,.4);transform:translateY(-2px)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--kpi-color,var(--accent))}
+.kpi-icon{font-size:28px;margin-bottom:12px}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+.kpi-value{font-family:'Rajdhani',sans-serif;font-size:42px;font-weight:700;color:var(--white);line-height:1}
+.kpi-change{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;font-weight:600}
+.kpi-change.up{color:var(--success)}
+.kpi-change.down{color:var(--accent)}
+.kpi-change.neutral{color:var(--gray)}
+.kpi-sparkline{position:absolute;bottom:0;right:0;opacity:.15}
+
+/* CHARTS GRID */
+.charts-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:28px}
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.chart-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.04em}
+.chart-badge{padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.badge-green{background:rgba(34,197,94,.15);color:var(--success)}
+.badge-blue{background:rgba(59,130,246,.15);color:var(--blue)}
+.badge-gold{background:rgba(240,165,0,.15);color:var(--gold)}
+.chart-wrap{position:relative;height:200px}
+
+/* CHARTS ROW 2 */
+.charts-row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:28px}
+@media(max-width:900px){.charts-row2{grid-template-columns:1fr}}
+
+/* DEVICE / SOURCE LIST */
+.list-items{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.list-item{display:flex;align-items:center;gap:12px}
+.list-icon{font-size:18px;flex-shrink:0}
+.list-info{flex:1}
+.list-label{font-size:13px;font-weight:600;color:var(--white)}
+.list-bar-wrap{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.list-bar{height:100%;border-radius:3px;transition:width .6s ease}
+.list-pct{font-size:12px;font-weight:700;color:var(--gray);min-width:36px;text-align:right}
+
+/* CONTACTS TABLE */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.sec-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.table-actions{display:flex;gap:8px;align-items:center}
+.search-input{padding:9px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:border-color .2s;width:220px}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:#444}
+.filter-select{padding:9px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Nunito',sans-serif;font-size:12px;outline:none;cursor:pointer}
+.filter-select option{background:var(--surface2)}
+
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);padding:14px 16px;border-bottom:1px solid var(--border);text-align:left;background:var(--surface2);cursor:pointer;user-select:none;white-space:nowrap}
+.data-table th:hover{color:var(--white)}
+.data-table th .sort-icon{margin-left:4px;opacity:.4}
+.data-table th.sorted .sort-icon{opacity:1;color:var(--accent)}
+.data-table td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:rgba(255,255,255,.02)}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.06em}
+.tag-new{background:rgba(240,165,0,.15);color:var(--gold)}
+.tag-read{background:rgba(144,144,168,.12);color:var(--gray)}
+.tag-replied{background:rgba(34,197,94,.12);color:var(--success)}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:between;padding:14px 16px;border-top:1px solid var(--border);gap:8px;flex-wrap:wrap}
+.page-info{font-size:12px;color:var(--gray);flex:1}
+.page-btns{display:flex;gap:4px}
+.page-btn{width:32px;height:32px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--gray);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.page-btn:hover,.page-btn.active{background:var(--accent);border-color:var(--accent);color:white}
+
+/* EXPORT */
+.export-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.export-info{font-size:13px;color:var(--gray)}
+.export-info strong{color:var(--white)}
+.export-btns{display:flex;gap:8px}
+.exp-btn{padding:9px 18px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s;display:flex;align-items:center;gap:6px}
+.exp-csv{background:rgba(34,197,94,.12);color:var(--success);border:1px solid rgba(34,197,94,.25)}
+.exp-csv:hover{background:rgba(34,197,94,.22)}
+.exp-xls{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.25)}
+.exp-xls:hover{background:rgba(59,130,246,.22)}
+.exp-pdf{background:rgba(232,25,44,.12);color:var(--accent);border:1px solid rgba(232,25,44,.25)}
+.exp-pdf:hover{background:rgba(232,25,44,.22)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;font-size:13px;padding:12px 24px;border-radius:100px;border:1px solid var(--border);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeUp .5s ease both}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">Present<span>AR</span></div>
+  <div class="nav-center">📊 Estadísticas</div>
+  <div class="nav-actions">
+    <button class="nav-btn nb-ghost" onclick="window.history.back()">← Volver</button>
+    <button class="nav-btn nb-green" onclick="exportCSV()">📥 Exportar CSV</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="page-header anim">
+    <div>
+      <div class="page-title">📊 Estadísticas</div>
+      <div class="page-sub">Lucas Martinez · AUTOVIA3 · Actualizado hace 2 minutos</div>
+    </div>
+    <div class="period-tabs">
+      <button class="period-tab" onclick="setPeriod('7d',this)">7 días</button>
+      <button class="period-tab active" onclick="setPeriod('30d',this)">30 días</button>
+      <button class="period-tab" onclick="setPeriod('90d',this)">3 meses</button>
+      <button class="period-tab" onclick="setPeriod('1y',this)">1 año</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid anim">
+    <div class="kpi-card" style="--kpi-color:#e8192c">
+      <div class="kpi-icon">👁</div>
+      <div class="kpi-label">Visitas totales</div>
+      <div class="kpi-value" id="kpi-visits">247</div>
+      <div class="kpi-change up">↑ +18% vs mes anterior</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color:#3b82f6">
+      <div class="kpi-icon">📲</div>
+      <div class="kpi-label">Escaneos QR</div>
+      <div class="kpi-value" id="kpi-scans">89</div>
+      <div class="kpi-change up">↑ +24% vs mes anterior</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color:#f0a500">
+      <div class="kpi-icon">📋</div>
+      <div class="kpi-label">Formularios recibidos</div>
+      <div class="kpi-value" id="kpi-forms">14</div>
+      <div class="kpi-change up">↑ +2 nuevos hoy</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color:#22c55e">
+      <div class="kpi-icon">💾</div>
+      <div class="kpi-label">Contactos guardados</div>
+      <div class="kpi-value" id="kpi-saves">63</div>
+      <div class="kpi-change up">↑ +5 esta semana</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color:#8b5cf6">
+      <div class="kpi-icon">🔗</div>
+      <div class="kpi-label">Clicks en links</div>
+      <div class="kpi-value" id="kpi-clicks">132</div>
+      <div class="kpi-change up">↑ +11% vs mes anterior</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color:#f0a500">
+      <div class="kpi-icon">⏱</div>
+      <div class="kpi-label">Tiempo promedio</div>
+      <div class="kpi-value">1:42</div>
+      <div class="kpi-change neutral">→ Sin cambios</div>
+    </div>
+  </div>
+
+  <!-- CHART VISITAS + DONA -->
+  <div class="charts-grid anim">
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">Visitas por día</div>
+        <span class="chart-badge badge-green">↑ +18% este mes</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chartVisits"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">Fuente de tráfico</div>
+        <span class="chart-badge badge-blue">Este mes</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chartSource"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2 CHARTS -->
+  <div class="charts-row2 anim">
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">QR vs Directo</div>
+        <span class="chart-badge badge-gold">Escaneos</span>
+      </div>
+      <div class="chart-wrap" style="height:160px">
+        <canvas id="chartQR"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-header"><div class="chart-title">Dispositivos</div></div>
+      <div class="list-items" style="margin-top:12px">
+        <div class="list-item">
+          <span class="list-icon">📱</span>
+          <div class="list-info">
+            <div class="list-label">Celular</div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:78%;background:#e8192c"></div></div>
+          </div>
+          <span class="list-pct">78%</span>
+        </div>
+        <div class="list-item">
+          <span class="list-icon">💻</span>
+          <div class="list-info">
+            <div class="list-label">Computadora</div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:15%;background:#3b82f6"></div></div>
+          </div>
+          <span class="list-pct">15%</span>
+        </div>
+        <div class="list-item">
+          <span class="list-icon">📟</span>
+          <div class="list-info">
+            <div class="list-label">Tablet</div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:7%;background:#8b5cf6"></div></div>
+          </div>
+          <span class="list-pct">7%</span>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-header"><div class="chart-title">Links más clickeados</div></div>
+      <div class="list-items" style="margin-top:12px">
+        <div class="list-item">
+          <span class="list-icon">🌐</span>
+          <div class="list-info">
+            <div class="list-label">Sitio Web</div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:65%;background:#e8192c"></div></div>
+          </div>
+          <span class="list-pct">65%</span>
+        </div>
+        <div class="list-item">
+          <span class="list-icon">📄</span>
+          <div class="list-info">
+            <div class="list-label">Brochure</div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:22%;background:#f0a500"></div></div>
+          </div>
+          <span class="list-pct">22%</span>
+        </div>
+        <div class="list-item">
+          <span class="list-icon">✉️</span>
+          <div class="list-info">
+            <div class="list-label">Presupuesto</div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:13%;background:#22c55e"></div></div>
+          </div>
+          <span class="list-pct">13%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULARIOS / CONTACTOS -->
+  <div class="section-header anim">
+    <div class="sec-title" style="flex:1">📋 Contactos recibidos</div>
+  </div>
+
+  <div class="export-bar anim">
+    <div class="export-info">
+      Mostrando <strong>14 contactos</strong> · <strong>2 nuevos</strong> sin leer
+    </div>
+    <div class="export-btns">
+      <button class="exp-btn exp-csv" onclick="exportCSV()">📥 CSV</button>
+      <button class="exp-btn exp-xls" onclick="exportXLS()">📊 Excel</button>
+      <button class="exp-btn exp-pdf" onclick="exportPDF()">📄 PDF</button>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap" class="anim">
+    <input class="search-input" type="text" placeholder="🔍 Buscar por nombre, empresa o email..." oninput="filterTable(this.value)" id="search-input">
+    <select class="filter-select" onchange="filterStatus(this.value)">
+      <option value="">Todos los estados</option>
+      <option value="new">Solo nuevos</option>
+      <option value="read">Leídos</option>
+      <option value="replied">Respondidos</option>
+    </select>
+    <select class="filter-select" onchange="filterPeriod(this.value)">
+      <option value="">Todo el período</option>
+      <option value="today">Hoy</option>
+      <option value="week">Esta semana</option>
+      <option value="month">Este mes</option>
+    </select>
+  </div>
+
+  <div class="table-wrap anim">
+    <table class="data-table" id="contacts-table">
+      <thead>
+        <tr>
+          <th onclick="sortTable('name')">Nombre <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('company')">Empresa <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable('email')">Email <span class="sort-icon">↕</span></th>
+          <th>Celular</th>
+          <th onclick="sortTable('date')">Fecha <span class="sort-icon">↕</span></th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="contacts-body">
+      </tbody>
+    </table>
+    <div class="pagination">
+      <div class="page-info" id="page-info">Mostrando 1-10 de 14 contactos</div>
+      <div class="page-btns">
+        <button class="page-btn" onclick="prevPage()">←</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn" onclick="nextPage()">2</button>
+        <button class="page-btn" onclick="nextPage()">→</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+const CONTACTS = [
+  {id:1, name:'Carlos Rodríguez', company:'Petroquímica Sur', email:'carlos@petrosur.com', phone:'+54 291 445-2233', date:'Hoy 14:32', status:'new'},
+  {id:2, name:'María González', company:'Logística Norte', email:'mgonzalez@lognorte.com', phone:'+54 291 312-9876', date:'Hoy 09:15', status:'new'},
+  {id:3, name:'Roberto Sánchez', company:'Construcciones BH', email:'roberto@cbh.com.ar', phone:'+54 291 558-1122', date:'Ayer 16:20', status:'read'},
+  {id:4, name:'Ana Fernández', company:'Industrias del Sur', email:'afernandez@indsur.com', phone:'+54 291 223-4455', date:'14/03 11:08', status:'replied'},
+  {id:5, name:'Diego Pérez', company:'Transporte Andino', email:'dperez@tandino.com', phone:'+54 291 667-3344', date:'14/03 08:45', status:'read'},
+  {id:6, name:'Laura Martínez', company:'Agroindustria LM', email:'laura@agroindustria.com', phone:'+54 291 789-0011', date:'13/03 17:30', status:'replied'},
+  {id:7, name:'Gustavo Torres', company:'Metalúrgica GT', email:'gtorres@metalgt.com', phone:'+54 291 334-5566', date:'13/03 14:12', status:'read'},
+  {id:8, name:'Silvia Campos', company:'Servicios Industriales SC', email:'silvia@sisc.com', phone:'+54 291 112-3344', date:'12/03 10:05', status:'read'},
+  {id:9, name:'Marcelo Ríos', company:'Energía del Sur', email:'mrios@energiasur.com', phone:'+54 291 556-7788', date:'11/03 16:40', status:'replied'},
+  {id:10, name:'Patricia Luna', company:'Química Industrial PL', email:'patricia@qipl.com', phone:'+54 291 223-9900', date:'11/03 09:20', status:'read'},
+  {id:11, name:'Fernando Vega', company:'Construcciones FV', email:'fvega@cfv.com', phone:'+54 291 441-2233', date:'10/03 15:10', status:'replied'},
+  {id:12, name:'Andrea Blanco', company:'Logística AB', email:'andrea@logab.com', phone:'+54 291 778-9900', date:'09/03 11:30', status:'read'},
+  {id:13, name:'Pablo Suárez', company:'Petroquímica PS', email:'pablo@pqps.com', phone:'+54 291 334-1122', date:'08/03 14:45', status:'replied'},
+  {id:14, name:'Claudia Mora', company:'Industrias CM', email:'claudia@icm.com.ar', phone:'+54 291 556-3344', date:'07/03 09:00', status:'read'},
+];
+
+let filtered = [...CONTACTS];
+let currentPage = 1;
+const perPage = 10;
+
+const STATUS_MAP = {
+  new: '<span class="tag tag-new">🔔 Nuevo</span>',
+  read: '<span class="tag tag-read">✓ Leído</span>',
+  replied: '<span class="tag tag-replied">↩ Respondido</span>',
+};
+
+function renderTable(){
+  const start=(currentPage-1)*perPage;
+  const slice=filtered.slice(start,start+perPage);
+  document.getElementById('contacts-body').innerHTML=slice.map(c=>`
+    <tr id="row-${c.id}">
+      <td><strong>${c.name}</strong></td>
+      <td>${c.company}</td>
+      <td style="color:var(--gray)">${c.email}</td>
+      <td style="color:var(--gray)">${c.phone}</td>
+      <td style="color:var(--gray);white-space:nowrap">${c.date}</td>
+      <td>${STATUS_MAP[c.status]}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button onclick="markRead(${c.id})" title="Marcar leído" style="width:28px;height:28px;border-radius:6px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#3b82f6;cursor:pointer;font-size:12px">✓</button>
+          <button onclick="replyWA(${c.id})" title="Responder WhatsApp" style="width:28px;height:28px;border-radius:6px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#22c55e;cursor:pointer;font-size:12px">💬</button>
+          <button onclick="deleteContact(${c.id})" title="Eliminar" style="width:28px;height:28px;border-radius:6px;background:rgba(232,25,44,.1);border:1px solid rgba(232,25,44,.2);color:#e8192c;cursor:pointer;font-size:12px">✕</button>
+        </div>
+      </td>
+    </tr>`).join('');
+  document.getElementById('page-info').textContent=`Mostrando ${start+1}-${Math.min(start+perPage,filtered.length)} de ${filtered.length} contactos`;
+}
+
+function filterTable(q){
+  const s=q.toLowerCase();
+  filtered=CONTACTS.filter(c=>c.name.toLowerCase().includes(s)||c.company.toLowerCase().includes(s)||c.email.toLowerCase().includes(s));
+  currentPage=1;renderTable();
+}
+function filterStatus(val){
+  filtered=val?CONTACTS.filter(c=>c.status===val):[...CONTACTS];
+  currentPage=1;renderTable();
+}
+function filterPeriod(val){
+  showToast('Filtro aplicado: '+( val||'Todo el período'));
+  renderTable();
+}
+function sortTable(field){
+  filtered.sort((a,b)=>a[field]>b[field]?1:-1);
+  renderTable();
+  showToast('Ordenado por '+field);
+}
+function markRead(id){
+  const c=CONTACTS.find(x=>x.id===id);
+  if(c&&c.status==='new'){c.status='read';filterTable(document.getElementById('search-input').value);showToast('✓ Marcado como leído')}
+}
+function replyWA(id){
+  const c=CONTACTS.find(x=>x.id===id);
+  if(c){c.status='replied';showToast('💬 Abriendo WhatsApp con '+c.name);renderTable()}
+}
+function deleteContact(id){
+  const i=CONTACTS.findIndex(x=>x.id===id);
+  if(i>-1){CONTACTS.splice(i,1);filtered=filtered.filter(x=>x.id!==id);renderTable();showToast('Contacto eliminado')}
+}
+function prevPage(){if(currentPage>1){currentPage--;renderTable()}}
+function nextPage(){if(currentPage*perPage<filtered.length){currentPage++;renderTable()}}
+
+// ── PERIOD ──
+const PERIOD_DATA={
+  '7d':{visits:62,scans:22,forms:4,saves:15,clicks:33},
+  '30d':{visits:247,scans:89,forms:14,saves:63,clicks:132},
+  '90d':{visits:721,scans:267,forms:41,saves:189,clicks:398},
+  '1y':{visits:2847,scans:1023,forms:163,saves:742,clicks:1567},
+};
+function setPeriod(p,btn){
+  document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const d=PERIOD_DATA[p];
+  document.getElementById('kpi-visits').textContent=d.visits.toLocaleString();
+  document.getElementById('kpi-scans').textContent=d.scans.toLocaleString();
+  document.getElementById('kpi-forms').textContent=d.forms.toLocaleString();
+  document.getElementById('kpi-saves').textContent=d.saves.toLocaleString();
+  document.getElementById('kpi-clicks').textContent=d.clicks.toLocaleString();
+  updateCharts(p);
+  showToast('Período actualizado');
+}
+
+// ── CHARTS ──
+const chartDefaults={
+  responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#1c1c26',borderColor:'#2a2a3a',borderWidth:1,titleColor:'#e8e8f0',bodyColor:'#9090a8',padding:10}},
+};
+
+// VISITAS LINE CHART
+const ctxV=document.getElementById('chartVisits').getContext('2d');
+const labels30=['1 Mar','3 Mar','5 Mar','7 Mar','9 Mar','11 Mar','13 Mar','15 Mar'];
+const data30=[6,9,4,12,8,15,11,18];
+const chartVisits=new Chart(ctxV,{
+  type:'line',
+  data:{
+    labels:labels30,
+    datasets:[{
+      label:'Visitas',data:data30,
+      borderColor:'#e8192c',backgroundColor:'rgba(232,25,44,0.08)',
+      borderWidth:2.5,fill:true,tension:.4,
+      pointBackgroundColor:'#e8192c',pointRadius:4,pointHoverRadius:6,
+    },{
+      label:'QR',data:[2,3,1,5,3,7,4,8],
+      borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.05)',
+      borderWidth:2,fill:true,tension:.4,
+      pointBackgroundColor:'#3b82f6',pointRadius:3,pointHoverRadius:5,
+    }]
+  },
+  options:{...chartDefaults,plugins:{...chartDefaults.plugins,legend:{display:true,labels:{color:'#9090a8',font:{family:'Nunito',size:11},boxWidth:12,boxHeight:12}}}},
+});
+
+// SOURCE DONUT
+const ctxS=document.getElementById('chartSource').getContext('2d');
+new Chart(ctxS,{
+  type:'doughnut',
+  data:{
+    labels:['WhatsApp','QR','Directo','Redes','Email'],
+    datasets:[{data:[42,28,15,10,5],backgroundColor:['#25d366','#e8192c','#3b82f6','#8b5cf6','#f0a500'],borderWidth:0,hoverOffset:6}]
+  },
+  options:{...chartDefaults,plugins:{...chartDefaults.plugins,legend:{display:true,position:'bottom',labels:{color:'#9090a8',font:{family:'Nunito',size:10},boxWidth:10,padding:12}}}},
+});
+
+// QR BAR
+const ctxQ=document.getElementById('chartQR').getContext('2d');
+new Chart(ctxQ,{
+  type:'bar',
+  data:{
+    labels:['L','M','X','J','V','S','D'],
+    datasets:[
+      {label:'QR',data:[8,12,6,14,10,18,7],backgroundColor:'rgba(232,25,44,0.8)',borderRadius:6},
+      {label:'Link',data:[4,6,3,8,5,9,4],backgroundColor:'rgba(59,130,246,0.8)',borderRadius:6},
+    ]
+  },
+  options:{...chartDefaults,scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9090a8',font:{family:'Nunito',size:10}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9090a8',font:{family:'Nunito',size:10}}}},plugins:{...chartDefaults.plugins,legend:{display:true,labels:{color:'#9090a8',font:{family:'Nunito',size:10},boxWidth:10}}}},
+});
+
+function updateCharts(p){
+  const multipliers={'7d':.25,'30d':1,'90d':2.9,'1y':11.5};
+  const m=multipliers[p]||1;
+  chartVisits.data.datasets[0].data=data30.map(v=>Math.round(v*m));
+  chartVisits.data.datasets[1].data=data30.map(v=>Math.round(v*m*.4));
+  chartVisits.update();
+}
+
+// ── EXPORT ──
+function exportCSV(){
+  const headers=['Nombre','Empresa','Email','Celular','Fecha','Estado'];
+  const rows=CONTACTS.map(c=>[c.name,c.company,c.email,c.phone,c.date,c.status]);
+  const csv=[headers,...rows].map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='contactos-presentar.csv';a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ CSV descargado');
+}
+function exportXLS(){showToast('📊 Descargando Excel...')}
+function exportPDF(){showToast('📄 Generando PDF...')}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// INIT
+renderTable();
+</script>
+</body>
+</html>
