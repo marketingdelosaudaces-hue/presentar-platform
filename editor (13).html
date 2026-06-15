@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PresentAR — Editor de Tarjeta</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c26;
+  --border:#2a2a3a;--accent:#e8192c;--accent2:#ff4d5e;
+  --white:#fff;--gray:#9090a8;--text:#e8e8f0;--success:#22c55e;
+}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(10,10,15,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100}
+.nav-brand{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
+.nav-brand span{color:var(--accent)}
+.nav-center{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray)}
+.nav-actions{display:flex;gap:8px}
+.nav-btn{padding:8px 18px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s}
+.nb-ghost{background:transparent;color:var(--gray);border:1px solid var(--border)}
+.nb-ghost:hover{background:var(--surface2);color:var(--white)}
+.nb-red{background:var(--accent);color:white;box-shadow:0 4px 16px rgba(232,25,44,.25)}
+.nb-red:hover{background:var(--accent2);transform:translateY(-1px)}
+.nb-green{background:var(--success);color:white}
+.nb-green:hover{opacity:.9}
+.nb-green:disabled{opacity:.5;cursor:not-allowed}
+
+/* LAYOUT */
+.editor-layout{display:grid;grid-template-columns:380px 1fr;height:calc(100vh - 60px);margin-top:60px}
+@media(max-width:900px){.editor-layout{grid-template-columns:1fr;height:auto}}
+
+/* PANEL IZQUIERDO */
+.edit-panel{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto}
+.edit-panel::-webkit-scrollbar{width:4px}
+.edit-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:10}
+.tab{flex:1;padding:14px 6px;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:hover:not(.active){color:var(--white)}
+.tab-content{display:none;padding:20px}
+.tab-content.active{display:block}
+
+/* FORM */
+.field-group{margin-bottom:16px}
+.field-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:7px;display:block}
+.field-input{width:100%;padding:11px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;color:var(--white);font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.field-input:focus{border-color:var(--accent)}
+.field-input::placeholder{color:#444}
+.field-textarea{width:100%;padding:11px 14px;min-height:80px;resize:vertical;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;color:var(--white);font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.field-textarea:focus{border-color:var(--accent)}
+.section-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:12px;margin-top:20px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.section-label:first-child{margin-top:0}
+
+/* IMAGE UPLOAD */
+.img-upload{border:2px dashed var(--border);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.img-upload:hover{border-color:var(--accent);background:rgba(232,25,44,.05)}
+.img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-preview{width:100%;height:110px;object-fit:cover;border-radius:8px;display:none;margin-bottom:8px}
+.img-preview.show{display:block}
+.avatar-preview{width:68px;height:68px;border-radius:50%;object-fit:cover;border:3px solid var(--border);display:none;margin:0 auto 8px}
+.avatar-preview.show{display:block}
+.upload-icon{font-size:28px;margin-bottom:6px}
+.upload-text{font-size:12px;color:var(--gray);font-weight:600}
+.upload-sub{font-size:10px;color:#555;margin-top:4px}
+.upload-progress{width:100%;height:4px;background:var(--border);border-radius:2px;margin-top:8px;display:none;overflow:hidden}
+.upload-progress.show{display:block}
+.upload-bar{height:100%;background:var(--accent);border-radius:2px;width:0;transition:width .3s}
+.btn-remove{padding:6px 12px;border-radius:6px;background:rgba(232,25,44,.1);border:1px solid rgba(232,25,44,.2);color:var(--accent);font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:6px}
+.btn-remove:hover{background:rgba(232,25,44,.2)}
+
+/* COLOR */
+.color-presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.preset{width:32px;height:32px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.preset:hover,.preset.active{border-color:white;transform:scale(1.1)}
+.color-row{display:flex;align-items:center;gap:10px}
+.color-preview{width:38px;height:38px;border-radius:9px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;position:relative}
+.color-preview input[type="color"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+
+/* LINKS */
+.links-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.link-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px}
+.link-fields{flex:1;display:flex;flex-direction:column;gap:5px}
+.link-field{width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--white);font-family:'Nunito',sans-serif;font-size:12px;outline:none;transition:border-color .2s}
+.link-field:focus{border-color:var(--accent)}
+.link-field::placeholder{color:#444}
+.link-del{width:28px;height:28px;border-radius:6px;background:rgba(232,25,44,.1);border:none;color:var(--accent);cursor:pointer;font-size:13px;flex-shrink:0;transition:background .2s}
+.link-del:hover{background:rgba(232,25,44,.25)}
+.link-toggle{width:36px;height:20px;border-radius:10px;background:var(--border);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.link-toggle.on{background:var(--success)}
+.link-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .2s}
+.link-toggle.on::after{transform:translateX(16px)}
+.btn-add{width:100%;padding:10px;border-radius:9px;background:rgba(232,25,44,.08);border:1.5px dashed rgba(232,25,44,.3);color:var(--accent);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:rgba(232,25,44,.15);border-style:solid}
+
+/* SECTIONS */
+.sec-toggle-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.sec-left{display:flex;align-items:center;gap:10px}
+.sec-icon{font-size:18px}
+.sec-name{font-size:13px;font-weight:600;color:var(--white)}
+.sec-desc{font-size:11px;color:var(--gray);margin-top:2px}
+.toggle-sw{width:40px;height:22px;border-radius:11px;background:var(--border);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.toggle-sw.on{background:var(--success)}
+.toggle-sw::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .2s}
+.toggle-sw.on::after{transform:translateX(18px)}
+
+/* PREVIEW */
+.preview-panel{background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 24px;overflow-y:auto}
+.preview-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:24px;display:flex;align-items:center;gap:8px;width:100%}
+.preview-label::before,.preview-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.phone-frame{width:290px;border-radius:30px;background:#fff;box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 0 8px #1a1a1a,0 0 0 10px #333;overflow:hidden;max-height:calc(100vh - 180px);overflow-y:auto}
+.phone-frame::-webkit-scrollbar{display:none}
+.pf-cover{height:150px;background:linear-gradient(135deg,#1a1a1a,#2d1010);position:relative;overflow:hidden;flex-shrink:0}
+.pf-cover img{width:100%;height:100%;object-fit:cover;display:none}
+.pf-cover img.show{display:block}
+.pf-cover-emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px}
+.pf-av-wrap{display:flex;justify-content:center;margin-top:-34px;position:relative;z-index:10}
+.pf-av{width:68px;height:68px;border-radius:50%;border:4px solid white;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:white;overflow:hidden;flex-shrink:0}
+.pf-av img{width:100%;height:100%;object-fit:contain}
+.pf-name{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#111;text-align:center;padding:8px 12px 2px;text-transform:uppercase}
+.pf-role{font-size:9px;color:#888;text-align:center;padding-bottom:8px;letter-spacing:.08em;text-transform:uppercase}
+.pf-tag{font-size:10px;color:#555;text-align:center;padding:0 12px 8px;font-style:italic;line-height:1.4}
+.pf-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 0}
+.pf-btn{display:flex;align-items:center;justify-content:center;gap:4px;padding:9px 6px;border-radius:50px;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:white}
+.pf-agenda{margin:6px 12px 0;padding:10px;border-radius:50px;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:white;text-align:center}
+.pf-links{display:flex;flex-direction:column;gap:5px;padding:10px 12px 0}
+.pf-link{display:flex;align-items:center;justify-content:center;padding:8px 12px;border:1.5px solid #e4e4e4;border-radius:50px;font-size:9px;font-weight:600;color:#333;letter-spacing:.03em}
+.pf-save{padding:11px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:white;text-align:center;margin-top:6px}
+
+/* LOADING STATE */
+.loading-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.loading-overlay.show{display:flex}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--gray);font-weight:600}
+
+/* SAVE INDICATOR */
+.save-indicator{position:fixed;bottom:24px;right:24px;padding:10px 20px;border-radius:100px;background:var(--success);color:white;font-size:12px;font-weight:700;opacity:0;transition:all .3s;transform:translateY(10px);z-index:200}
+.save-indicator.show{opacity:1;transform:translateY(0)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;font-size:13px;padding:12px 24px;border-radius:100px;border:1px solid var(--border);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand" onclick="goBack()" style="cursor:pointer" title="Volver al panel">Present<span>AR</span></div>
+  <div class="nav-center" id="nav-status">✏️ Editor de tarjeta</div>
+  <div class="nav-actions">
+    <button class="nav-btn nb-ghost" onclick="goBack()">← Volver al panel</button>
+    <button class="nav-btn nb-red" onclick="previewCard()">👁 Ver tarjeta</button>
+    <button class="nav-btn nb-green" id="btn-save" onclick="saveAll()">💾 Guardar</button>
+  </div>
+</nav>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Cargando tarjeta...</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="editor-layout">
+
+  <!-- PANEL IZQUIERDO -->
+  <div class="edit-panel">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('info')">👤 Info</div>
+      <div class="tab" onclick="switchTab('images')">🖼️ Fotos</div>
+      <div class="tab" onclick="switchTab('style')">🎨 Estilo</div>
+      <div class="tab" onclick="switchTab('links')">🔗 Links</div>
+      <div class="tab" onclick="switchTab('sections')">⚙️ Secciones</div>
+    </div>
+
+    <!-- TAB INFO -->
+    <div class="tab-content active" id="tab-info">
+      <div class="section-label">Datos personales</div>
+      <div class="field-group"><label class="field-label">Nombre completo</label><input class="field-input" id="f-name" oninput="liveUpdate()" placeholder="Tu nombre"></div>
+      <div class="field-group"><label class="field-label">Cargo / Profesión</label><input class="field-input" id="f-role" oninput="liveUpdate()" placeholder="Tu cargo"></div>
+      <div class="field-group"><label class="field-label">Empresa</label><input class="field-input" id="f-company" oninput="liveUpdate()" placeholder="Tu empresa"></div>
+      <div class="field-group"><label class="field-label">Tagline</label><textarea class="field-textarea" id="f-tagline" oninput="liveUpdate()" placeholder="Una frase que te describa..."></textarea></div>
+      <div class="section-label">Contacto</div>
+      <div class="field-group"><label class="field-label">WhatsApp</label><input class="field-input" id="f-phone" placeholder="+54 291 ..." oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label">Email</label><input class="field-input" id="f-email" placeholder="tu@email.com" oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label">Dirección</label><input class="field-input" id="f-address" placeholder="Ciudad, Provincia" oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label">Sitio web</label><input class="field-input" id="f-web" placeholder="https://..." oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label">Horarios</label><input class="field-input" id="f-hours" placeholder="Lunes a Viernes 9 a 18hs" oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label">Descripción de la empresa</label><textarea class="field-textarea" id="f-about" placeholder="Contá sobre tu empresa..." oninput="liveUpdate()"></textarea></div>
+      <div class="section-label">🛡️ Certificaciones</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:rgba(232,25,44,.12);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 Logo 200 × 200 px</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">PNG transparente</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Máx 500 KB</span>
+      </div>
+      <p style="font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.5">📌 Agregá cada certificación con su logo. Aparecerán destacadas en grid 2 columnas en tu tarjeta.</p>
+      <div id="certs-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px"></div>
+      <button onclick="addCert()" style="width:100%;padding:11px;background:rgba(232,25,44,.08);border:1.5px dashed rgba(232,25,44,.3);color:var(--accent);border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s">+ Agregar certificación</button>
+
+      <div class="section-label">🎁 Beneficio / Código de descuento</div>
+      <p style="font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.5">Configurá un beneficio que tu cliente puede revelar tocando un botón en la tarjeta. Ideal para captar leads.</p>
+      <div class="field-group"><label class="field-label">Título del beneficio</label><input class="field-input" id="f-ben-titulo" placeholder="¡10% de descuento en tu primera consulta!"></div>
+      <div class="field-group"><label class="field-label">Descripción</label><textarea class="field-textarea" id="f-ben-desc" placeholder="Por visitar nuestra tarjeta digital, te regalamos un descuento exclusivo." rows="2"></textarea></div>
+      <div class="field-group"><label class="field-label">Código de descuento</label><input class="field-input" id="f-ben-codigo" placeholder="PRESENTAR10" style="text-transform:uppercase;letter-spacing:2px;font-weight:600"></div>
+      <div class="field-group">
+        <label class="field-label">Imagen del beneficio (opcional)</label>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:rgba(232,25,44,.12);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 800 × 600 px</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">JPG · PNG</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Máx 1 MB</span>
+        </div>
+        <p style="font-size:10px;color:var(--gray);margin-bottom:8px;line-height:1.5">📌 Subí una imagen tipo flyer o cupón. Aparece destacada en la sección de beneficio.</p>
+        <div style="position:relative;border:2px dashed var(--border);border-radius:11px;padding:14px;text-align:center;cursor:pointer;background:var(--surface2)">
+          <input type="file" accept="image/*" onchange="uploadBenefitImage(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          <img class="img-preview" id="ben-img-preview" style="max-height:120px;object-fit:contain">
+          <div id="ben-img-ph" style="font-size:11px;color:var(--gray)">📸 Tocá para subir imagen<br><small style="font-size:9px">Tocá o arrastrá una imagen</small></div>
+        </div>
+        <button onclick="removeBenefitImage()" id="ben-img-remove" style="display:none;width:100%;margin-top:6px;padding:7px;background:rgba(232,25,44,.1);border:none;color:var(--accent);border-radius:7px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;cursor:pointer">✕ Quitar imagen</button>
+      </div>
+    </div>
+
+    <!-- TAB IMÁGENES -->
+    <div class="tab-content" id="tab-images">
+      <div class="section-label">Foto de portada</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:rgba(232,25,44,.12);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 1200 × 630 px</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">JPG · PNG</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Máx 2 MB</span>
+      </div>
+      <p style="font-size:10px;color:var(--gray);margin-bottom:10px;line-height:1.5">📌 Imagen apaisada que aparece en la portada de tu tarjeta. Va con efecto parallax al hacer scroll.</p>
+      <div class="img-upload" id="cover-zone">
+        <input type="file" accept="image/*" onchange="uploadImage(this,'cover')">
+        <img class="img-preview" id="cover-preview">
+        <div id="cover-ph"><div class="upload-icon">🖼️</div><div class="upload-text">Subir foto de portada</div><div class="upload-sub">Tocá o arrastrá una imagen</div></div>
+        <div class="upload-progress" id="cover-progress"><div class="upload-bar" id="cover-bar"></div></div>
+      </div>
+      <button class="btn-remove" onclick="removeImage('cover')">✕ Quitar portada</button>
+
+      <div class="section-label" style="margin-top:24px">Logo / Avatar</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:rgba(232,25,44,.12);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 400 × 400 px</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">PNG transparente</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Máx 1 MB</span>
+      </div>
+      <p style="font-size:10px;color:var(--gray);margin-bottom:10px;line-height:1.5">📌 Logo cuadrado de tu marca. Ideal: PNG con fondo transparente para que se vea bien sobre cualquier color.</p>
+      <div class="img-upload" id="logo-zone">
+        <input type="file" accept="image/*" onchange="uploadImage(this,'logo')">
+        <img class="avatar-preview" id="logo-preview">
+        <div id="logo-ph"><div class="upload-icon">👤</div><div class="upload-text">Subir logo o foto</div><div class="upload-sub">Tocá o arrastrá una imagen</div></div>
+        <div class="upload-progress" id="logo-progress"><div class="upload-bar" id="logo-bar"></div></div>
+      </div>
+      <button class="btn-remove" onclick="removeImage('logo')">✕ Quitar logo</button>
+
+      <!-- STORIES EDITABLE -->
+      <div class="section-label" style="margin-top:24px">📸 Stories</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:rgba(232,25,44,.12);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 1080 × 1920 px</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Vertical</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Máx 1 MB c/u</span>
+      </div>
+      <p style="font-size:10px;color:var(--gray);margin-bottom:12px;line-height:1.5">📌 Aparecen como círculos arriba de tu tarjeta, tipo Instagram. Subí fotos de obras, certificaciones, equipo, premios.</p>
+      <div id="stories-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px"></div>
+      <button onclick="addStory()" style="width:100%;padding:11px;background:rgba(232,25,44,.08);border:1.5px dashed rgba(232,25,44,.3);color:var(--accent);border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">+ Agregar story</button>
+
+      <!-- PROYECTOS / TRABAJOS REALIZADOS -->
+      <div class="section-label" style="margin-top:24px">🏗️ Trabajos realizados</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:rgba(232,25,44,.12);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 800 × 1000 px</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Vertical</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Máx 1 MB</span>
+      </div>
+      <p style="font-size:10px;color:var(--gray);margin-bottom:12px;line-height:1.5">📌 Galería horizontal con tus proyectos destacados. Agregá foto + título + ubicación + año.</p>
+      <div id="proyectos-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px"></div>
+      <button onclick="addProyecto()" style="width:100%;padding:11px;background:rgba(232,25,44,.08);border:1.5px dashed rgba(232,25,44,.3);color:var(--accent);border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">+ Agregar proyecto</button>
+    </div>
+
+    <!-- TAB ESTILO -->
+    <div class="tab-content" id="tab-style">
+      <div class="section-label">Color principal</div>
+      <div class="color-presets" id="color-presets">
+        <div class="preset active" style="background:#e8192c" onclick="setColor('#e8192c',this)"></div>
+        <div class="preset" style="background:#b01020" onclick="setColor('#b01020',this)"></div>
+        <div class="preset" style="background:#1a1a1a" onclick="setColor('#1a1a1a',this)"></div>
+        <div class="preset" style="background:#1e40af" onclick="setColor('#1e40af',this)"></div>
+        <div class="preset" style="background:#0f766e" onclick="setColor('#0f766e',this)"></div>
+        <div class="preset" style="background:#7c3aed" onclick="setColor('#7c3aed',this)"></div>
+        <div class="preset" style="background:#f0a500" onclick="setColor('#f0a500',this)"></div>
+        <div class="preset" style="background:#be185d" onclick="setColor('#be185d',this)"></div>
+      </div>
+      <div class="color-row">
+        <div class="color-preview" id="color-swatch" style="background:#e8192c">
+          <input type="color" id="color-picker" value="#e8192c" oninput="setColor(this.value,null)">
+        </div>
+        <input class="field-input" id="color-hex" value="#e8192c" style="flex:1" oninput="setColor(this.value,null)">
+      </div>
+      <div class="section-label" style="margin-top:24px">Redes sociales</div>
+      <div class="field-group"><label class="field-label">Instagram</label><input class="field-input" id="f-instagram" placeholder="https://instagram.com/..."></div>
+      <div class="field-group"><label class="field-label">LinkedIn</label><input class="field-input" id="f-linkedin" placeholder="https://linkedin.com/..."></div>
+      <div class="field-group"><label class="field-label">Facebook</label><input class="field-input" id="f-facebook" placeholder="https://facebook.com/..."></div>
+    </div>
+
+    <!-- TAB LINKS -->
+    <div class="tab-content" id="tab-links">
+      <p style="font-size:12px;color:var(--gray);margin-bottom:14px;line-height:1.5">Agregá links a tu web, catálogos o brochures.</p>
+      <div class="links-list" id="links-list"></div>
+      <button class="btn-add" onclick="addLink()">+ Agregar link</button>
+    </div>
+
+    <!-- TAB SECCIONES -->
+    <div class="tab-content" id="tab-sections">
+      <p style="font-size:12px;color:var(--gray);margin-bottom:14px;line-height:1.5">Activá o desactivá secciones de tu tarjeta.</p>
+      <div id="sections-list"></div>
+    </div>
+  </div>
+
+  <!-- PANEL DERECHO — PREVIEW REAL -->
+  <div class="preview-panel">
+    <div class="preview-label">
+      <span>Vista previa real</span>
+      <button onclick="reloadPreview()" style="background:transparent;border:1px solid var(--border);color:var(--white);padding:5px 12px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px">↻ Recargar</button>
+    </div>
+    <div style="width:340px;max-height:calc(100vh - 140px);background:#000;border-radius:36px;padding:10px;box-shadow:0 30px 60px rgba(0,0,0,.5);position:relative">
+      <div style="position:absolute;top:18px;left:50%;transform:translateX(-50%);width:80px;height:20px;background:#000;border-radius:0 0 14px 14px;z-index:2"></div>
+      <iframe id="preview-iframe" src="about:blank" style="width:100%;height:calc(100vh - 200px);min-height:600px;border:none;border-radius:28px;background:#fafaf9;display:block" loading="lazy"></iframe>
+    </div>
+    <div style="margin-top:12px;text-align:center;font-size:11px;color:var(--gray);max-width:340px">
+      💡 Guardá los cambios para verlos aquí. Tocá <strong>Recargar</strong> para actualizar.
+    </div>
+  </div>
+</div>
+
+<div class="save-indicator" id="save-ind">✓ Guardado en Supabase</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://eldiuxxqqxjpwjtrxqfg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA';
+
+let cardColor = '#e8192c';
+let coverUrl = null;
+let logoUrl = null;
+let cardId = null;
+let userId = null;
+let links = [];
+let certsList = [];
+let benefitImage = null;
+let storiesList = [];
+let proyectosList = [];
+let linkId = 10;
+
+const SECTIONS = [
+  {id:'actions',name:'Botones de acción',desc:'WhatsApp y Compartir',icon:'⚡',on:true},
+  {id:'agenda',name:'Agendar reunión',desc:'Botón para agendar',icon:'📅',on:true},
+  {id:'links',name:'Links y brochures',desc:'Sitio web, catálogos',icon:'🔗',on:true},
+  {id:'info',name:'Datos de contacto',desc:'Teléfono, email, dirección',icon:'📋',on:true},
+  {id:'about',name:'Acerca de',desc:'Descripción de la empresa',icon:'🏢',on:true},
+  {id:'form',name:'Formulario de contacto',desc:'Captación de leads',icon:'📝',on:true},
+  {id:'save',name:'Guardar contacto',desc:'Barra inferior',icon:'💾',on:true},
+];
+
+// ── INIT ──
+window.addEventListener('load', async () => {
+  const session = JSON.parse(localStorage.getItem('presentar_user') || 'null');
+  if (!session) { window.location.href = 'index.html'; return; }
+  userId = session.id;
+  window._sessionSlug = session.slug || null;
+  document.getElementById('nav-status').textContent = `✏️ ${session.nombre}`;
+  showLoading('Cargando tu tarjeta...');
+  await loadCard();
+  renderLinks();
+  renderSections();
+  hideLoading();
+});
+
+async function loadCard() {
+  try {
+    let res, cards;
+    // Intentar por usuario_id primero
+    res = await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?usuario_id=eq.${userId}&select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    cards = await res.json();
+    // Si no encontró, buscar por slug (cuando userId es el email)
+    if (!cards || !cards.length) {
+      const slug = window._sessionSlug;
+      if (slug) {
+        res = await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?slug=eq.${slug}&select=*`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        cards = await res.json();
+      }
+    }
+    // Si sigue sin encontrar, buscar por email en usuarios
+    if (!cards || !cards.length) {
+      const session = JSON.parse(localStorage.getItem('presentar_user') || 'null');
+      if (session?.email) {
+        const resU = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?email=eq.${encodeURIComponent(session.email)}&select=id`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const users = await resU.json();
+        if (users && users.length) {
+          userId = users[0].id;
+          res = await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?usuario_id=eq.${userId}&select=*`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+          });
+          cards = await res.json();
+        }
+      }
+    }
+
+    if (cards && cards.length > 0) {
+      const c = cards[0];
+      cardId = c.id;
+      window._cardSlug = c.slug;
+      document.getElementById('f-name').value      = c.nombre || '';
+      document.getElementById('f-role').value      = c.cargo  || '';
+      document.getElementById('f-company').value   = c.empresa || '';
+      document.getElementById('f-tagline').value   = c.tagline || '';
+      document.getElementById('f-phone').value     = c.telefono || '';
+      document.getElementById('f-email').value     = c.email || '';
+      document.getElementById('f-address').value   = c.direccion || '';
+      document.getElementById('f-web').value       = c.web || '';
+      document.getElementById('f-hours').value     = c.horarios || '';
+      document.getElementById('f-about').value     = c.about || '';
+      document.getElementById('f-instagram').value = c.instagram || '';
+      document.getElementById('f-linkedin').value  = c.linkedin || '';
+      document.getElementById('f-facebook').value  = c.facebook || '';
+      if (c.certificaciones) {
+        // Migrar legacy si no hay certs_json
+        if (!c.certs_json || c.certs_json === '[]') {
+          certsList = c.certificaciones.split(',').map(n => n.trim()).filter(Boolean).map(name => ({name, logo: null, id: Date.now() + Math.random()}));
+        }
+      }
+      if (c.certs_json) {
+        try { 
+          const parsed = JSON.parse(c.certs_json);
+          if (parsed && parsed.length) certsList = parsed.map(c => ({...c, id: c.id || (Date.now() + Math.random())}));
+        } catch {}
+      }
+      renderCertsList();
+      if (c.stories_json) {
+        try { storiesList = JSON.parse(c.stories_json) || []; } catch { storiesList = []; }
+      }
+      renderStoriesList();
+      if (c.proyectos_json) {
+        try { proyectosList = JSON.parse(c.proyectos_json) || []; } catch { proyectosList = []; }
+      }
+      renderProyectosList();
+      if (c.beneficio_titulo) document.getElementById('f-ben-titulo').value = c.beneficio_titulo;
+      if (c.beneficio_desc) document.getElementById('f-ben-desc').value = c.beneficio_desc;
+      if (c.beneficio_codigo) document.getElementById('f-ben-codigo').value = c.beneficio_codigo;
+      if (c.beneficio_imagen) {
+        benefitImage = c.beneficio_imagen;
+        const prev = document.getElementById('ben-img-preview');
+        const ph = document.getElementById('ben-img-ph');
+        const rm = document.getElementById('ben-img-remove');
+        if (prev) { prev.src = c.beneficio_imagen; prev.classList.add('show'); }
+        if (ph) ph.style.display = 'none';
+        if (rm) rm.style.display = 'block';
+      }
+      if (c.color) setColor(c.color, null);
+      if (c.cover_url) { coverUrl = c.cover_url; showCoverPreview(coverUrl); }
+      if (c.logo_url)  { logoUrl  = c.logo_url;  showLogoPreview(logoUrl); }
+      if (c.links) { try { links = JSON.parse(c.links) || []; } catch { links = []; } }
+      liveUpdate();
+      renderLinks();
+      reloadPreview();
+      showToast('✓ Tarjeta cargada correctamente');
+    } else {
+      showToast('Nueva tarjeta — completá los datos y guardá');
+    }
+  } catch(e) {
+    showToast('Error cargando tarjeta: ' + e.message);
+  }
+}
+
+// ── TABS ──
+function switchTab(name) {
+  const tabs = ['info','images','style','links','sections'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabs[i] === name));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ── LIVE UPDATE ──
+function liveUpdate() {
+  // El preview ahora es un iframe con la tarjeta real
+  // Esta función solo actualiza el color global
+  applyColor();
+}
+
+function reloadPreview() {
+  const iframe = document.getElementById('preview-iframe');
+  if (!iframe) return;
+  const slug = window._cardSlug;
+  if (!slug) {
+    showToast('Guardá la tarjeta primero');
+    return;
+  }
+  iframe.src = `tarjeta.html?slug=${slug}&preview=1&t=${Date.now()}`;
+}
+
+// ── UPLOAD IMAGES ──
+async function uploadImage(input, type) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  const maxMB = type === 'cover' ? 2 : 1;
+  if (file.size > maxMB * 1024 * 1024) { showToast(`⚠ La imagen debe ser menor a ${maxMB}MB`); return; }
+
+  const bucket = type === 'cover' ? 'tarjetas' : 'logos';
+  const ext    = file.name.split('.').pop();
+  const path   = `${userId}/${type}-${Date.now()}.${ext}`;
+
+  showProgress(type);
+
+  try {
+    // Simular progreso
+    animateProgress(type);
+
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${bucket}/${path}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': file.type,
+        'x-upsert': 'true',
+      },
+      body: file,
+    });
+
+    if (!res.ok) throw new Error('Error al subir');
+
+    const url = `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+
+    if (type === 'cover') {
+      coverUrl = url;
+      showCoverPreview(url);
+    } else {
+      logoUrl = url;
+      showLogoPreview(url);
+    }
+
+    hideProgress(type);
+    showToast('✓ Imagen subida correctamente');
+  } catch(e) {
+    hideProgress(type);
+    // Fallback: usar base64 local
+    const reader = new FileReader();
+    reader.onload = e2 => {
+      if (type === 'cover') { coverUrl = e2.target.result; showCoverPreview(coverUrl); }
+      else { logoUrl = e2.target.result; showLogoPreview(logoUrl); }
+      showToast('✓ Imagen cargada (local)');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function showCoverPreview(url) {
+  const prev = document.getElementById('cover-preview');
+  prev.src = url; prev.classList.add('show');
+  const ph = document.getElementById('cover-ph');
+  if (ph) ph.style.display = 'none';
+}
+function showLogoPreview(url) {
+  const prev = document.getElementById('logo-preview');
+  prev.src = url; prev.classList.add('show');
+  const ph = document.getElementById('logo-ph');
+  if (ph) ph.style.display = 'none';
+}
+function removeImage(type) {
+  if (type === 'cover') {
+    coverUrl = null;
+    document.getElementById('cover-preview').classList.remove('show');
+    const ph = document.getElementById('cover-ph');
+    if (ph) ph.style.display = 'block';
+  } else {
+    logoUrl = null;
+    document.getElementById('logo-preview').classList.remove('show');
+    const ph = document.getElementById('logo-ph');
+    if (ph) ph.style.display = 'block';
+  }
+}
+function showProgress(type) { 
+  const el = document.getElementById(`${type}-progress`);
+  if (el) el.classList.add('show'); 
+}
+function hideProgress(type) { 
+  const el = document.getElementById(`${type}-progress`);
+  if (el) el.classList.remove('show');
+  const bar = document.getElementById(`${type}-bar`);
+  if (bar) bar.style.width = '0';
+}
+function animateProgress(type) {
+  const bar = document.getElementById(`${type}-bar`);
+  if (!bar) return;
+  let w = 0;
+  const iv = setInterval(() => { w += 10; bar.style.width = w + '%'; if (w >= 90) clearInterval(iv); }, 100);
+}
+
+// ── COLOR ──
+function setColor(hex, el) {
+  if (!hex || hex.length < 4) return;
+  cardColor = hex;
+  document.getElementById('color-hex').value = hex;
+  document.getElementById('color-picker').value = hex;
+  document.getElementById('color-swatch').style.background = hex;
+  document.querySelectorAll('.preset').forEach(p => p.classList.remove('active'));
+  if (el) el.classList.add('active');
+  applyColor();
+}
+function applyColor() {
+  // El color se ve en el iframe real al recargar
+  renderLinksPreview();
+}
+
+// ── LINKS ──
+function renderLinks() {
+  const list = document.getElementById('links-list');
+  list.innerHTML = links.map(l => `
+    <div class="link-item">
+      <div class="link-fields">
+        <input class="link-field" placeholder="Nombre del botón" value="${l.label}" oninput="updateLink(${l.id},'label',this.value)">
+        <input class="link-field" placeholder="URL" value="${l.url}" oninput="updateLink(${l.id},'url',this.value)" style="font-size:11px;color:#888">
+      </div>
+      <button class="link-toggle ${l.active ? 'on' : ''}" onclick="toggleLink(${l.id},this)"></button>
+      <button class="link-del" onclick="deleteLink(${l.id})">✕</button>
+    </div>`).join('');
+  renderLinksPreview();
+}
+function renderLinksPreview() {
+  // Ya no tocamos el mockup; el preview es el iframe real
+  const sec = document.getElementById('pf-links');
+  if (!sec) return;
+  sec.innerHTML = links.filter(l => l.active).map(l => `
+    <div class="pf-link" style="border-color:${cardColor}40">
+      <span style="color:${cardColor};margin-right:4px">🔗</span>${l.label}
+    </div>`).join('') || '<div class="pf-link">Sin links</div>';
+}
+function addLink() {
+  links.push({ id: linkId++, label: 'Nuevo link', url: 'https://', active: true });
+  renderLinks();
+}
+function updateLink(id, field, val) {
+  const l = links.find(x => x.id === id);
+  if (l) { l[field] = val; if (field === 'label') renderLinksPreview(); }
+}
+function toggleLink(id, btn) {
+  const l = links.find(x => x.id === id);
+  if (l) { l.active = !l.active; btn.classList.toggle('on'); renderLinksPreview(); }
+}
+function deleteLink(id) {
+  links = links.filter(x => x.id !== id);
+  renderLinks();
+  showToast('Link eliminado');
+}
+
+// ── CERTIFICACIONES ──
+function renderCertsList() {
+  const container = document.getElementById('certs-list');
+  if (!container) return;
+  if (!certsList.length) {
+    container.innerHTML = '<p style="font-size:11px;color:var(--gray);text-align:center;padding:14px;background:var(--surface2);border-radius:9px">No agregaste certificaciones todavía.</p>';
+    return;
+  }
+  container.innerHTML = certsList.map((c, idx) => `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:11px;display:flex;align-items:center;gap:11px">
+      <div style="position:relative;width:46px;height:46px;flex-shrink:0">
+        <div style="width:100%;height:100%;border-radius:10px;background:white;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);padding:4px">
+          ${c.logo 
+            ? `<img src="${c.logo}" style="width:100%;height:100%;object-fit:contain">` 
+            : `<div style="width:100%;height:100%;background:linear-gradient(135deg,var(--accent),#ff4d5e);border-radius:6px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>`}
+        </div>
+        <input type="file" accept="image/*" onchange="uploadCertLogo(this, '${c.id}')" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:5px">
+        <input type="text" value="${c.name || ''}" placeholder="ISO 9001" oninput="updateCertName('${c.id}', this.value)" style="width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--white);font-family:'Nunito',sans-serif;font-size:12px;outline:none">
+        <input type="text" value="${c.desc || ''}" placeholder="Descripción opcional" oninput="updateCertDesc('${c.id}', this.value)" style="width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:#888;font-family:'Nunito',sans-serif;font-size:11px;outline:none">
+      </div>
+      <button onclick="deleteCert('${c.id}')" style="width:26px;height:26px;border-radius:6px;background:rgba(232,25,44,.1);border:none;color:var(--accent);cursor:pointer;font-size:13px;flex-shrink:0">✕</button>
+    </div>`).join('');
+}
+
+function addCert() {
+  const id = Date.now() + '_' + Math.random();
+  certsList.push({id, name: '', desc: '', logo: null});
+  renderCertsList();
+}
+
+function updateCertName(id, val) {
+  const c = certsList.find(x => x.id == id);
+  if (c) c.name = val;
+}
+
+function updateCertDesc(id, val) {
+  const c = certsList.find(x => x.id == id);
+  if (c) c.desc = val;
+}
+
+function deleteCert(id) {
+  certsList = certsList.filter(x => x.id != id);
+  renderCertsList();
+  showToast('Certificación eliminada');
+}
+
+async function uploadCertLogo(input, certId) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 500 * 1024) { showToast('⚠ Logo máx 500KB'); return; }
+  const ext = file.name.split('.').pop();
+  const path = `${userId}/cert-${Date.now()}.${ext}`;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/logos/${path}`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type, 'x-upsert': 'true' },
+      body: file,
+    });
+    if (!res.ok) throw new Error('Upload fail');
+    const url = `${SUPABASE_URL}/storage/v1/object/public/logos/${path}`;
+    const c = certsList.find(x => x.id == certId);
+    if (c) c.logo = url;
+    renderCertsList();
+    showToast('✓ Logo subido');
+  } catch(e) {
+    const reader = new FileReader();
+    reader.onload = e2 => {
+      const c = certsList.find(x => x.id == certId);
+      if (c) c.logo = e2.target.result;
+      renderCertsList();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ── BENEFICIO IMAGEN ──
+async function uploadBenefitImage(input) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 1024 * 1024) { showToast('⚠ La imagen debe ser menor a 1MB'); return; }
+  const ext = file.name.split('.').pop();
+  const path = `${userId}/benefit-${Date.now()}.${ext}`;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/tarjetas/${path}`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type, 'x-upsert': 'true' },
+      body: file,
+    });
+    if (!res.ok) throw new Error('Upload fail');
+    benefitImage = `${SUPABASE_URL}/storage/v1/object/public/tarjetas/${path}`;
+    const prev = document.getElementById('ben-img-preview');
+    prev.src = benefitImage; prev.classList.add('show');
+    document.getElementById('ben-img-ph').style.display = 'none';
+    document.getElementById('ben-img-remove').style.display = 'block';
+    showToast('✓ Imagen del beneficio subida');
+  } catch(e) {
+    const reader = new FileReader();
+    reader.onload = e2 => {
+      benefitImage = e2.target.result;
+      const prev = document.getElementById('ben-img-preview');
+      prev.src = benefitImage; prev.classList.add('show');
+      document.getElementById('ben-img-ph').style.display = 'none';
+      document.getElementById('ben-img-remove').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function removeBenefitImage() {
+  benefitImage = null;
+  document.getElementById('ben-img-preview').classList.remove('show');
+  document.getElementById('ben-img-ph').style.display = 'block';
+  document.getElementById('ben-img-remove').style.display = 'none';
+  showToast('Imagen quitada');
+}
+
+// ── STORIES ──
+function renderStoriesList() {
+  const container = document.getElementById('stories-list');
+  if (!container) return;
+  if (!storiesList.length) {
+    container.innerHTML = '<p style="font-size:11px;color:var(--gray);text-align:center;padding:14px;background:var(--surface2);border-radius:9px">No agregaste stories todavía. Tocá "+ Agregar story" para empezar.</p>';
+    return;
+  }
+  container.innerHTML = storiesList.map((s, idx) => `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:11px;display:flex;align-items:center;gap:11px">
+      <div style="position:relative;width:54px;height:54px;flex-shrink:0">
+        <div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(45deg,var(--accent),#ff5e7c);padding:2.5px">
+          <div style="width:100%;height:100%;border-radius:50%;background:white;padding:2px">
+            <div style="width:100%;height:100%;border-radius:50%;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;${s.img ? `background-image:url('${s.img}')` : `background:linear-gradient(135deg,#1a1a1c,#3a3a40)`}">
+              ${!s.img ? '<svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2"><circle cx="12" cy="12" r="3"/><path d="M3 7h3l2-3h8l2 3h3v13H3z"/></svg>' : ''}
+            </div>
+          </div>
+        </div>
+        <input type="file" accept="image/*" onchange="uploadStoryImage(this, '${s.id}')" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border-radius:50%">
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0">
+        <input type="text" value="${s.name || ''}" placeholder="Obras, Equipo, Premios..." oninput="updateStoryName('${s.id}', this.value)" maxlength="14" style="width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--white);font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;outline:none">
+        <span style="font-size:9px;color:var(--gray)">${s.img ? '✓ Imagen lista' : 'Tocá el círculo para subir imagen'}</span>
+      </div>
+      <button onclick="deleteStory('${s.id}')" style="width:26px;height:26px;border-radius:6px;background:rgba(232,25,44,.1);border:none;color:var(--accent);cursor:pointer;font-size:13px;flex-shrink:0">✕</button>
+    </div>`).join('');
+}
+
+function addStory() {
+  if (storiesList.length >= 6) { showToast('Máx 6 stories'); return; }
+  const id = Date.now() + '_' + Math.random();
+  storiesList.push({id, name: '', img: null});
+  renderStoriesList();
+}
+
+function updateStoryName(id, val) {
+  const s = storiesList.find(x => x.id == id);
+  if (s) s.name = val;
+}
+
+function deleteStory(id) {
+  storiesList = storiesList.filter(x => x.id != id);
+  renderStoriesList();
+  showToast('Story eliminado');
+}
+
+async function uploadStoryImage(input, storyId) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 1024 * 1024) { showToast('⚠ Imagen máx 1MB'); return; }
+  const ext = file.name.split('.').pop();
+  const path = `${userId}/story-${Date.now()}.${ext}`;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/tarjetas/${path}`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type, 'x-upsert': 'true' },
+      body: file,
+    });
+    if (!res.ok) throw new Error('Upload fail');
+    const url = `${SUPABASE_URL}/storage/v1/object/public/tarjetas/${path}`;
+    const s = storiesList.find(x => x.id == storyId);
+    if (s) s.img = url;
+    renderStoriesList();
+    showToast('✓ Imagen del story subida');
+  } catch(e) {
+    const reader = new FileReader();
+    reader.onload = e2 => {
+      const s = storiesList.find(x => x.id == storyId);
+      if (s) s.img = e2.target.result;
+      renderStoriesList();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ── PROYECTOS / TRABAJOS REALIZADOS ──
+function renderProyectosList() {
+  const container = document.getElementById('proyectos-list');
+  if (!container) return;
+  if (!proyectosList.length) {
+    container.innerHTML = '<p style="font-size:11px;color:var(--gray);text-align:center;padding:14px;background:var(--surface2);border-radius:9px">No agregaste proyectos todavía. Tocá "+ Agregar proyecto" para empezar.</p>';
+    return;
+  }
+  container.innerHTML = proyectosList.map((p, idx) => `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:11px;display:flex;align-items:flex-start;gap:11px">
+      <div style="position:relative;width:80px;height:100px;flex-shrink:0">
+        <div style="width:100%;height:100%;border-radius:10px;background:#222;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);${p.img ? `background-image:url('${p.img}');background-size:cover;background-position:center` : ''}">
+          ${!p.img ? '<svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:none;stroke:#666;stroke-width:2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>' : ''}
+        </div>
+        <input type="file" accept="image/*" onchange="uploadProyectoImage(this, '${p.id}')" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border-radius:10px">
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
+        <input type="text" value="${p.titulo || ''}" placeholder="Título del proyecto" oninput="updateProyecto('${p.id}', 'titulo', this.value)" maxlength="40" style="width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--white);font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;outline:none">
+        <input type="text" value="${p.ubicacion || ''}" placeholder="Ubicación (ej: Bahía Blanca)" oninput="updateProyecto('${p.id}', 'ubicacion', this.value)" style="width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:#aaa;font-family:'Nunito',sans-serif;font-size:11px;outline:none">
+        <div style="display:flex;gap:6px">
+          <input type="text" value="${p.anio || ''}" placeholder="Año" oninput="updateProyecto('${p.id}', 'anio', this.value)" maxlength="4" style="width:60px;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:#aaa;font-family:'Nunito',sans-serif;font-size:11px;outline:none">
+          <input type="text" value="${p.tag || ''}" placeholder="Tag opcional (YPF, Dow...)" oninput="updateProyecto('${p.id}', 'tag', this.value)" maxlength="10" style="flex:1;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:#aaa;font-family:'Nunito',sans-serif;font-size:11px;outline:none">
+        </div>
+      </div>
+      <button onclick="deleteProyecto('${p.id}')" style="width:26px;height:26px;border-radius:6px;background:rgba(232,25,44,.1);border:none;color:var(--accent);cursor:pointer;font-size:13px;flex-shrink:0">✕</button>
+    </div>`).join('');
+}
+
+function addProyecto() {
+  if (proyectosList.length >= 12) { showToast('Máx 12 proyectos'); return; }
+  const id = Date.now() + '_' + Math.random();
+  proyectosList.push({id, titulo: '', ubicacion: '', anio: '', tag: '', img: null});
+  renderProyectosList();
+}
+
+function updateProyecto(id, field, val) {
+  const p = proyectosList.find(x => x.id == id);
+  if (p) p[field] = val;
+}
+
+function deleteProyecto(id) {
+  proyectosList = proyectosList.filter(x => x.id != id);
+  renderProyectosList();
+  showToast('Proyecto eliminado');
+}
+
+async function uploadProyectoImage(input, proyId) {
+  if (!input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 1024 * 1024) { showToast('⚠ Imagen máx 1MB'); return; }
+  const ext = file.name.split('.').pop();
+  const path = `${userId}/proyecto-${Date.now()}.${ext}`;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/tarjetas/${path}`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type, 'x-upsert': 'true' },
+      body: file,
+    });
+    if (!res.ok) throw new Error('Upload fail');
+    const url = `${SUPABASE_URL}/storage/v1/object/public/tarjetas/${path}`;
+    const p = proyectosList.find(x => x.id == proyId);
+    if (p) p.img = url;
+    renderProyectosList();
+    showToast('✓ Imagen del proyecto subida');
+  } catch(e) {
+    const reader = new FileReader();
+    reader.onload = e2 => {
+      const p = proyectosList.find(x => x.id == proyId);
+      if (p) p.img = e2.target.result;
+      renderProyectosList();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ── SECTIONS ──
+function renderSections() {
+  document.getElementById('sections-list').innerHTML = SECTIONS.map(s => `
+    <div class="sec-toggle-item">
+      <div class="sec-left">
+        <span class="sec-icon">${s.icon}</span>
+        <div><div class="sec-name">${s.name}</div><div class="sec-desc">${s.desc}</div></div>
+      </div>
+      <button class="toggle-sw ${s.on ? 'on' : ''}" onclick="toggleSection('${s.id}',this)"></button>
+    </div>`).join('');
+}
+function toggleSection(id, btn) {
+  const s = SECTIONS.find(x => x.id === id);
+  if (s) { s.on = !s.on; btn.classList.toggle('on'); showToast(s.on ? `✓ "${s.name}" activada` : `"${s.name}" desactivada`); }
+}
+
+// ── SAVE ──
+async function saveAll() {
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  showLoading('Guardando en Supabase...');
+
+  const data = {
+    nombre:    document.getElementById('f-name').value,
+    cargo:     document.getElementById('f-role').value,
+    empresa:   document.getElementById('f-company').value,
+    tagline:   document.getElementById('f-tagline').value,
+    telefono:  document.getElementById('f-phone').value,
+    email:     document.getElementById('f-email').value,
+    direccion: document.getElementById('f-address').value,
+    web:       document.getElementById('f-web').value,
+    horarios:  document.getElementById('f-hours').value,
+    about:     document.getElementById('f-about').value,
+    instagram: document.getElementById('f-instagram').value,
+    linkedin:  document.getElementById('f-linkedin').value,
+    facebook:  document.getElementById('f-facebook').value,
+    color:     cardColor,
+    cover_url: coverUrl,
+    logo_url:  logoUrl,
+    links:     JSON.stringify(links),
+    certificaciones: certsList.map(c => c.name).filter(Boolean).join(', '),
+    certs_json: JSON.stringify(certsList.filter(c => c.name)),
+    beneficio_titulo: document.getElementById('f-ben-titulo').value,
+    beneficio_desc:   document.getElementById('f-ben-desc').value,
+    beneficio_codigo: document.getElementById('f-ben-codigo').value.toUpperCase(),
+    beneficio_imagen: benefitImage,
+    stories_json: JSON.stringify(storiesList.filter(s => s.name && s.img)),
+    proyectos_json: JSON.stringify(proyectosList.filter(p => p.titulo && p.img)),
+    activa:    true,
+  };
+
+  try {
+    if (cardId) {
+      // UPDATE
+      await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?id=eq.${cardId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation',
+        },
+        body: JSON.stringify(data),
+      });
+    } else {
+      // INSERT
+      const slug = (data.nombre || 'tarjeta').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/tarjetas`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation',
+        },
+        body: JSON.stringify({ ...data, usuario_id: userId, slug }),
+      });
+      const created = await res.json();
+      if (created && created[0]) { cardId = created[0].id; window._cardSlug = created[0].slug; }
+    }
+
+    hideLoading();
+    const ind = document.getElementById('save-ind');
+    ind.classList.add('show');
+    setTimeout(() => ind.classList.remove('show'), 2500);
+    showToast('✓ Cambios guardados en Supabase');
+    
+    // Recargar el iframe con los cambios nuevos
+    setTimeout(reloadPreview, 600);
+  } catch(e) {
+    hideLoading();
+    showToast('❌ Error al guardar: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = '💾 Guardar';
+  }
+}
+
+// ── UTILS ──
+function goBack() {
+  // Volver al panel manteniendo la sesión
+  window.location.href = 'index.html';
+}
+
+function previewCard() {
+  // Usar el slug real de la tarjeta guardada
+  if (cardId) {
+    // Buscar slug desde Supabase
+    fetch(`https://eldiuxxqqxjpwjtrxqfg.supabase.co/rest/v1/tarjetas?id=eq.${cardId}&select=slug`, {
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA',
+      }
+    })
+    .then(r => r.json())
+    .then(data => {
+      const slug = data[0]?.slug;
+      if (slug) window.open(`tarjeta.html?slug=${slug}`, '_blank');
+      else showToast('⚠ Guardá la tarjeta primero');
+    });
+  } else {
+    showToast('⚠ Guardá la tarjeta primero para verla');
+  }
+}
+function showLoading(msg) {
+  document.getElementById('loading-text').textContent = msg || 'Cargando...';
+  document.getElementById('loading-overlay').classList.add('show');
+}
+function hideLoading() { document.getElementById('loading-overlay').classList.remove('show'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
