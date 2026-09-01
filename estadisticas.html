@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PresentAR — Estadísticas</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -137,16 +137,52 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .anim{animation:fadeUp .5s ease both}
 </style>
+
+<style id="presentar-stats-v2">
+:root{
+  --bg:#f3f1eb!important;--surface:#f8f7f3!important;--surface2:#fff!important;
+  --border:#d9d6cf!important;--accent:#111!important;--accent2:#000!important;
+  --gold:#111!important;--white:#111!important;--gray:#77746d!important;--text:#111!important;
+  --success:#111!important;--blue:#111!important;--purple:#111!important;
+}
+*{box-sizing:border-box}
+body{background:#f3f1eb!important;color:#111!important;font-family:'DM Sans',sans-serif!important}
+body::before{display:none!important}
+.nav{height:72px!important;padding:0 28px!important;background:rgba(248,247,243,.96)!important;border-bottom:1px solid #d9d6cf!important;backdrop-filter:blur(16px)!important}
+.nav-brand{font-family:'Archivo Black',sans-serif!important;font-size:18px!important;color:#111!important;letter-spacing:-.03em!important}
+.nav-brand span{color:#111!important}.nav-brand small{font-family:'DM Sans',sans-serif!important;font-size:12px!important;color:#77746d!important;font-weight:600!important;margin-left:4px!important}
+.nav-center{font:700 10px 'Space Mono',monospace!important;letter-spacing:.12em!important;color:#77746d!important}
+.nav-actions{gap:8px!important}.nav-btn{font-family:'DM Sans',sans-serif!important;border-radius:9px!important;text-transform:none!important;letter-spacing:0!important;font-weight:700!important}
+.nb-ghost{background:#fff!important;color:#111!important;border:1px solid #d9d6cf!important}.nb-ghost:hover{background:#efede7!important}
+.nb-green{background:#111!important;color:#fff!important;border:1px solid #111!important}
+.page-wrap{max-width:1440px!important;padding:108px 28px 60px!important}
+.page-header{align-items:flex-end!important;margin-bottom:28px!important}.page-kicker{font:700 10px 'Space Mono',monospace!important;letter-spacing:.12em!important;color:#77746d!important;margin-bottom:12px!important}
+.page-title{font-family:'Archivo Black',sans-serif!important;font-size:44px!important;line-height:.98!important;letter-spacing:-.045em!important;color:#111!important}
+.page-sub{font-size:12px!important;color:#77746d!important;margin-top:14px!important}.page-desc{font-size:14px!important;color:#77746d!important;max-width:650px!important;line-height:1.5!important;margin-top:6px!important}
+.period-tabs{background:#ebe9e4!important;border:1px solid #d9d6cf!important;border-radius:10px!important;padding:4px!important}.period-tab{font-family:'DM Sans',sans-serif!important;color:#6e6a63!important;border-radius:7px!important}.period-tab.active{background:#111!important;color:#fff!important;box-shadow:none!important}
+.kpi-grid{grid-template-columns:repeat(6,1fr)!important;gap:12px!important}.kpi-card{background:#fff!important;border:1px solid #d9d6cf!important;border-radius:14px!important;padding:18px!important;box-shadow:none!important;overflow:hidden!important;position:relative!important}.kpi-card::before{display:none!important}.kpi-card:hover{transform:none!important;border-color:#bdb9b1!important}
+.kpi-index{font:700 9px 'Space Mono',monospace!important;color:#99958d!important;letter-spacing:.08em!important}.kpi-label{font-size:11px!important;color:#6e6a63!important;font-weight:700!important;margin-top:16px!important}.kpi-value{font-family:'Archivo Black',sans-serif!important;font-size:31px!important;color:#111!important;letter-spacing:-.04em!important}.kpi-change{font:700 9px 'Space Mono',monospace!important;color:#8a867f!important;background:none!important}.kpi-change.up,.kpi-change.neutral{color:#8a867f!important}
+.chart-card,.table-wrap,.export-bar{background:#fff!important;border:1px solid #d9d6cf!important;border-radius:16px!important;box-shadow:none!important}.chart-title,.sec-title{font-size:16px!important;color:#111!important;font-weight:800!important}.chart-badge{font:700 9px 'Space Mono',monospace!important;background:#f0eee8!important;color:#111!important;border:0!important}.badge-green,.badge-blue,.badge-gold{background:#f0eee8!important;color:#111!important}
+.chart-wrap{background:#fff!important}.list-label{color:#111!important;font-weight:700!important}.list-bar-wrap{background:#efede8!important}.list-pct{font:700 10px 'Space Mono',monospace!important;color:#111!important}.list-icon{filter:grayscale(1)!important;opacity:.7!important}
+.export-bar{padding:18px!important}.export-info strong{color:#111!important}.export-info span{color:#77746d!important}.exp-btn{font-family:'DM Sans',sans-serif!important;border-radius:9px!important;background:#fff!important;border:1px solid #d9d6cf!important;color:#111!important}.exp-btn:hover{background:#111!important;color:#fff!important}
+.search-input,.filter-select{background:#fff!important;color:#111!important;border:1px solid #d9d6cf!important;border-radius:9px!important;font-family:'DM Sans',sans-serif!important}.search-input:focus,.filter-select:focus{border-color:#111!important;box-shadow:0 0 0 1px #111!important}
+.data-table th{background:#faf9f6!important;color:#77746d!important;font:700 9px 'Space Mono',monospace!important;letter-spacing:.08em!important}.data-table td{color:#111!important;border-top:1px solid #eeeae4!important}.data-table tr:hover td{background:#faf9f6!important}.tag{font:700 9px 'Space Mono',monospace!important;border-radius:999px!important}.tag-new{background:#111!important;color:#fff!important}.tag-read,.tag-replied{background:#efede8!important;color:#111!important}
+.pagination{border-top:1px solid #eeeae4!important}.page-info{color:#77746d!important}.page-btn{background:#fff!important;border:1px solid #d9d6cf!important;color:#111!important;border-radius:8px!important}.page-btn.active{background:#111!important;color:#fff!important;border-color:#111!important}
+.toast{background:#111!important;color:#fff!important;border:0!important}
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)!important}}
+@media(max-width:760px){.kpi-grid{grid-template-columns:1fr 1fr!important}.page-title{font-size:34px!important}.page-wrap{padding:96px 16px 50px!important}.nav-center{display:none!important}}
+</style>
+
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
-  <div class="nav-brand">Present<span>AR</span></div>
-  <div class="nav-center">📊 Estadísticas</div>
+  <div class="nav-brand" onclick="window.location.href='index.html'" title="Volver al inicio" style="cursor:pointer">PresentAR <small>/ Estadísticas</small></div>
+  <div class="nav-center">RENDIMIENTO DE TARJETA</div>
   <div class="nav-actions">
-    <button class="nav-btn nb-ghost" onclick="window.history.back()">← Volver</button>
-    <button class="nav-btn nb-green" onclick="exportCSV()">📥 Exportar CSV</button>
+    <button class="nav-btn nb-ghost" onclick="if(history.length>1){history.back()}else{window.location.href='editor.html'}">← Volver</button>
+    <button class="nav-btn nb-green" onclick="exportCSV()">Exportar CSV</button>
   </div>
 </nav>
 
@@ -155,8 +191,8 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
   <!-- HEADER -->
   <div class="page-header anim">
     <div>
-      <div class="page-title">📊 Estadísticas</div>
-      <div class="page-sub" id="page-sub">Cargando...</div>
+      <div class="page-kicker">PRESENTAR · RENDIMIENTO</div><div class="page-title">Estadísticas claras.<br>Decisiones mejores.</div>
+      <div class="page-sub" id="page-sub">Cargando...</div><div class="page-desc">Medí visitas, escaneos, contactos y acciones para entender cómo funciona tu tarjeta.</div>
     </div>
     <div class="period-tabs">
       <button class="period-tab" onclick="setPeriod('7d',this)">7 días</button>
@@ -169,37 +205,37 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
   <!-- KPIs -->
   <div class="kpi-grid anim">
     <div class="kpi-card" style="--kpi-color:#e8192c">
-      <div class="kpi-icon">👁</div>
+      <div class="kpi-index">01</div>
       <div class="kpi-label">Visitas totales</div>
       <div class="kpi-value" id="kpi-visits">247</div>
       <div class="kpi-change up">↑ +18% vs mes anterior</div>
     </div>
     <div class="kpi-card" style="--kpi-color:#3b82f6">
-      <div class="kpi-icon">📲</div>
+      <div class="kpi-index">02</div>
       <div class="kpi-label">Escaneos QR</div>
       <div class="kpi-value" id="kpi-scans">89</div>
       <div class="kpi-change up">↑ +24% vs mes anterior</div>
     </div>
     <div class="kpi-card" style="--kpi-color:#f0a500">
-      <div class="kpi-icon">📋</div>
+      <div class="kpi-index">03</div>
       <div class="kpi-label">Formularios recibidos</div>
       <div class="kpi-value" id="kpi-forms">14</div>
       <div class="kpi-change up">↑ +2 nuevos hoy</div>
     </div>
     <div class="kpi-card" style="--kpi-color:#22c55e">
-      <div class="kpi-icon">💾</div>
+      <div class="kpi-index">04</div>
       <div class="kpi-label">Contactos guardados</div>
       <div class="kpi-value" id="kpi-saves">63</div>
       <div class="kpi-change up">↑ +5 esta semana</div>
     </div>
     <div class="kpi-card" style="--kpi-color:#8b5cf6">
-      <div class="kpi-icon">🔗</div>
+      <div class="kpi-index">05</div>
       <div class="kpi-label">Clicks en links</div>
       <div class="kpi-value" id="kpi-clicks">132</div>
       <div class="kpi-change up">↑ +11% vs mes anterior</div>
     </div>
     <div class="kpi-card" style="--kpi-color:#f0a500">
-      <div class="kpi-icon">⏱</div>
+      <div class="kpi-index">06</div>
       <div class="kpi-label">Tiempo promedio</div>
       <div class="kpi-value">1:42</div>
       <div class="kpi-change neutral">→ Sin cambios</div>
@@ -246,7 +282,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
           <span class="list-icon">📱</span>
           <div class="list-info">
             <div class="list-label">Celular</div>
-            <div class="list-bar-wrap"><div class="list-bar" style="width:78%;background:#e8192c"></div></div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:78%;background:#111111"></div></div>
           </div>
           <span class="list-pct">78%</span>
         </div>
@@ -254,7 +290,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
           <span class="list-icon">💻</span>
           <div class="list-info">
             <div class="list-label">Computadora</div>
-            <div class="list-bar-wrap"><div class="list-bar" style="width:15%;background:#3b82f6"></div></div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:15%;background:#111111"></div></div>
           </div>
           <span class="list-pct">15%</span>
         </div>
@@ -262,7 +298,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
           <span class="list-icon">📟</span>
           <div class="list-info">
             <div class="list-label">Tablet</div>
-            <div class="list-bar-wrap"><div class="list-bar" style="width:7%;background:#8b5cf6"></div></div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:7%;background:#111111"></div></div>
           </div>
           <span class="list-pct">7%</span>
         </div>
@@ -275,7 +311,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
           <span class="list-icon">🌐</span>
           <div class="list-info">
             <div class="list-label">Sitio Web</div>
-            <div class="list-bar-wrap"><div class="list-bar" style="width:65%;background:#e8192c"></div></div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:65%;background:#111111"></div></div>
           </div>
           <span class="list-pct">65%</span>
         </div>
@@ -283,7 +319,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
           <span class="list-icon">📄</span>
           <div class="list-info">
             <div class="list-label">Brochure</div>
-            <div class="list-bar-wrap"><div class="list-bar" style="width:22%;background:#f0a500"></div></div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:22%;background:#111111"></div></div>
           </div>
           <span class="list-pct">22%</span>
         </div>
@@ -291,7 +327,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
           <span class="list-icon">✉️</span>
           <div class="list-info">
             <div class="list-label">Presupuesto</div>
-            <div class="list-bar-wrap"><div class="list-bar" style="width:13%;background:#22c55e"></div></div>
+            <div class="list-bar-wrap"><div class="list-bar" style="width:13%;background:#111111"></div></div>
           </div>
           <span class="list-pct">13%</span>
         </div>
@@ -301,7 +337,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 
   <!-- FORMULARIOS / CONTACTOS -->
   <div class="section-header anim">
-    <div class="sec-title" style="flex:1">📋 Contactos recibidos</div>
+    <div class="sec-title" style="flex:1">Contactos recibidos</div>
   </div>
 
   <div class="export-bar anim">
@@ -309,14 +345,14 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
       Mostrando <strong>14 contactos</strong> · <strong>2 nuevos</strong> sin leer
     </div>
     <div class="export-btns">
-      <button class="exp-btn exp-csv" onclick="exportCSV()">📥 CSV</button>
-      <button class="exp-btn exp-xls" onclick="exportXLS()">📊 Excel</button>
-      <button class="exp-btn exp-pdf" onclick="exportPDF()">📄 PDF</button>
+      <button class="exp-btn exp-csv" onclick="exportCSV()">CSV</button>
+      <button class="exp-btn exp-xls" onclick="exportXLS()">Excel</button>
+      <button class="exp-btn exp-pdf" onclick="exportPDF()">PDF</button>
     </div>
   </div>
 
   <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap" class="anim">
-    <input class="search-input" type="text" placeholder="🔍 Buscar por nombre, empresa o email..." oninput="filterTable(this.value)" id="search-input">
+    <input class="search-input" type="text" placeholder="Buscar por nombre, empresa o email..." oninput="filterTable(this.value)" id="search-input">
     <select class="filter-select" onchange="filterStatus(this.value)">
       <option value="">Todos los estados</option>
       <option value="new">Solo nuevos</option>
@@ -573,14 +609,14 @@ const chartVisits=new Chart(ctxV,{
     labels:labels30,
     datasets:[{
       label:'Visitas',data:data30,
-      borderColor:'#e8192c',backgroundColor:'rgba(232,25,44,0.08)',
+      borderColor:'#111111',backgroundColor:'rgba(17,17,17,0.05)',
       borderWidth:2.5,fill:true,tension:.4,
-      pointBackgroundColor:'#e8192c',pointRadius:4,pointHoverRadius:6,
+      pointBackgroundColor:'#111111',pointRadius:4,pointHoverRadius:6,
     },{
       label:'QR',data:[2,3,1,5,3,7,4,8],
-      borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.05)',
+      borderColor:'#77746d',backgroundColor:'rgba(119,116,109,0.05)',
       borderWidth:2,fill:true,tension:.4,
-      pointBackgroundColor:'#3b82f6',pointRadius:3,pointHoverRadius:5,
+      pointBackgroundColor:'#77746d',pointRadius:3,pointHoverRadius:5,
     }]
   },
   options:{...chartDefaults,plugins:{...chartDefaults.plugins,legend:{display:true,labels:{color:'#9090a8',font:{family:'Nunito',size:11},boxWidth:12,boxHeight:12}}}},
@@ -592,7 +628,7 @@ new Chart(ctxS,{
   type:'doughnut',
   data:{
     labels:['WhatsApp','QR','Directo','Redes','Email'],
-    datasets:[{data:[42,28,15,10,5],backgroundColor:['#25d366','#e8192c','#3b82f6','#8b5cf6','#f0a500'],borderWidth:0,hoverOffset:6}]
+    datasets:[{data:[42,28,15,10,5],backgroundColor:['#111111','#D4FF3D','#77746d','#b4b0a8','#dedbd4'],borderWidth:0,hoverOffset:6}]
   },
   options:{...chartDefaults,plugins:{...chartDefaults.plugins,legend:{display:true,position:'bottom',labels:{color:'#9090a8',font:{family:'Nunito',size:10},boxWidth:10,padding:12}}}},
 });
@@ -604,8 +640,8 @@ new Chart(ctxQ,{
   data:{
     labels:['L','M','X','J','V','S','D'],
     datasets:[
-      {label:'QR',data:[8,12,6,14,10,18,7],backgroundColor:'rgba(232,25,44,0.8)',borderRadius:6},
-      {label:'Link',data:[4,6,3,8,5,9,4],backgroundColor:'rgba(59,130,246,0.8)',borderRadius:6},
+      {label:'QR',data:[8,12,6,14,10,18,7],backgroundColor:'#111111',borderRadius:6},
+      {label:'Link',data:[4,6,3,8,5,9,4],backgroundColor:'#D4FF3D',borderRadius:6},
     ]
   },
   options:{...chartDefaults,scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9090a8',font:{family:'Nunito',size:10}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#9090a8',font:{family:'Nunito',size:10}}}},plugins:{...chartDefaults.plugins,legend:{display:true,labels:{color:'#9090a8',font:{family:'Nunito',size:10},boxWidth:10}}}},
@@ -620,18 +656,138 @@ function updateCharts(p){
 }
 
 // ── EXPORT ──
+function getExportContacts(){
+  return (filtered && filtered.length ? filtered : ALL_CONTACTS) || [];
+}
+
+function csvEscape(value){
+  const s = String(value ?? '');
+  return `"${s.replace(/"/g,'""')}"`;
+}
+
+function downloadBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function exportCSV(){
-  const headers=['Nombre','Empresa','Email','Celular','Fecha','Estado'];
-  const rows=CONTACTS.map(c=>[c.name,c.company,c.email,c.phone,c.date,c.status]);
-  const csv=[headers,...rows].map(r=>r.join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='contactos-presentar.csv';a.click();
-  URL.revokeObjectURL(url);
+  const data = getExportContacts();
+  if(!data.length){ showToast('No hay contactos para exportar'); return; }
+
+  const headers = ['Nombre','Empresa','Email','Celular','Fecha','Estado'];
+  const rows = data.map(c => [c.name,c.company,c.email,c.phone,c.date,c.status]);
+  const csv = '\uFEFF' + [headers, ...rows]
+    .map(row => row.map(csvEscape).join(';'))
+    .join('\r\n');
+
+  downloadBlob(
+    new Blob([csv], {type:'text/csv;charset=utf-8;'}),
+    'contactos-presentar.csv'
+  );
   showToast('✓ CSV descargado');
 }
-function exportXLS(){showToast('📊 Descargando Excel...')}
-function exportPDF(){showToast('📄 Generando PDF...')}
+
+function exportXLS(){
+  const data = getExportContacts();
+  if(!data.length){ showToast('No hay contactos para exportar'); return; }
+
+  const escapeHTML = value => String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+
+  const rows = data.map(c => `
+    <tr>
+      <td>${escapeHTML(c.name)}</td>
+      <td>${escapeHTML(c.company)}</td>
+      <td>${escapeHTML(c.email)}</td>
+      <td>${escapeHTML(c.phone)}</td>
+      <td>${escapeHTML(c.date)}</td>
+      <td>${escapeHTML(c.status)}</td>
+    </tr>`).join('');
+
+  const workbook = `<!DOCTYPE html>
+  <html><head><meta charset="UTF-8"></head><body>
+  <table border="1">
+    <thead><tr>
+      <th>Nombre</th><th>Empresa</th><th>Email</th>
+      <th>Celular</th><th>Fecha</th><th>Estado</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table></body></html>`;
+
+  downloadBlob(
+    new Blob(['\uFEFF', workbook], {type:'application/vnd.ms-excel;charset=utf-8;'}),
+    'contactos-presentar.xls'
+  );
+  showToast('✓ Excel descargado');
+}
+
+function exportPDF(){
+  const data = getExportContacts();
+  if(!data.length){ showToast('No hay contactos para exportar'); return; }
+
+  const escapeHTML = value => String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+
+  const rows = data.map(c => `
+    <tr>
+      <td>${escapeHTML(c.name)}</td>
+      <td>${escapeHTML(c.company)}</td>
+      <td>${escapeHTML(c.email)}</td>
+      <td>${escapeHTML(c.phone)}</td>
+      <td>${escapeHTML(c.date)}</td>
+      <td>${escapeHTML(c.status)}</td>
+    </tr>`).join('');
+
+  const w = window.open('', '_blank');
+  if(!w){
+    showToast('Permití ventanas emergentes para exportar PDF');
+    return;
+  }
+
+  w.document.write(`<!DOCTYPE html>
+  <html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Contactos PresentAR</title>
+    <style>
+      @page{size:A4 landscape;margin:14mm}
+      body{font-family:Arial,sans-serif;color:#111;margin:0}
+      h1{font-size:22px;margin:0 0 4px}
+      p{font-size:11px;color:#666;margin:0 0 18px}
+      table{width:100%;border-collapse:collapse;font-size:10px}
+      th{background:#111;color:#fff;text-align:left;padding:8px}
+      td{padding:7px 8px;border-bottom:1px solid #ddd}
+    </style>
+  </head>
+  <body>
+    <h1>PresentAR · Contactos</h1>
+    <p>${data.length} contactos exportados</p>
+    <table>
+      <thead><tr>
+        <th>Nombre</th><th>Empresa</th><th>Email</th>
+        <th>Celular</th><th>Fecha</th><th>Estado</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <script>
+      window.onload = () => setTimeout(() => window.print(), 250);
+    <\/script>
+  </body></html>`);
+  w.document.close();
+  showToast('📄 PDF listo para guardar');
+}
 
 function showToast(msg){
   const t=document.getElementById('toast');

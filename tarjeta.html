@@ -987,6 +987,55 @@ function showToast(msg) {
 }
 
 loadCard();
+
+
+// ── PREVIEW EN TIEMPO REAL DESDE editor.html ──
+function applyEditorPreviewSections(sectionState = {}) {
+  const root = document.getElementById('card-content');
+  if (!root) return;
+
+  const show = (el, on) => { if (el) el.style.display = on === false ? 'none' : ''; };
+
+  // Botones principales (Guardar contacto / Agregar a inicio)
+  show(root.querySelector('.cards-grid'), sectionState.actions);
+
+  // Agenda
+  const cards = [...root.querySelectorAll('.section-card')];
+  const byEyebrow = txt => cards.find(c => c.querySelector('.sec-eyebrow')?.textContent?.trim() === txt);
+  show(byEyebrow('AGENDÁ TU REUNIÓN'), sectionState.agenda);
+
+  // Links / servicios configurables
+  const linksCard = cards.find(c => c.querySelector('.sec-eyebrow')?.textContent?.trim() === 'SERVICIOS');
+  show(linksCard, sectionState.links);
+
+  // Contacto (teléfono, email, dirección, horarios)
+  const contactCard = cards.find(c => c.querySelector('.sec-title-row')?.textContent?.trim() === 'Contacto');
+  show(contactCard, sectionState.info);
+
+  // Acerca de
+  show(byEyebrow('ACERCA DE'), sectionState.about);
+
+  // Formulario
+  show(root.querySelector('#contact-form'), sectionState.form);
+
+  // El editor histórico llama "Guardar contacto" a la barra/acción de guardado.
+  // Si save está apagado, ocultamos específicamente el primer botón de cards-grid.
+  const saveButton = root.querySelector('.cards-grid .action-card:first-child');
+  show(saveButton, sectionState.save);
+}
+
+window.addEventListener('message', event => {
+  const msg = event.data;
+  if (!msg || msg.type !== 'presentar-preview-update' || !msg.draft) return;
+  try {
+    const previewLinks = Array.isArray(msg.links) ? msg.links : [];
+    renderCard(msg.draft, previewLinks);
+    requestAnimationFrame(() => applyEditorPreviewSections(msg.sections || {}));
+  } catch (err) {
+    console.error('Preview PresentAR:', err);
+  }
+});
+
 </script>
 </body>
 </html>

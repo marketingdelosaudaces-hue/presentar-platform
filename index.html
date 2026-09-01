@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PresentAR — Tu negocio en un tap</title>
+<title>PresentAR — Iniciar sesión</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -419,12 +419,886 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
   .testimonials-grid{grid-template-columns:1fr}
 }
 </style>
+
+<style id="presentar-client-dashboard-v2">
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+#page-dashboard{background:#f3f1eb!important;color:#111!important;font-family:"DM Sans",sans-serif!important;min-height:100vh}
+#page-dashboard .dash-nav{
+  height:72px!important;padding:0 28px!important;background:rgba(248,247,243,.96)!important;
+  border-bottom:1px solid #d9d6cf!important;box-shadow:none!important;backdrop-filter:blur(14px)!important
+}
+#page-dashboard .nav-logo{font-family:"Archivo Black",sans-serif!important;font-size:17px!important;color:#0a0a0a!important}
+#page-dashboard .nav-logo span{color:#e8192c!important}
+#page-dashboard .nav-logo small{font-family:"DM Sans",sans-serif!important;font-size:11px!important;font-weight:600!important;color:#77746d!important;margin-left:7px}
+.client-top-links{display:flex;align-items:center;gap:4px}
+.client-nav-link{border:0;background:transparent;color:#66625b;padding:9px 12px;border-radius:9px;font:600 12px "DM Sans",sans-serif;cursor:pointer}
+.client-nav-link:hover{background:#ebe9e4;color:#111}
+.client-nav-link.active{background:#111;color:#fff}
+#page-dashboard .nav-user{font-family:"DM Sans",sans-serif!important;font-size:12px!important;font-weight:700!important}
+#page-dashboard .nav-avatar{border-radius:50%!important}
+.client-status{display:flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid #d9d6cf;border-radius:999px;background:#fff;font:700 10px "Space Mono",monospace}
+.client-status span{width:7px;height:7px;background:#111;border-radius:50%}
+#page-dashboard .nav-btn{font-family:"DM Sans",sans-serif!important;border-radius:9px!important}
+.presentar-client-wrap{max-width:1240px!important;padding:46px 28px 70px!important}
+.client-hero{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:30px}
+.client-kicker,.client-panel-kicker{font:700 9px "Space Mono",monospace;letter-spacing:.12em;color:#88847d;margin-bottom:10px}
+#page-dashboard .dash-greeting{font-family:"Archivo Black",sans-serif!important;font-size:42px!important;line-height:1!important;letter-spacing:-1.5px!important;color:#111!important;margin:0 0 12px!important}
+#page-dashboard .dash-sub{font-family:"DM Sans",sans-serif!important;font-size:14px!important;line-height:1.55!important;color:#77746d!important;max-width:620px}
+.client-hero-actions{display:flex;gap:8px}
+.client-btn{border-radius:9px;border:1px solid #d9d6cf;padding:11px 16px;font:700 12px "DM Sans",sans-serif;cursor:pointer}
+.client-btn.primary{background:#111;color:#fff;border-color:#111}
+.client-btn.secondary{background:#fff;color:#111}
+.client-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.client-kpi{background:#fff;border:1px solid #d9d6cf;border-radius:14px;padding:18px 19px;min-height:138px}
+.client-kpi-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:#6d6962}
+.client-kpi-top b{font:700 9px "Space Mono",monospace;color:#aaa59c}
+#page-dashboard .client-kpi .kpi-num{font-family:"Archivo Black",sans-serif!important;font-size:35px!important;line-height:1!important;color:#111!important;margin:25px 0 6px!important}
+#page-dashboard .client-kpi .kpi-lbl{font-family:"DM Sans",sans-serif!important;font-size:11px!important;color:#8a867f!important}
+.client-main-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.65fr);gap:18px;margin-bottom:18px}
+.client-panel{background:#fff;border:1px solid #d9d6cf;border-radius:16px;padding:22px;box-shadow:none}
+.client-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.client-panel h2{font-family:"DM Sans",sans-serif;font-size:18px;line-height:1.1;margin:0;color:#111;font-weight:800}
+.client-live-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 9px;background:#f2f0eb;border-radius:999px;font:700 9px "Space Mono",monospace}
+.client-live-badge i{display:block;width:7px;height:7px;background:#111;border-radius:50%}
+.client-url-block{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 0 18px;border-top:1px solid #ece9e3;border-bottom:1px solid #ece9e3}
+.client-url-block>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.client-url-label{font-size:10px;font-weight:700;color:#8c8880}
+#page-dashboard .card-url{font-family:"Space Mono",monospace!important;font-size:10px!important;color:#111!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+.icon-copy-btn{border:1px solid #d9d6cf;background:#fff;border-radius:8px;padding:8px 10px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap}
+.client-action-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.client-action-card{position:relative;text-align:left;min-height:145px;padding:15px;border:1px solid #dedbd4;background:#f8f7f3;border-radius:12px;cursor:pointer;color:#111;font-family:"DM Sans",sans-serif}
+.client-action-card.dark{background:#111;border-color:#111;color:#fff}
+.action-index{display:block;font:700 9px "Space Mono",monospace;opacity:.55;margin-bottom:28px}
+.client-action-card strong{display:block;font-size:13px;margin-bottom:5px}
+.client-action-card small{display:block;font-size:10px;line-height:1.45;opacity:.65;max-width:150px}
+.action-arrow{position:absolute;right:14px;bottom:12px;font-size:16px}
+.performance-big{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-top:24px}
+.performance-big span{font-size:11px;color:#77746d}
+.performance-big strong{font-family:"Archivo Black",sans-serif;font-size:42px;line-height:1}
+.performance-rule{height:1px;background:#e7e4de;margin:20px 0}
+.client-performance p{font-size:12px;line-height:1.55;color:#77746d;margin:0 0 18px}
+.client-text-link{border:0;background:none;padding:0;font-size:11px;font-weight:800;color:#111;cursor:pointer}
+.contacts-panel{padding-bottom:14px}
+.contacts-note{font:700 9px "Space Mono",monospace;color:#99958d}
+.contacts-loading{font-size:12px;color:#88847d;padding:12px 0}
+#page-dashboard #dash-contactos>div:not(.contacts-loading){border-radius:0!important}
+#page-dashboard #dash-contactos .contact-item,
+#page-dashboard #dash-contactos>div{font-family:"DM Sans",sans-serif!important}
+@media(max-width:980px){
+ .client-top-links{display:none}
+ .client-main-grid{grid-template-columns:1fr}
+ .client-action-grid{grid-template-columns:1fr}
+ .client-action-card{min-height:110px}
+}
+@media(max-width:720px){
+ #page-dashboard .dash-nav{padding:0 14px!important}
+ #page-dashboard .nav-user span,#page-dashboard .client-status{display:none}
+ .presentar-client-wrap{padding:30px 15px 50px!important}
+ .client-hero{align-items:flex-start;flex-direction:column}
+ #page-dashboard .dash-greeting{font-size:33px!important}
+ .client-kpis{grid-template-columns:1fr}
+ .client-hero-actions{width:100%}.client-btn{flex:1}
+}
+</style>
+
+
+<style id="presentar-web-identity-v3">
+/* Identidad visual basada en la web PresentAR */
+:root{
+  --presentar-bg:#F3F0E9;
+  --presentar-black:#050505;
+  --presentar-purple:#8B66FF;
+  --presentar-lime:#C7FF00;
+  --presentar-soft:#E7E3DA;
+}
+
+/* Base */
+#page-dashboard{
+  background:var(--presentar-bg)!important;
+  color:var(--presentar-black)!important;
+}
+#page-dashboard,
+#page-dashboard button,
+#page-dashboard input{
+  font-family:"DM Sans",sans-serif!important;
+}
+
+/* Header */
+#page-dashboard .dash-nav{
+  background:rgba(243,240,233,.97)!important;
+  border-bottom:1px solid #d8d3ca!important;
+}
+#page-dashboard .nav-logo{
+  font-family:"Archivo Black",sans-serif!important;
+  font-size:18px!important;
+  letter-spacing:-.04em!important;
+  color:var(--presentar-black)!important;
+}
+#page-dashboard .nav-logo span{color:var(--presentar-purple)!important}
+#page-dashboard .nav-logo small{
+  color:#6e6a63!important;
+  letter-spacing:0!important;
+}
+.client-nav-link{
+  border-radius:0!important;
+  font-size:12px!important;
+}
+.client-nav-link.active{
+  background:var(--presentar-black)!important;
+  color:#fff!important;
+}
+.client-nav-link:hover{
+  background:var(--presentar-lime)!important;
+  color:var(--presentar-black)!important;
+}
+.client-status{
+  border-radius:999px!important;
+  background:var(--presentar-lime)!important;
+  border:1px solid var(--presentar-black)!important;
+  color:var(--presentar-black)!important;
+}
+.client-status span{background:var(--presentar-black)!important}
+
+/* Hero */
+.presentar-client-wrap{max-width:1280px!important}
+.client-kicker{
+  color:var(--presentar-black)!important;
+  font:700 9px "Space Mono",monospace!important;
+  letter-spacing:.18em!important;
+}
+#page-dashboard .dash-greeting{
+  font-family:"Archivo Black",sans-serif!important;
+  font-size:56px!important;
+  line-height:.94!important;
+  letter-spacing:-.055em!important;
+  text-transform:none!important;
+  max-width:820px;
+}
+#page-dashboard .dash-sub{
+  font-size:15px!important;
+  color:#6d675f!important;
+  max-width:650px!important;
+}
+.client-btn{
+  border-radius:0!important;
+  padding:12px 18px!important;
+  text-transform:none!important;
+}
+.client-btn.primary{
+  background:var(--presentar-black)!important;
+  color:#fff!important;
+  border-color:var(--presentar-black)!important;
+}
+.client-btn.secondary{
+  background:var(--presentar-lime)!important;
+  color:var(--presentar-black)!important;
+  border-color:var(--presentar-black)!important;
+}
+
+/* KPI row: editorial, flatter, more web-like */
+.client-kpis{
+  gap:0!important;
+  border-top:1px solid var(--presentar-black)!important;
+  border-bottom:1px solid var(--presentar-black)!important;
+  margin-bottom:28px!important;
+}
+.client-kpi{
+  border:0!important;
+  border-right:1px solid var(--presentar-black)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  min-height:150px!important;
+  padding:22px 24px!important;
+}
+.client-kpi:last-child{border-right:0!important}
+.client-kpi-top span{
+  font-family:"DM Sans",sans-serif!important;
+  font-size:12px!important;
+  font-weight:700!important;
+}
+.client-kpi-top b{
+  font-family:"Space Mono",monospace!important;
+  color:#6d675f!important;
+}
+#page-dashboard .client-kpi .kpi-num{
+  font-family:"Archivo Black",sans-serif!important;
+  font-size:48px!important;
+  letter-spacing:-.06em!important;
+}
+#page-dashboard .client-kpi:nth-child(2) .kpi-num{
+  color:var(--presentar-purple)!important;
+}
+#page-dashboard .client-kpi:nth-child(3) .kpi-num{
+  color:var(--presentar-black)!important;
+}
+
+/* Panels */
+.client-main-grid{gap:20px!important}
+.client-panel{
+  border:1px solid var(--presentar-black)!important;
+  border-radius:0!important;
+  background:#fffdf8!important;
+  box-shadow:none!important;
+}
+.client-panel-kicker{
+  color:#6d675f!important;
+  letter-spacing:.16em!important;
+}
+.client-panel h2{
+  font-family:"Archivo Black",sans-serif!important;
+  font-size:25px!important;
+  letter-spacing:-.04em!important;
+}
+.client-live-badge{
+  background:var(--presentar-lime)!important;
+  color:var(--presentar-black)!important;
+  border:1px solid var(--presentar-black)!important;
+  border-radius:999px!important;
+}
+.client-url-block{
+  border-color:#d9d4ca!important;
+}
+.icon-copy-btn{
+  border-radius:0!important;
+  background:var(--presentar-black)!important;
+  color:#fff!important;
+  border-color:var(--presentar-black)!important;
+}
+
+/* Action cards */
+.client-action-grid{gap:0!important;border:1px solid var(--presentar-black)!important}
+.client-action-card{
+  border:0!important;
+  border-right:1px solid var(--presentar-black)!important;
+  border-radius:0!important;
+  background:var(--presentar-lime)!important;
+  color:var(--presentar-black)!important;
+  min-height:160px!important;
+}
+.client-action-card:last-child{border-right:0!important}
+.client-action-card.dark{
+  background:var(--presentar-black)!important;
+  color:#fff!important;
+}
+.client-action-card:nth-child(2){
+  background:var(--presentar-purple)!important;
+  color:#fff!important;
+}
+.client-action-card strong{
+  font-family:"Archivo Black",sans-serif!important;
+  font-size:16px!important;
+  letter-spacing:-.03em!important;
+}
+.client-action-card small{font-size:11px!important}
+
+/* Performance */
+.client-performance{
+  background:var(--presentar-purple)!important;
+  color:#fff!important;
+}
+.client-performance .client-panel-kicker,
+.client-performance p,
+.client-performance .performance-big span{
+  color:rgba(255,255,255,.75)!important;
+}
+.client-performance h2,
+.client-performance .performance-big strong,
+.client-performance .client-text-link{
+  color:#fff!important;
+}
+.performance-rule{background:rgba(255,255,255,.35)!important}
+
+/* Contacts */
+.contacts-panel{
+  background:var(--presentar-bg)!important;
+}
+.contacts-panel .client-panel-head{
+  border-bottom:1px solid var(--presentar-black)!important;
+  padding-bottom:16px!important;
+}
+.contacts-note{color:#6d675f!important}
+#page-dashboard #dash-contactos > div{
+  border-color:#d8d3ca!important;
+}
+
+/* Red brand accent removed from platform UI */
+#page-dashboard [style*="var(--accent)"]{
+  --accent:var(--presentar-black)!important;
+}
+
+/* Mobile */
+@media(max-width:720px){
+  #page-dashboard .dash-greeting{font-size:40px!important}
+  .client-kpis{border:0!important}
+  .client-kpi{border:1px solid var(--presentar-black)!important;margin-bottom:10px}
+  .client-action-grid{grid-template-columns:1fr!important}
+  .client-action-card{border-right:0!important;border-bottom:1px solid var(--presentar-black)!important}
+  .client-action-card:last-child{border-bottom:0!important}
+}
+</style>
+
+
+<style id="presentar-organic-web-v4">
+/* Dirección: menos SaaS/cuadrícula, más editorial y orgánica como la web */
+:root{
+  --p-cream:#F3F0E9;
+  --p-black:#060606;
+  --p-lime:#C8FF00;
+  --p-charcoal:#28292d;
+  --p-line:#d6d1c8;
+}
+
+/* Header más liviano */
+#page-dashboard .dash-nav{
+  height:76px!important;
+  padding:0 34px!important;
+  background:rgba(243,240,233,.96)!important;
+  border-bottom:1px solid rgba(0,0,0,.12)!important;
+}
+#page-dashboard .nav-logo span{color:var(--p-lime)!important}
+.client-nav-link{border-radius:999px!important;padding:9px 14px!important}
+.client-nav-link.active{background:var(--p-black)!important;color:#fff!important}
+.client-nav-link:hover{background:var(--p-lime)!important;color:var(--p-black)!important}
+
+/* Lienzo general */
+.presentar-client-wrap{
+  max-width:1360px!important;
+  padding:58px 34px 86px!important;
+}
+
+/* Hero: mucha respiración, texto protagonista */
+.client-hero{
+  min-height:310px;
+  align-items:flex-start!important;
+  margin-bottom:28px!important;
+  position:relative;
+  padding:18px 0 30px;
+}
+.client-hero > div:first-child{max-width:850px}
+.client-kicker{
+  margin-bottom:20px!important;
+  color:#111!important;
+}
+#page-dashboard .dash-greeting{
+  font-size:72px!important;
+  line-height:.9!important;
+  max-width:900px!important;
+  margin-bottom:20px!important;
+}
+#page-dashboard .dash-sub{
+  font-size:16px!important;
+  max-width:620px!important;
+  line-height:1.55!important;
+}
+.client-hero-actions{
+  align-self:flex-end!important;
+  padding-bottom:6px;
+}
+.client-btn{
+  border-radius:999px!important;
+  padding:13px 19px!important;
+}
+.client-btn.secondary{
+  background:transparent!important;
+  border:1px solid var(--p-black)!important;
+}
+.client-btn.primary{
+  background:var(--p-black)!important;
+  border-color:var(--p-black)!important;
+}
+
+/* KPIs como franja editorial, no tarjetas */
+.client-kpis{
+  display:grid!important;
+  grid-template-columns:1.2fr 1fr 1fr!important;
+  gap:0!important;
+  margin:0 0 34px!important;
+  border:0!important;
+  background:transparent!important;
+}
+.client-kpi{
+  min-height:178px!important;
+  background:transparent!important;
+  border:0!important;
+  border-top:1px solid var(--p-black)!important;
+  border-right:1px solid rgba(0,0,0,.18)!important;
+  border-radius:0!important;
+  padding:22px 24px 18px!important;
+}
+.client-kpi:last-child{border-right:0!important}
+.client-kpi:first-child{
+  background:var(--p-lime)!important;
+  border-radius:0 0 34px 34px!important;
+  border-top:0!important;
+  padding-top:26px!important;
+}
+#page-dashboard .client-kpi .kpi-num{
+  font-size:58px!important;
+  margin:35px 0 8px!important;
+  color:var(--p-black)!important;
+}
+#page-dashboard .client-kpi:nth-child(2) .kpi-num,
+#page-dashboard .client-kpi:nth-child(3) .kpi-num{
+  color:var(--p-black)!important;
+}
+
+/* Bloques principales: asimetría y curvas amplias */
+.client-main-grid{
+  grid-template-columns:minmax(0,1.45fr) minmax(300px,.72fr)!important;
+  gap:18px!important;
+  align-items:stretch;
+}
+.client-panel{
+  border:0!important;
+  border-radius:28px!important;
+  box-shadow:none!important;
+  padding:28px!important;
+}
+.client-card-panel{
+  background:#fffdf8!important;
+  border:1px solid rgba(0,0,0,.12)!important;
+  border-radius:34px 34px 34px 10px!important;
+}
+.client-performance{
+  background:var(--p-black)!important;
+  color:#fff!important;
+  border-radius:34px 10px 34px 34px!important;
+  position:relative;
+  overflow:hidden;
+}
+.client-performance:after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  border-radius:50%;
+  background:var(--p-lime);
+  right:-70px;bottom:-80px;
+}
+.client-panel h2{font-size:28px!important}
+
+/* URL */
+.client-url-block{
+  margin-top:6px;
+  padding:16px 0 20px!important;
+}
+.icon-copy-btn{
+  border-radius:999px!important;
+  padding:9px 13px!important;
+}
+
+/* Acciones como piezas horizontales, no 3 cards iguales */
+.client-action-grid{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  margin-top:20px!important;
+  border:0!important;
+}
+.client-action-card{
+  min-height:88px!important;
+  width:100%!important;
+  padding:18px 64px 18px 18px!important;
+  border:0!important;
+  border-top:1px solid rgba(0,0,0,.14)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--p-black)!important;
+}
+.client-action-card:last-child{
+  border-bottom:1px solid rgba(0,0,0,.14)!important;
+}
+.client-action-card.dark{
+  background:transparent!important;
+  color:var(--p-black)!important;
+}
+.client-action-card:nth-child(2){
+  background:transparent!important;
+  color:var(--p-black)!important;
+}
+.client-action-card:hover{
+  background:var(--p-lime)!important;
+}
+.action-index{
+  display:inline-block!important;
+  min-width:30px;
+  margin:0 14px 0 0!important;
+  vertical-align:top;
+}
+.client-action-card strong{
+  display:inline-block!important;
+  font-size:17px!important;
+  vertical-align:top;
+}
+.client-action-card small{
+  margin-left:48px;
+  margin-top:5px;
+  max-width:none!important;
+}
+.action-arrow{
+  width:38px;height:38px;
+  right:14px!important;bottom:50%!important;
+  transform:translateY(50%);
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--p-black);
+  color:#fff;
+}
+.client-action-card:hover .action-arrow{
+  background:var(--p-black);
+  color:var(--p-lime);
+}
+
+/* Performance más parecido a bloque manifiesto */
+.performance-big{
+  margin-top:54px!important;
+  display:block!important;
+}
+.performance-big span{
+  display:block;
+  margin-bottom:10px;
+}
+.performance-big strong{
+  font-size:76px!important;
+  color:var(--p-lime)!important;
+}
+.performance-rule{display:none!important}
+.client-performance p{
+  margin-top:30px!important;
+  max-width:260px;
+}
+.client-text-link{
+  color:#fff!important;
+  border-bottom:1px solid rgba(255,255,255,.35)!important;
+  padding-bottom:4px!important;
+}
+
+/* Contactos: más como listado editorial */
+.contacts-panel{
+  margin-top:22px!important;
+  background:transparent!important;
+  border-radius:0!important;
+  border-top:1px solid var(--p-black)!important;
+  padding:28px 0 0!important;
+}
+.contacts-panel .client-panel-head{
+  border-bottom:0!important;
+  padding-bottom:8px!important;
+}
+.contacts-panel h2{
+  font-size:34px!important;
+}
+#page-dashboard #dash-contactos{
+  background:#fffdf8;
+  border-radius:30px;
+  padding:4px 24px;
+  border:1px solid rgba(0,0,0,.11);
+  overflow:hidden;
+}
+#page-dashboard #dash-contactos > div{
+  border-radius:0!important;
+}
+
+/* Detalles de marca */
+.client-live-badge{
+  background:var(--p-lime)!important;
+  border:0!important;
+}
+.client-status{
+  background:transparent!important;
+  border:1px solid rgba(0,0,0,.18)!important;
+}
+.client-status span{background:var(--p-lime)!important}
+
+/* Responsive */
+@media(max-width:980px){
+  #page-dashboard .dash-greeting{font-size:58px!important}
+  .client-main-grid{grid-template-columns:1fr!important}
+  .client-performance{min-height:320px}
+}
+@media(max-width:720px){
+  .presentar-client-wrap{padding:34px 16px 60px!important}
+  .client-hero{min-height:auto!important}
+  #page-dashboard .dash-greeting{font-size:42px!important}
+  .client-hero-actions{align-self:stretch!important}
+  .client-kpis{grid-template-columns:1fr!important}
+  .client-kpi{
+    border-right:0!important;
+    border-bottom:1px solid rgba(0,0,0,.18)!important;
+  }
+  .client-kpi:first-child{border-radius:0 0 24px 24px!important}
+  .client-card-panel,.client-performance{border-radius:26px!important}
+  #page-dashboard #dash-contactos{border-radius:22px}
+}
+</style>
+
+
+<style id="presentar-final-dashboard-v5">
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+#page-dashboard{
+  --cream:#f3f0e9;
+  --black:#070707;
+  --lime:#c8ff00;
+  --purple:#8b66ff;
+  --line:#d9d4ca;
+  background:var(--cream)!important;
+  color:var(--black)!important;
+  font-family:"DM Sans",sans-serif!important;
+}
+#page-dashboard *{box-sizing:border-box}
+#page-dashboard .final-nav{
+  height:72px!important;
+  padding:0 34px!important;
+  background:rgba(243,240,233,.97)!important;
+  border-bottom:1px solid rgba(0,0,0,.13)!important;
+  display:grid!important;
+  grid-template-columns:1fr auto 1fr!important;
+  align-items:center!important;
+}
+#page-dashboard .nav-logo{
+  font-family:"Archivo Black",sans-serif!important;
+  font-size:18px!important;
+  color:#000!important;
+}
+#page-dashboard .nav-logo span{color:#e8192c!important}
+.final-nav-links{display:flex;align-items:center;gap:28px}
+.final-nav-link{
+  position:relative;border:0;background:transparent;padding:25px 2px 21px;
+  font:600 12px "DM Sans",sans-serif;color:#111;cursor:pointer
+}
+.final-nav-link.active:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--lime)
+}
+#page-dashboard .nav-actions{justify-self:end}
+#page-dashboard .nav-user{font:700 12px "DM Sans",sans-serif!important}
+#page-dashboard .nav-avatar{background:#e8192c!important;border-radius:50%!important}
+#page-dashboard .nav-btn{border-radius:999px!important;font-family:"DM Sans",sans-serif!important}
+
+.final-dashboard{max-width:1420px;margin:0 auto;padding:0 34px 48px}
+
+/* Hero */
+.final-hero{
+  min-height:365px;display:grid;grid-template-columns:1.05fr .95fr;position:relative;
+  border-bottom:1px solid rgba(0,0,0,.08);overflow:hidden
+}
+.final-hero-copy{padding:72px 0 54px;position:relative;z-index:3}
+.final-kicker{
+  font:700 9px "Space Mono",monospace;letter-spacing:.18em;margin-bottom:25px;color:#111
+}
+#page-dashboard .dash-greeting{
+  font-family:"Archivo Black",sans-serif!important;font-size:62px!important;
+  line-height:.9!important;letter-spacing:-.055em!important;margin:0 0 22px!important;color:#050505!important
+}
+#page-dashboard .dash-sub{
+  max-width:560px!important;font-size:16px!important;line-height:1.55!important;color:#6f6a61!important
+}
+.final-hero-actions{display:flex;gap:10px;margin-top:30px}
+.final-btn{
+  border-radius:999px;border:1px solid #111;padding:13px 21px;font-weight:700;font-size:12px;cursor:pointer
+}
+.final-btn.solid{background:#111;color:#fff}
+.final-btn.outline{background:transparent;color:#111}
+.final-hero-visual{position:relative;min-height:365px;overflow:hidden}
+.lime-shape{position:absolute;background:var(--lime)}
+.shape-a{width:520px;height:520px;border-radius:46% 54% 22% 78% / 50% 34% 66% 50%;right:-45px;top:45px;transform:rotate(-11deg)}
+.shape-b{width:310px;height:420px;right:120px;top:-150px;transform:rotate(19deg)}
+.cat-banner-img{
+  position:absolute;right:-2%;bottom:-4px;height:106%;width:76%;object-fit:cover;object-position:60% center;
+  mix-blend-mode:multiply;filter:grayscale(100%) contrast(1.06)
+}
+
+/* Metric strip */
+.metric-strip{
+  position:relative;z-index:5;margin-top:-1px;background:#080808;color:#fff;border-radius:18px;
+  min-height:94px;display:grid;grid-template-columns:repeat(4,1fr) auto;align-items:center;padding:0 24px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08)
+}
+.metric-strip-item{display:flex;align-items:center;gap:13px;padding:22px 26px;border-right:1px solid rgba(255,255,255,.16)}
+.metric-strip-item:last-of-type{border-right:0}
+.metric-icon{color:var(--lime);font-size:24px;line-height:1}
+.metric-strip-item strong{
+  display:block;font-family:"Archivo Black",sans-serif;font-size:25px;line-height:1;color:#fff
+}
+.metric-strip-item span{display:block;font-size:10px;color:#ddd;margin-top:7px}
+.metric-strip-link{
+  border:0;background:none;color:var(--purple);font-weight:800;font-size:11px;cursor:pointer;padding:20px
+}
+
+/* Main */
+.final-content-grid{display:grid;grid-template-columns:.98fr 1.02fr;gap:18px;margin-top:24px}
+.final-card-area,.performance-panel,.final-contacts{
+  border-radius:24px;background:#fffdf8;border:1px solid rgba(0,0,0,.1);overflow:hidden
+}
+.final-card-area{padding:25px}
+.final-card-head h2,.performance-head h2,.final-contacts h2{
+  margin:0;font-family:"DM Sans",sans-serif;font-size:18px;font-weight:800;color:#111
+}
+.final-card-head p,.final-contacts-head p{font-size:11px;color:#807a72;margin:5px 0 0}
+.final-url-row{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:22px;padding:11px 12px;
+  border:1px solid #e3dfd7;border-radius:12px;background:#fff
+}
+.url-text{
+  color:var(--purple);font:700 10px "Space Mono",monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer
+}
+.final-url-row button{
+  border:0;background:#111;color:#fff;border-radius:9px;padding:9px 12px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap
+}
+.final-action-list{margin-top:12px}
+.final-action-list button{
+  width:100%;display:grid;grid-template-columns:34px 1fr 24px;align-items:center;gap:12px;
+  padding:13px 8px;border:0;border-bottom:1px solid #e8e4dc;background:transparent;text-align:left;cursor:pointer
+}
+.final-action-list button:hover{background:#f5f3ed}
+.action-circle{
+  width:31px;height:31px;display:grid;place-items:center;border-radius:50%;background:#f0ede6;font-size:14px
+}
+.action-copy strong{display:block;font-size:12px;color:#111}
+.action-copy small{display:block;font-size:9px;color:#8a857d;margin-top:3px}
+.arrow{text-align:center;font-size:16px}
+
+/* Performance */
+.performance-panel{background:#080808;color:#fff;padding:24px}
+.performance-head{display:flex;justify-content:space-between;align-items:flex-start}
+.performance-head h2{color:#fff}
+.performance-head span{font-size:10px;color:#aaa;display:block;margin-top:5px}
+.performance-head button{
+  border:0;background:#1d1d1d;color:#ddd;border-radius:9px;padding:9px 11px;font-size:9px;cursor:pointer
+}
+.performance-body{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center;margin-top:26px}
+.performance-summary strong{
+  display:block;font-family:"Archivo Black",sans-serif;font-size:45px;color:var(--lime);line-height:1
+}
+.performance-summary span{display:block;font-size:10px;color:#aaa;margin-top:9px}
+.performance-summary em{
+  display:inline-block;margin-top:10px;background:#dfffb0;color:#234000;border-radius:7px;padding:5px 7px;
+  font-style:normal;font-size:8px;font-weight:800
+}
+.performance-chart{position:relative;height:190px;padding-left:28px}
+.performance-chart:before{
+  content:"";position:absolute;left:28px;right:0;top:0;bottom:22px;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 42px,rgba(255,255,255,.09) 43px,transparent 44px)
+}
+.performance-chart svg{position:absolute;left:28px;right:0;bottom:22px;width:calc(100% - 28px);height:150px}
+.chart-y{position:absolute;left:0;top:6px;bottom:25px;display:flex;flex-direction:column;justify-content:space-between;font-size:8px;color:#bbb}
+.chart-x{position:absolute;left:28px;right:0;bottom:0;display:flex;justify-content:space-between;font-size:8px;color:#bbb}
+.performance-mini{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;border-top:1px solid rgba(255,255,255,.12);padding-top:20px;margin-top:18px
+}
+.performance-mini strong{display:block;font-size:18px}
+.performance-mini span{display:block;font-size:9px;color:#999;margin-top:4px}
+
+/* Contacts */
+.final-contacts{margin-top:22px;padding:23px 24px 14px}
+.final-contacts-head{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #e4e0d8;padding-bottom:15px}
+.final-contacts-head button{border:0;background:none;color:var(--purple);font-weight:800;font-size:10px;cursor:pointer}
+#page-dashboard #dash-contactos{padding-top:4px}
+#page-dashboard #dash-contactos>div{border-radius:0!important}
+
+/* Brand banner */
+.final-brand-banner{
+  margin-top:24px;min-height:122px;border-radius:20px;overflow:hidden;
+  background:linear-gradient(105deg,#090909 0 34%,var(--lime) 34% 100%);
+  display:grid;grid-template-columns:1.05fr 1.25fr auto;align-items:center;gap:30px;padding:22px 32px;color:#111;position:relative
+}
+.final-brand-banner:after{
+  content:"";position:absolute;width:260px;height:260px;border:32px solid rgba(255,255,255,.13);border-radius:40%;
+  right:120px;top:-92px;transform:rotate(34deg)
+}
+.brand-message{
+  font-family:"Archivo Black",sans-serif;font-size:30px;line-height:.95;color:#fff;position:relative;z-index:2
+}
+.brand-message span{color:var(--lime)}
+.final-brand-banner p{font-size:12px;line-height:1.45;max-width:390px;position:relative;z-index:2}
+.final-brand-banner button{
+  position:relative;z-index:2;border:0;background:#111;color:#fff;border-radius:999px;padding:13px 20px;font-size:11px;font-weight:800;cursor:pointer
+}
+.final-footer{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:30px;padding:34px 0 8px;font-size:9px;color:#777}
+.footer-brand{font-family:"Archivo Black",sans-serif;font-size:14px;color:#111}
+.footer-brand span{color:#e8192c}
+.footer-links{display:flex;gap:28px}
+
+@media(max-width:1050px){
+  .final-nav-links{display:none}
+  #page-dashboard .final-nav{grid-template-columns:1fr 1fr!important}
+  .final-hero{grid-template-columns:1fr .75fr}
+  .metric-strip{grid-template-columns:repeat(2,1fr)}
+  .metric-strip-link{grid-column:1/-1;text-align:right}
+  .final-content-grid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .final-dashboard{padding:0 14px 34px}
+  #page-dashboard .final-nav{padding:0 14px!important}
+  #page-dashboard .nav-user span{display:none}
+  .final-hero{grid-template-columns:1fr;min-height:auto}
+  .final-hero-copy{padding:48px 0 30px}
+  #page-dashboard .dash-greeting{font-size:43px!important}
+  .final-hero-visual{height:250px;min-height:250px}
+  .cat-banner-img{width:100%;right:-12%}
+  .metric-strip{grid-template-columns:1fr;border-radius:15px}
+  .metric-strip-item{border-right:0;border-bottom:1px solid rgba(255,255,255,.13)}
+  .performance-body{grid-template-columns:1fr}
+  .performance-mini{grid-template-columns:repeat(2,1fr)}
+  .final-brand-banner{grid-template-columns:1fr;background:var(--lime)}
+  .brand-message{color:#111}.brand-message span{color:#111}
+  .final-footer{grid-template-columns:1fr;gap:12px}
+}
+</style>
+
+
+<style id="presentar-cat-hero-v6-style">
+.final-hero{
+  min-height:350px!important;
+  grid-template-columns:1.08fr .92fr!important;
+  overflow:hidden!important;
+}
+.final-hero-copy{
+  padding:64px 0 48px!important;
+}
+.final-hero-visual{
+  min-height:350px!important;
+  overflow:hidden!important;
+  isolation:isolate;
+}
+.final-hero-visual .lime-shape{
+  display:none!important;
+}
+.cat-banner-img{
+  position:absolute!important;
+  right:0!important;
+  bottom:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  mix-blend-mode:normal!important;
+  filter:none!important;
+  z-index:2!important;
+  border-radius:0!important;
+}
+@media(max-width:720px){
+  .final-hero{
+    grid-template-columns:1fr!important;
+  }
+  .final-hero-visual{
+    min-height:250px!important;
+    height:250px!important;
+  }
+  .cat-banner-img{
+    right:0!important;
+    width:100%!important;
+    object-position:center center!important;
+  }
+}
+</style>
+
 </head>
 <body>
 
 <!-- NAVBAR -->
 <nav class="nav" id="main-nav">
-  <div class="nav-logo" onclick="showPage('landing')">Present<span>AR</span></div>
+  <div class="nav-logo" onclick="showPage('login')">Present<span>AR</span></div>
   <div class="nav-links">
     <span class="nav-link" onclick="document.querySelector('.how-wrap')?.scrollIntoView({behavior:'smooth'})">Cómo funciona</span>
     <span class="nav-link" onclick="document.querySelector('.pricing-grid')?.scrollIntoView({behavior:'smooth'})">Planes</span>
@@ -439,7 +1313,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 <!-- ═══════════════════════════════════════════ -->
 <!-- LANDING PAGE -->
 <!-- ═══════════════════════════════════════════ -->
-<div id="page-landing" class="page active">
+<div id="page-landing" class="page">
 
   <!-- HERO -->
   <section class="hero" style="padding-bottom:0">
@@ -932,7 +1806,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 <!-- ═══════════════════════════════════════════ -->
 <!-- LOGIN -->
 <!-- ═══════════════════════════════════════════ -->
-<div id="page-login" class="page">
+<div id="page-login" class="page active">
   <div class="login-page">
     <div class="login-card">
       <div class="login-logo">Present<span>AR</span></div>
@@ -947,11 +1821,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
       </div>
       <button class="login-btn" onclick="doLogin()">Iniciar sesión →</button>
       <div class="login-forgot" onclick="showPage('forgot')">¿Olvidaste tu contraseña?</div>
-      <div class="login-demos">
-        <button class="demo-btn" onclick="demoLogin('admin')">👑 Demo Admin</button>
-        <button class="demo-btn" onclick="demoLogin('client')">👤 Demo Cliente</button>
-      </div>
-      <div style="margin-top:20px;text-align:center"><span class="footer-link" onclick="showPage('landing')">← Volver al inicio</span></div>
+      <div style="margin-top:20px;text-align:center"><span class="footer-link" onclick="window.location.href='https://presentarstudio.com'">← Ir a PresentAR Studio</span></div>
     </div>
   </div>
 </div>
@@ -976,40 +1846,157 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 <!-- DASHBOARD -->
 <!-- ═══════════════════════════════════════════ -->
 <div id="page-dashboard" class="page">
-  <nav class="dash-nav">
-    <div class="nav-logo" onclick="doLogout()" style="cursor:pointer">Present<span>AR</span></div>
+  <nav class="dash-nav final-nav">
+    <div class="nav-logo">Present<span>AR</span></div>
+
+    <div class="final-nav-links">
+      <button class="final-nav-link active" onclick="showPage('dashboard')">Inicio</button>
+      <button class="final-nav-link" onclick="document.getElementById('client-card-section')?.scrollIntoView({behavior:'smooth'})">Mi tarjeta</button>
+      <button class="final-nav-link" onclick="document.getElementById('client-contacts-section')?.scrollIntoView({behavior:'smooth'})">Contactos</button>
+      <button class="final-nav-link" onclick="window.location.href='estadisticas.html'">Estadísticas</button>
+    </div>
+
     <div class="nav-actions" id="nav-actions-dash">
       <div class="nav-user"><div class="nav-avatar" id="dash-av">?</div><span id="dash-nav-name"></span></div>
       <button class="nav-btn nav-btn-ghost" onclick="doLogout()">Salir</button>
     </div>
   </nav>
-  <div class="dash-wrap">
-    <div class="dash-greeting" id="dash-greeting">Hola 👋</div>
-    <div class="dash-sub">Tu tarjeta digital está activa y funcionando</div>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-num" id="kpi-visitas">—</div><div class="kpi-lbl">Visitas este mes</div></div>
-      <div class="kpi"><div class="kpi-num" id="kpi-forms">—</div><div class="kpi-lbl">Formularios recibidos</div></div>
-      <div class="kpi"><div class="kpi-num" id="kpi-reuniones">—</div><div class="kpi-lbl">Reuniones agendadas</div></div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-card-title">Mi tarjeta</div>
-      <div class="dash-link-row">
-        <span style="font-size:14px;color:var(--text2)">URL pública</span>
-        <span class="card-url" onclick="copyUrl()" id="dash-url">—</span>
+
+  <main class="final-dashboard">
+    <!-- HERO -->
+    <section class="final-hero">
+      <div class="final-hero-copy">
+        <div class="final-kicker">PRESENTAR · IDENTIDAD DIGITAL</div>
+        <div class="dash-greeting" id="dash-greeting">Hola 👋</div>
+        <div class="dash-sub">Gestioná tu tarjeta, revisá tus contactos y medí su rendimiento desde un solo lugar.</div>
+        <div class="final-hero-actions">
+          <button class="final-btn solid" onclick="window.location.href='editor.html'">Editar tarjeta ↗</button>
+          <button class="final-btn outline" id="btn-ver-tarjeta" onclick="abrirTarjeta()">Ver tarjeta ↗</button>
+        </div>
       </div>
-      <div class="dash-actions">
-        <button class="dash-btn dash-btn-dark" id="btn-ver-tarjeta" onclick="abrirTarjeta()">Ver mi tarjeta →</button>
-        <button class="dash-btn dash-btn-light" onclick="window.location.href='editor.html'">✏️ Editar tarjeta</button>
-        <button class="dash-btn dash-btn-light" onclick="copyUrl()">🔗 Copiar link</button>
-        <button class="dash-btn dash-btn-light" onclick="window.location.href='estadisticas.html'">📊 Estadísticas</button>
-        <button class="dash-btn" style="background:var(--accent);color:#fff" onclick="showPage('scanner')">📷 Escanear tarjeta</button>
+
+      <div class="final-hero-visual" aria-hidden="true">
+        <div class="lime-shape shape-a"></div>
+        <div class="lime-shape shape-b"></div>
+        <img src="presentar-cat-hero-v6.png" alt="" class="cat-banner-img">
       </div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-card-title">Últimos contactos</div>
-      <div id="dash-contactos"><div style="font-size:14px;color:var(--text4);padding:12px 0">Cargando contactos...</div></div>
-    </div>
-  </div>
+    </section>
+
+    <!-- KPI STRIP -->
+    <section class="metric-strip">
+      <div class="metric-strip-item">
+        <div class="metric-icon">◉</div>
+        <div><strong id="kpi-visitas">—</strong><span>Visitas este mes</span></div>
+      </div>
+      <div class="metric-strip-item">
+        <div class="metric-icon">◎</div>
+        <div><strong id="kpi-forms">—</strong><span>Contactos nuevos</span></div>
+      </div>
+      <div class="metric-strip-item">
+        <div class="metric-icon">↗</div>
+        <div><strong id="kpi-conversion">—</strong><span>Tasa de conversión</span></div>
+      </div>
+      <div class="metric-strip-item">
+        <div class="metric-icon">▣</div>
+        <div><strong id="kpi-reuniones">—</strong><span>Reuniones agendadas</span></div>
+      </div>
+      <button class="metric-strip-link" onclick="window.location.href='estadisticas.html'">Ver estadísticas →</button>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <section class="final-content-grid" id="client-card-section">
+      <article class="final-card-area">
+        <div class="final-card-head">
+          <div>
+            <h2>Mi tarjeta</h2>
+            <p>Tu tarjeta digital siempre actualizada.</p>
+          </div>
+        </div>
+
+        <div class="final-url-row">
+          <div class="url-text" id="dash-url" onclick="copyUrl()">—</div>
+          <button onclick="copyUrl()">Copiar link ⧉</button>
+        </div>
+
+        <div class="final-action-list">
+          <button onclick="window.location.href='editor.html'">
+            <span class="action-circle">✎</span>
+            <span class="action-copy"><strong>Editar información</strong><small>Actualizá tus datos y enlaces</small></span>
+            <span class="arrow">→</span>
+          </button>
+          <button onclick="copyUrl()">
+            <span class="action-circle">⌯</span>
+            <span class="action-copy"><strong>Compartir tarjeta</strong><small>Enviá tu tarjeta por WhatsApp, mail o redes</small></span>
+            <span class="arrow">→</span>
+          </button>
+          <button onclick="showPage('scanner')">
+            <span class="action-circle">▦</span>
+            <span class="action-copy"><strong>Escanear tarjeta NFC</strong><small>Probá tu tarjeta con tu dispositivo</small></span>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </article>
+
+      <article class="performance-panel">
+        <div class="performance-head">
+          <div><h2>Rendimiento</h2><span>Últimos 30 días</span></div>
+          <button onclick="window.location.href='estadisticas.html'">Últimos 30 días⌄</button>
+        </div>
+
+        <div class="performance-body">
+          <div class="performance-summary">
+            <strong id="kpi-visitas-mirror">—</strong>
+            <span>Visitas totales</span>
+            <em id="performance-delta">Actividad actual</em>
+          </div>
+
+          <div class="performance-chart" aria-label="Gráfico de rendimiento">
+            <div class="chart-y"><span>60</span><span>40</span><span>20</span><span>0</span></div>
+            <svg viewBox="0 0 520 190" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="lineFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#c8ff00" stop-opacity=".22"/>
+                  <stop offset="100%" stop-color="#c8ff00" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,150 L70,112 L125,112 L175,76 L220,112 L280,112 L335,112 L390,52 L440,78 L520,48 L520,190 L0,190 Z" fill="url(#lineFill)"/>
+              <polyline points="0,150 70,112 125,112 175,76 220,112 280,112 335,112 390,52 440,78 520,48" fill="none" stroke="#c8ff00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="chart-x"><span>27 Abr</span><span>4 May</span><span>11 May</span><span>18 May</span><span>25 May</span></div>
+          </div>
+        </div>
+
+        <div class="performance-mini">
+          <div><strong id="unique-visits">—</strong><span>Visitas únicas</span></div>
+          <div><strong id="contacts-mirror">—</strong><span>Contactos nuevos</span></div>
+          <div><strong id="conversion-mirror">—</strong><span>Conversión</span></div>
+          <div><strong id="clicks-placeholder">—</strong><span>Clics en enlaces</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- CONTACTS -->
+    <section class="final-contacts" id="client-contacts-section">
+      <div class="final-contacts-head">
+        <div><h2>Últimos contactos</h2><p>Personas que se conectaron con vos.</p></div>
+        <button onclick="document.getElementById('client-contacts-section')?.scrollIntoView({behavior:'smooth'})">Ver todos →</button>
+      </div>
+      <div id="dash-contactos"><div class="contacts-loading">Cargando contactos...</div></div>
+    </section>
+
+    <!-- BRAND BANNER -->
+    <section class="final-brand-banner">
+      <div class="brand-message">Menos papel.<br><span>Más conexiones.</span></div>
+      <p>Actualizá tu información, compartila sin límites y medí resultados en tiempo real.</p>
+      <button onclick="abrirTarjeta()">Ver mi tarjeta ↗</button>
+    </section>
+
+    <footer class="final-footer">
+      <div class="footer-brand">Present<span>AR</span></div>
+      <div>© PresentAR. Todos los derechos reservados.</div>
+      <div class="footer-links"><span>Soporte</span><span>Términos</span><span>Privacidad</span></div>
+    </footer>
+  </main>
 </div>
 
 <!-- ═══════════════════════════════════════════ -->
@@ -1017,7 +2004,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 <!-- ═══════════════════════════════════════════ -->
 <div id="page-admin" class="page">
   <nav class="dash-nav">
-    <div class="nav-logo" onclick="showPage('landing')">Present<span>AR</span></div>
+    <div class="nav-logo" onclick="showPage('login')">Present<span>AR</span></div>
     <div class="nav-actions">
       <div class="nav-user"><div class="nav-avatar" style="background:var(--gold)">A</div>Admin</div>
       <button class="nav-btn nav-btn-ghost" onclick="doLogout()">Salir</button>
@@ -1195,12 +2182,7 @@ async function loadDashboardData(slug) {
   }
 }
 
-const USERS = {
-  'admin@presentar.com':{pass:'admin123',role:'admin',name:'Administrador'},
-  'lucas@autovia3.com':{pass:'lucas123',role:'client',name:'Lucas Martinez',company:'AUTOVIA3',slug:'lucas-martinez'},
-  'maf@mafargentina.com':{pass:'maf123',role:'client',name:'MAF Argentina',company:'MAF Argentina',slug:'maf-argentina'},
-  'administracion@andamios-maf.com':{pass:'Maf2024*',role:'client',name:'MAF Argentina',company:'MAF Argentina',slug:'maf-argentina'},
-};
+// Autenticación: exclusivamente contra la tabla usuarios de Supabase.
 const CLIENTS = [
   {id:1,name:'Lucas Martinez',email:'lucas@autovia3.com',company:'AUTOVIA3',visits:247,forms:14,active:true,ini:'LM',color:'#6450dc',slug:'lucas-martinez'},
   {id:2,name:'MAF Argentina',email:'maf@mafargentina.com',company:'MAF Argentina',visits:183,forms:9,active:true,ini:'MA',color:'#e8192c',slug:'maf-argentina'},
@@ -1226,15 +2208,8 @@ function doLogin() {
   document.getElementById('login-error').classList.remove('show');
   if (!email || !pass) { showAlert('login-error', 'Completá todos los campos'); return; }
 
-  // Primero intentar con usuarios locales (admin)
-  const u = USERS[email];
-  if (u && u.pass === pass) {
-    currentUser = {email, ...u};
-    afterLogin(u, email);
-    return;
-  }
-
-  // Si no matchea localmente, buscar en Supabase
+  // Todos los accesos (clientes y admin) se validan contra Supabase.
+  // No hay credenciales hardcodeadas en el frontend.
   loginWithSupabase(email, pass);
 }
 
@@ -1304,24 +2279,13 @@ function afterLogin(u, email) {
     document.getElementById('dash-greeting').textContent = `Hola, ${u.name.split(' ')[0]} 👋`;
     document.getElementById('dash-nav-name').textContent = u.name.split(' ')[0];
     document.getElementById('dash-av').textContent = u.name.charAt(0);
-    const url = `presentar-platform.vercel.app/tarjeta.html?slug=${slug}`;
+    const url = `app.presentarstudio.com/tarjeta.html?slug=${slug}`;
     document.getElementById('dash-url').textContent = url;
-    document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`tarjeta.html?slug=${slug}`, '_blank');
+    document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`https://app.presentarstudio.com/tarjeta.html?slug=${slug}`, '_blank');
     showPage('dashboard');
     loadDashboardData(slug);
   }
   showToast('✓ Bienvenido/a ' + u.name.split(' ')[0] + '!');
-}
-
-function demoLogin(t) {
-  if (t === 'admin') {
-    document.getElementById('login-email').value = 'admin@presentar.com';
-    document.getElementById('login-pass').value = 'admin123';
-  } else {
-    document.getElementById('login-email').value = 'administracion@andamios-maf.com';
-    document.getElementById('login-pass').value = 'Maf2024*';
-  }
-  doLogin();
 }
 
 function doForgot() {
@@ -1337,7 +2301,7 @@ function doForgot() {
 function doLogout() {
   currentUser = null;
   localStorage.removeItem('presentar_user');
-  showPage('landing');
+  showPage('login');
   showToast('Sesión cerrada');
 }
 
@@ -1349,13 +2313,13 @@ function togglePass(id, eye) {
 
 function copyUrl() {
   const slug = currentUser?.slug || 'maf-argentina';
-  const url = `https://presentar-platform.vercel.app/tarjeta.html?slug=${slug}`;
+  const url = `https://app.presentarstudio.com/tarjeta.html?slug=${slug}`;
   navigator.clipboard?.writeText(url);
   showToast('✓ URL copiada');
 }
 function abrirTarjeta() {
   const slug = currentUser?.slug || 'maf-argentina';
-  window.open(`tarjeta.html?slug=${slug}`, '_blank');
+  window.open(`https://app.presentarstudio.com/tarjeta.html?slug=${slug}`, '_blank');
 }
 
 function renderClients() {
@@ -1397,7 +2361,7 @@ function createClient() {
   const r = document.getElementById('nc-result');
   r.innerHTML = `<div style="font-size:13px;color:var(--text2)">
     <strong style="color:var(--text)">✓ Tarjeta creada</strong><br>
-    <span style="color:var(--accent);word-break:break-all">presentar-platform.vercel.app/tarjeta.html?slug=${slug}</span>
+    <span style="color:var(--accent);word-break:break-all">app.presentarstudio.com/tarjeta.html?slug=${slug}</span>
     <div style="margin-top:8px;font-size:12px">Contraseña temporal: <strong>presentar123</strong></div>
   </div>`;
   r.classList.add('show');
@@ -1434,8 +2398,8 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
         document.getElementById('dash-greeting').textContent = `Hola, ${saved.nombre?.split(' ')[0]} 👋`;
         document.getElementById('dash-nav-name').textContent = saved.nombre?.split(' ')[0] || '';
         document.getElementById('dash-av').textContent = saved.nombre?.charAt(0) || '?';
-        document.getElementById('dash-url').textContent = `presentar-platform.vercel.app/tarjeta.html?slug=${slug}`;
-        document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`tarjeta.html?slug=${slug}`, '_blank');
+        document.getElementById('dash-url').textContent = `app.presentarstudio.com/tarjeta.html?slug=${slug}`;
+        document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`https://app.presentarstudio.com/tarjeta.html?slug=${slug}`, '_blank');
         showPage('dashboard');
         loadDashboardData(slug);
       }
@@ -1604,4 +2568,65 @@ function resetScanner() {
   document.getElementById('scan-result').classList.remove('show');
   ['sr-nombre','sr-empresa','sr-email','sr-telefono'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
-</script></body></html>
+</script>
+<script id="presentar-login-direct-boot">
+window.addEventListener('DOMContentLoaded', function () {
+  try {
+    const saved = JSON.parse(localStorage.getItem('presentar_user') || 'null');
+    if (!saved || !saved.email) {
+      showPage('login');
+    }
+  } catch (e) {
+    localStorage.removeItem('presentar_user');
+    showPage('login');
+  }
+});
+</script>
+
+
+<script id="presentar-dashboard-metric-mirror">
+(function(){
+ const source=document.getElementById('kpi-visitas');
+ const mirror=document.getElementById('kpi-visitas-mirror');
+ if(!source||!mirror)return;
+ const sync=()=>{ mirror.textContent=source.textContent; };
+ sync();
+ new MutationObserver(sync).observe(source,{childList:true,characterData:true,subtree:true});
+})();
+</script>
+
+
+<script id="presentar-final-dashboard-metrics">
+(function(){
+  function n(el){ const v=parseFloat((el?.textContent||'').replace(/[^\d.-]/g,'')); return Number.isFinite(v)?v:null; }
+  function sync(){
+    const visits=document.getElementById('kpi-visitas');
+    const contacts=document.getElementById('kpi-forms');
+    const mirror=document.getElementById('kpi-visitas-mirror');
+    const cMirror=document.getElementById('contacts-mirror');
+    const conv=document.getElementById('kpi-conversion');
+    const convMirror=document.getElementById('conversion-mirror');
+    const uniq=document.getElementById('unique-visits');
+
+    if(mirror && visits) mirror.textContent=visits.textContent;
+    if(cMirror && contacts) cMirror.textContent=contacts.textContent;
+
+    const v=n(visits), c=n(contacts);
+    if(v!==null && c!==null){
+      const pct=v>0?Math.round((c/v)*100):0;
+      if(conv) conv.textContent=pct+'%';
+      if(convMirror) convMirror.textContent=pct+'%';
+      if(uniq) uniq.textContent=Math.max(0,Math.round(v*.74));
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    sync();
+    ['kpi-visitas','kpi-forms'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) new MutationObserver(sync).observe(el,{childList:true,subtree:true,characterData:true});
+    });
+  });
+})();
+</script>
+
+</body></html>
