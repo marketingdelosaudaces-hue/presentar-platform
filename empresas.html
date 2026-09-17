@@ -1,0 +1,2849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PresentAR Empresas</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --lime:#C7FF00;
+    --black:#11161B;
+    --background:#F3F1EB;
+    --white:#FFFFFF;
+    --border:#DEDBD3;
+    --muted:#77746D;
+}
+
+body{
+    margin:0;
+    background:var(--background);
+    color:#111;
+    font-family:"DM Sans",sans-serif;
+}
+
+.app{
+    min-height:100vh;
+    display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:245px;
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+
+    background:#11161B;
+    color:white;
+
+    padding:28px 16px;
+
+    display:flex;
+    flex-direction:column;
+}
+
+.logo{
+    font-family:"Archivo Black";
+    font-size:27px;
+    letter-spacing:-1.3px;
+}
+
+.logo span{
+    color:var(--lime);
+}
+
+.sidebar-label{
+    margin:8px 0 28px 12px;
+
+    font-family:"Space Mono";
+    font-size:9px;
+    letter-spacing:.15em;
+
+    color:#646D74;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.menu button{
+    border:0;
+    background:transparent;
+
+    color:#D5D9DC;
+
+    padding:12px 14px;
+    border-radius:11px;
+
+    text-align:left;
+
+    font-weight:600;
+    font-size:14px;
+
+    cursor:pointer;
+}
+
+.menu button:hover{
+    background:#20272D;
+}
+
+.menu button.active{
+    background:#2A3238;
+    color:white;
+}
+
+.menu button.active:after{
+    content:"";
+
+    width:7px;
+    height:7px;
+
+    background:var(--lime);
+
+    float:right;
+
+    border-radius:50%;
+
+    margin-top:6px;
+}
+
+.future{
+    opacity:.55;
+}
+
+.divider{
+    height:1px;
+    background:#293139;
+    margin:10px;
+}
+
+/* PLAN */
+
+.plan{
+    margin-top:auto;
+
+    background:#171D22;
+    border:1px solid #283139;
+
+    border-radius:15px;
+
+    padding:16px;
+}
+
+.plan small{
+    font-family:"Space Mono";
+    font-size:8px;
+
+    color:#778087;
+}
+
+.plan strong{
+    display:block;
+
+    margin-top:7px;
+
+    font-size:15px;
+}
+
+.plan-users{
+    font-size:11px;
+
+    margin-top:5px;
+
+    color:#9BA2A7;
+}
+
+.plan-progress{
+    height:6px;
+
+    background:#293239;
+
+    border-radius:20px;
+
+    margin:13px 0;
+
+    overflow:hidden;
+}
+
+.plan-progress div{
+    width:20%;
+    height:100%;
+
+    background:var(--lime);
+}
+
+.plan button{
+    width:100%;
+
+    background:transparent;
+
+    border:1px solid #364049;
+
+    color:white;
+
+    border-radius:9px;
+
+    padding:9px;
+
+    cursor:pointer;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:245px;
+
+    width:calc(100% - 245px);
+}
+
+.topbar{
+    height:74px;
+
+    background:rgba(255,255,255,.94);
+
+    border-bottom:1px solid var(--border);
+
+    padding:0 30px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:sticky;
+    top:0;
+
+    z-index:10;
+}
+
+.company strong{
+    display:block;
+
+    font-size:14px;
+}
+
+.company small{
+    color:var(--muted);
+
+    font-size:10px;
+}
+
+/* PAGES */
+
+.view{
+    display:none;
+
+    max-width:1500px;
+
+    padding:35px 30px 60px;
+
+    margin:auto;
+}
+
+.view.active{
+    display:block;
+}
+
+.page-header{
+    display:flex;
+
+    align-items:flex-end;
+    justify-content:space-between;
+
+    margin-bottom:25px;
+}
+
+.kicker{
+    font-family:"Space Mono";
+
+    letter-spacing:.12em;
+
+    font-size:9px;
+
+    color:#99958D;
+}
+
+h1{
+    font-family:"Archivo Black";
+
+    font-size:40px;
+
+    letter-spacing:-2px;
+
+    line-height:1;
+
+    margin:9px 0;
+}
+
+.page-header p{
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin:0;
+}
+
+.btn{
+    border:0;
+
+    padding:11px 16px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:700;
+}
+
+.btn-black{
+    background:#111;
+
+    color:white;
+}
+
+.btn-lime{
+    background:var(--lime);
+
+    color:#111;
+}
+
+/* KPIS */
+
+.kpis{
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:12px;
+
+    margin-bottom:15px;
+}
+
+.kpi{
+    min-height:135px;
+
+    padding:18px;
+
+    background:white;
+
+    border:1px solid rgba(0,0,0,.04);
+
+    border-radius:16px;
+}
+
+.kpi:nth-child(1){
+    background:linear-gradient(135deg,#EFF7FF,#FFF);
+}
+
+.kpi:nth-child(2){
+    background:linear-gradient(135deg,#EEFCF7,#FFF);
+}
+
+.kpi:nth-child(3){
+    background:linear-gradient(135deg,#FFF5EB,#FFF);
+}
+
+.kpi:nth-child(4){
+    background:linear-gradient(135deg,#F6F1FF,#FFF);
+}
+
+.kpi-label{
+    color:#6E6B65;
+
+    font-size:11px;
+}
+
+.kpi-value{
+    display:block;
+
+    font-family:"Archivo Black";
+
+    font-size:32px;
+
+    margin:8px 0;
+}
+
+.kpi-change{
+    color:#308B30;
+
+    font-size:10px;
+
+    font-weight:700;
+}
+
+/* PANELS */
+
+.dashboard-grid{
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:14px;
+
+    margin-bottom:14px;
+}
+
+.bottom-grid{
+    display:grid;
+
+    grid-template-columns:1.4fr 1fr;
+
+    gap:14px;
+}
+
+.panel{
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:19px;
+}
+
+.panel h2{
+    font-size:16px;
+
+    margin:4px 0 18px;
+}
+
+/* FAKE CHART */
+
+.chart{
+    height:230px;
+
+    display:flex;
+
+    gap:13px;
+
+    align-items:flex-end;
+
+    padding-top:30px;
+}
+
+.chart div{
+    flex:1;
+
+    border-radius:6px 6px 0 0;
+
+    background:linear-gradient(
+        180deg,
+        #C7FF00,
+        #E6FF8A
+    );
+}
+
+/* SOURCE */
+
+.source{
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:13px 0;
+
+    border-bottom:1px solid #EEE;
+}
+
+.source:last-child{
+    border:0;
+}
+
+.source span{
+    color:#666;
+
+    font-size:12px;
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+th{
+    font-family:"Space Mono";
+
+    font-size:9px;
+
+    color:#888;
+
+    text-align:left;
+
+    padding:10px;
+
+    border-bottom:1px solid #EEE;
+}
+
+td{
+    padding:12px 10px;
+
+    border-bottom:1px solid #EEE;
+
+    font-size:12px;
+}
+
+.member small{
+    display:block;
+
+    color:#888;
+
+    margin-top:2px;
+}
+
+.status{
+    display:inline-block;
+
+    padding:5px 9px;
+
+    border-radius:30px;
+
+    font-size:9px;
+
+    font-weight:700;
+}
+
+.status.new{
+    background:#FFF1D5;
+}
+
+.status.contact{
+    background:#E7F2FF;
+}
+
+.status.opportunity{
+    background:#FFF0DE;
+}
+
+.status.win{
+    background:#EAF8E6;
+}
+
+/* TOOLBAR */
+
+.toolbar{
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:16px;
+}
+
+.toolbar input,
+.toolbar select{
+    padding:10px 12px;
+
+    border:1px solid var(--border);
+
+    border-radius:9px;
+
+    background:white;
+}
+
+.toolbar input{
+    min-width:300px;
+}
+
+/* FUNNEL */
+
+.funnel{
+    margin-top:20px;
+}
+
+.funnel div{
+    height:48px;
+
+    margin:8px auto;
+
+    border-radius:8px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    background:#111;
+
+    color:white;
+}
+
+.funnel div:nth-child(2){
+    width:75%;
+
+    background:#293139;
+}
+
+.funnel div:nth-child(3){
+    width:52%;
+
+    background:#7DA400;
+}
+
+.funnel div:nth-child(4){
+    width:30%;
+
+    background:var(--lime);
+
+    color:#111;
+}
+/* =========================================
+   PRESENTAR EMPRESAS · AVATARES
+========================================= */
+
+.member-profile{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.member-avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    overflow:hidden;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#11161B;
+    color:#C7FF00;
+
+    font-weight:800;
+    font-size:11px;
+
+    border:2px solid white;
+    box-shadow:0 0 0 1px #E4E2DC;
+}
+
+.member-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.member-data strong{
+    display:block;
+}
+
+.member-data small{
+    display:block;
+    color:#888;
+    margin-top:3px;
+}
+
+.owner-profile{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.owner-profile .member-avatar{
+    width:28px;
+    height:28px;
+    font-size:8px;
+}
+
+
+/* =========================================
+   FILTRO DE FECHAS
+========================================= */
+
+.dashboard-filter{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+
+    margin-bottom:18px;
+
+    padding:12px 14px;
+
+    background:white;
+
+    border:1px solid var(--border);
+    border-radius:13px;
+}
+
+.period-buttons{
+    display:flex;
+    gap:6px;
+}
+
+.period-btn{
+    border:0;
+    background:#F1F0EB;
+
+    padding:8px 12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:10px;
+    font-weight:700;
+}
+
+.period-btn:hover{
+    background:#E7E5DF;
+}
+
+.period-btn.active{
+    background:#11161B;
+    color:white;
+}
+
+.custom-dates{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.custom-dates input{
+    border:1px solid var(--border);
+
+    padding:7px 9px;
+
+    border-radius:8px;
+
+    font-family:"DM Sans";
+    font-size:10px;
+}
+
+
+/* =========================================
+   PRESENTAR BANNER
+========================================= */
+
+.presentar-banner{
+    position:relative;
+
+    min-height:165px;
+
+    margin-bottom:18px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    padding:26px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(199,255,0,.35),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #11161B,
+            #1A2228 60%,
+            #253039
+        );
+
+    color:white;
+}
+
+.presentar-banner::after{
+    content:"PresentAR";
+
+    position:absolute;
+
+    right:-15px;
+    bottom:-31px;
+
+    font-family:"Archivo Black";
+
+    font-size:88px;
+
+    letter-spacing:-6px;
+
+    color:rgba(255,255,255,.045);
+}
+
+.presentar-banner .banner-kicker{
+    font-family:"Space Mono";
+
+    font-size:8px;
+
+    letter-spacing:.15em;
+
+    color:#9CA5AA;
+}
+
+.presentar-banner h2{
+    position:relative;
+    z-index:2;
+
+    margin:7px 0;
+
+    font-family:"Archivo Black";
+
+    font-size:27px;
+
+    letter-spacing:-1px;
+}
+
+.presentar-banner h2 span{
+    color:#C7FF00;
+}
+
+.presentar-banner p{
+    position:relative;
+    z-index:2;
+
+    max-width:560px;
+
+    margin:0;
+
+    color:#C5CBCF;
+
+    font-size:12px;
+}
+
+.demo-badge{
+    position:relative;
+    z-index:2;
+
+    width:max-content;
+
+    margin-top:16px;
+
+    padding:7px 10px;
+
+    background:#C7FF00;
+
+    color:#11161B;
+
+    border-radius:20px;
+
+    font-family:"Space Mono";
+
+    font-size:8px;
+
+    font-weight:700;
+}
+
+
+/* RESPONSIVE EXTRA */
+
+@media(max-width:700px){
+
+    .dashboard-filter{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .period-buttons{
+        flex-wrap:wrap;
+    }
+
+    .custom-dates{
+        flex-wrap:wrap;
+    }
+
+}
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+    }
+
+    .kpis{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .dashboard-grid,
+    .bottom-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Present<span>AR</span>
+    </div>
+
+    <div class="sidebar-label">
+        EMPRESAS
+    </div>
+
+    <div class="menu">
+
+        <button class="active" data-page="dashboard">
+            ⌂ Dashboard
+        </button>
+
+        <button data-page="equipo">
+            ◎ Equipo
+        </button>
+
+        <button data-page="leads">
+            ◌ Leads
+        </button>
+
+        <button data-page="contactos">
+            ▣ Contactos
+        </button>
+
+        <button data-page="analytics">
+            ▥ Analytics
+        </button>
+
+        <div class="divider"></div>
+
+        <button class="future">
+            □ Eventos · Próximamente
+        </button>
+
+        <button class="future">
+            ◇ Credenciales · Próximamente
+        </button>
+
+        <button class="future">
+            ✓ Capacitaciones · Próximamente
+        </button>
+
+    </div>
+
+    <div class="plan">
+
+        <small>
+            PLAN EMPRESAS
+        </small>
+
+        <strong>
+            Team
+        </strong>
+
+        <div class="plan-users">
+            2 / 10 miembros
+        </div>
+
+        <div class="plan-progress">
+            <div></div>
+        </div>
+
+        <button onclick="futureFeature()">
+            Gestionar plan
+        </button>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+
+    <div class="company">
+
+        <strong id="companyName">
+            PresentAR Studio
+        </strong>
+
+        <small>
+            Conectando personas. Generando oportunidades.
+        </small>
+
+    </div>
+
+    <strong>
+        PresentAR Empresas
+    </strong>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<section class="view active" id="dashboard">
+
+<div class="page-header">
+
+    <div>
+
+        <div class="kicker">
+            PRESENTAR · PANEL GERENCIAL
+        </div>
+
+        <h1>
+            Hola, <span id="userName">Lucas</span> 👋
+        </h1>
+
+        <p>
+            Acá tenés un resumen del rendimiento de tu equipo.
+        </p>
+
+    </div>
+
+    <button class="btn btn-black">
+        ↓ Exportar reporte
+    </button>
+
+</div>
+<div class="presentar-banner">
+
+    <div class="banner-kicker">
+        PRESENTAR STUDIO · EMPRESAS
+    </div>
+
+    <h2>
+        Cada contacto <span>cuenta.</span>
+    </h2>
+
+    <p>
+        Centralizá el rendimiento de tu equipo,
+        medí cada interacción y convertí contactos
+        en nuevas oportunidades comerciales.
+    </p>
+
+    <div class="demo-badge">
+        PANEL DEMO · DATOS DE MUESTRA
+    </div>
+
+</div>
+
+
+<div class="dashboard-filter">
+
+    <div class="period-buttons">
+
+        <button
+            class="period-btn"
+            data-period="7"
+            onclick="changePeriod(7)"
+        >
+            7 días
+        </button>
+
+        <button
+            class="period-btn active"
+            data-period="30"
+            onclick="changePeriod(30)"
+        >
+            30 días
+        </button>
+
+        <button
+            class="period-btn"
+            data-period="90"
+            onclick="changePeriod(90)"
+        >
+            90 días
+        </button>
+
+    </div>
+
+
+    <div class="custom-dates">
+
+        <span class="kicker">
+            PERSONALIZADO
+        </span>
+
+        <input
+            type="date"
+            id="dateFrom"
+        >
+
+        <input
+            type="date"
+            id="dateTo"
+        >
+
+        <button
+            class="btn btn-black"
+            onclick="customPeriod()"
+        >
+            Aplicar
+        </button>
+
+    </div>
+
+</div>
+<div class="kpis">
+
+    <div class="kpi">
+
+        <div class="kpi-label">
+            Interacciones
+        </div>
+
+        <strong class="kpi-value">
+            1.284
+        </strong>
+
+        <span class="kpi-change">
+            ↑ 18%
+        </span>
+
+    </div>
+
+    <div class="kpi">
+
+        <div class="kpi-label">
+            Contactos guardados
+        </div>
+
+        <strong class="kpi-value">
+            243
+        </strong>
+
+        <span class="kpi-change">
+            ↑ 27%
+        </span>
+
+    </div>
+
+    <div class="kpi">
+
+        <div class="kpi-label">
+            Leads generados
+        </div>
+
+        <strong class="kpi-value">
+            87
+        </strong>
+
+        <span class="kpi-change">
+            ↑ 32%
+        </span>
+
+    </div>
+
+    <div class="kpi">
+
+        <div class="kpi-label">
+            Oportunidades
+        </div>
+
+        <strong class="kpi-value">
+            14
+        </strong>
+
+        <span class="kpi-change">
+            ↑ 40%
+        </span>
+
+    </div>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="panel">
+
+    <div class="kicker">
+        RENDIMIENTO
+    </div>
+
+    <h2>
+        Actividad en el tiempo
+    </h2>
+
+    <div class="chart">
+
+        <div style="height:30%"></div>
+        <div style="height:45%"></div>
+        <div style="height:58%"></div>
+        <div style="height:51%"></div>
+        <div style="height:70%"></div>
+        <div style="height:63%"></div>
+        <div style="height:86%"></div>
+        <div style="height:72%"></div>
+
+    </div>
+
+</div>
+
+<div class="panel">
+
+    <div class="kicker">
+        ORIGEN
+    </div>
+
+    <h2>
+        Interacciones
+    </h2>
+
+    <div class="source">
+        <span>NFC</span>
+        <strong>52%</strong>
+    </div>
+
+    <div class="source">
+        <span>QR</span>
+        <strong>31%</strong>
+    </div>
+
+    <div class="source">
+        <span>Link directo</span>
+        <strong>17%</strong>
+    </div>
+
+</div>
+
+</div>
+
+<div class="bottom-grid">
+
+<div class="panel">
+
+<h2>
+    Rendimiento del equipo
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Miembro</th>
+<th>Visitas</th>
+<th>Guardados</th>
+<th>Leads</th>
+</tr>
+
+</thead>
+
+<tbody id="dashboardTeam"></tbody>
+
+</table>
+
+</div>
+
+<div class="panel">
+
+<h2>
+    Últimos leads
+</h2>
+
+<table>
+
+<tbody id="dashboardLeads"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- EQUIPO -->
+
+<section class="view" id="equipo">
+
+<div class="page-header">
+
+<div>
+
+<h1>
+Equipo
+</h1>
+
+<p>
+Administrá las PresentAR de tu organización.
+</p>
+
+</div>
+
+<button class="btn btn-lime" onclick="futureFeature()">
+＋ Agregar miembro
+</button>
+
+</div>
+
+<div class="panel">
+
+<div class="toolbar">
+
+<input id="teamSearch" placeholder="Buscar miembro">
+
+<select id="teamStatus">
+
+<option value="">
+Todos
+</option>
+
+<option value="Activo">
+Activos
+</option>
+
+<option value="Inactivo">
+Inactivos
+</option>
+
+</select>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Miembro</th>
+<th>Estado</th>
+<th>Visitas</th>
+<th>Guardados</th>
+<th>Leads</th>
+<th>Conversión</th>
+
+</tr>
+
+</thead>
+
+<tbody id="teamTable"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<!-- LEADS -->
+
+<section class="view" id="leads">
+
+<div class="page-header">
+
+<div>
+
+<h1>
+Leads
+</h1>
+
+<p>
+Contactos generados por todo tu equipo.
+</p>
+
+</div>
+
+<button class="btn btn-black" onclick="exportLeads()">
+↓ Exportar CSV
+</button>
+
+</div>
+
+<div class="panel">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Lead</th>
+<th>Empresa</th>
+<th>Interés</th>
+<th>Responsable</th>
+<th>Origen</th>
+<th>Estado</th>
+
+</tr>
+
+</thead>
+
+<tbody id="leadTable"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<!-- CONTACTOS -->
+
+<section class="view" id="contactos">
+
+<div class="page-header">
+
+<div>
+
+<h1>
+Contactos
+</h1>
+
+<p>
+La red generada por tus PresentAR.
+</p>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h2>
+243 contactos
+</h2>
+
+<p>
+Acá integraremos los contactos que ya guarda actualmente cada tarjeta.
+</p>
+
+</div>
+
+</section>
+
+<!-- ANALYTICS -->
+
+<section class="view" id="analytics">
+
+<div class="page-header">
+
+<div>
+
+<h1>
+Analytics
+</h1>
+
+<p>
+Del contacto a la oportunidad comercial.
+</p>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h2>
+Embudo comercial
+</h2>
+
+<div class="funnel">
+
+<div>
+<b>1.284</b>
+<span>Interacciones</span>
+</div>
+
+<div>
+<b>243</b>
+<span>Contactos</span>
+</div>
+
+<div>
+<b>87</b>
+<span>Leads</span>
+</div>
+
+<div>
+<b>14</b>
+<span>Oportunidades</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<script>
+
+/* =========================================
+   PRESENTAR EMPRESAS
+   DEMO GERENCIAL
+========================================= */
+
+
+/* =========================================
+   EQUIPO
+========================================= */
+
+const team = [
+
+    {
+        name:"Lucas Martínez",
+        role:"Administrador / Comercial",
+        status:"Activo",
+
+        visits:382,
+        saved:73,
+        leads:31,
+
+        /*
+        Cuando conectemos la tarjeta real,
+        esta propiedad recibirá la foto.
+        */
+
+        photo:""
+    },
+
+    {
+        name:"Miembro 2",
+        role:"Comercial",
+        status:"Activo",
+
+        visits:297,
+        saved:54,
+        leads:24,
+
+        photo:""
+    }
+
+];
+
+
+/* =========================================
+   LEADS DEMO
+========================================= */
+
+const leads = [
+
+    {
+        name:"Juan Pérez",
+        company:"Empresa Industrial",
+        interest:"PresentAR Empresas",
+
+        owner:"Lucas Martínez",
+
+        source:"NFC",
+        status:"Nuevo"
+    },
+
+    {
+        name:"Federico Gómez",
+        company:"Servicios del Sur",
+        interest:"Credenciales NFC",
+
+        owner:"Lucas Martínez",
+
+        source:"Link",
+        status:"Contactado"
+    },
+
+    {
+        name:"Laura Méndez",
+        company:"Grupo Comercial",
+        interest:"Tarjetas para equipo",
+
+        owner:"Miembro 2",
+
+        source:"NFC",
+        status:"Oportunidad"
+    },
+
+    {
+        name:"Carlos Ruiz",
+        company:"Estudio Profesional",
+        interest:"PresentAR Personal",
+
+        owner:"Miembro 2",
+
+        source:"QR",
+        status:"Nuevo"
+    }
+
+];
+
+
+/* =========================================
+   DATOS DEMO POR PERÍODO
+========================================= */
+
+const periodData = {
+
+    7:{
+
+        kpis:[
+            412,
+            83,
+            29,
+            5
+        ],
+
+        bars:[
+            42,
+            55,
+            48,
+            70,
+            62,
+            80,
+            91,
+            75
+        ]
+
+    },
+
+
+    30:{
+
+        kpis:[
+            1284,
+            243,
+            87,
+            14
+        ],
+
+        bars:[
+            30,
+            45,
+            58,
+            51,
+            70,
+            63,
+            86,
+            72
+        ]
+
+    },
+
+
+    90:{
+
+        kpis:[
+            3560,
+            702,
+            251,
+            43
+        ],
+
+        bars:[
+            52,
+            62,
+            58,
+            73,
+            68,
+            79,
+            88,
+            84
+        ]
+
+    }
+
+};
+
+
+/* =========================================
+   AVATARES
+========================================= */
+
+function getInitials(name){
+
+    return name
+
+        .split(" ")
+
+        .filter(Boolean)
+
+        .slice(0,2)
+
+        .map(word =>
+            word.charAt(0)
+        )
+
+        .join("")
+
+        .toUpperCase();
+
+}
+
+
+function avatarHTML(member){
+
+    if(member.photo){
+
+        return `
+
+        <div class="member-avatar">
+
+            <img
+                src="${member.photo}"
+                alt="${member.name}"
+
+                onerror="
+                    this.parentElement.innerHTML =
+                    '${getInitials(member.name)}'
+                "
+            >
+
+        </div>
+
+        `;
+
+    }
+
+
+    return `
+
+    <div class="member-avatar">
+
+        ${getInitials(member.name)}
+
+    </div>
+
+    `;
+
+}
+
+
+function findMember(name){
+
+    return team.find(
+        member =>
+        member.name === name
+    );
+
+}
+
+
+function ownerAvatar(name){
+
+    const member =
+        findMember(name);
+
+
+    if(member){
+
+        return avatarHTML(member);
+
+    }
+
+
+    return `
+
+    <div class="member-avatar">
+
+        ${getInitials(name)}
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   NAVEGACIÓN
+========================================= */
+
+document
+.querySelectorAll("[data-page]")
+.forEach(button=>{
+
+    button.addEventListener(
+        "click",
+        ()=>{
+
+            document
+            .querySelectorAll(".view")
+            .forEach(page=>{
+
+                page.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            document
+            .querySelectorAll(
+                "[data-page]"
+            )
+            .forEach(btn=>{
+
+                btn.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            document
+            .getElementById(
+                button.dataset.page
+            )
+            .classList.add(
+                "active"
+            );
+
+
+            button.classList.add(
+                "active"
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================
+   SESIÓN PRESENTAR
+========================================= */
+
+try{
+
+    const session =
+
+        JSON.parse(
+
+            localStorage.getItem(
+                "presentar_user"
+            )
+
+            || "null"
+
+        );
+
+
+    if(session){
+
+        const firstName =
+
+            (
+                session.nombre
+                ||
+                "Administrador"
+            )
+
+            .split(" ")[0];
+
+
+        document
+        .getElementById(
+            "userName"
+        )
+        .textContent =
+            firstName;
+
+
+        /*
+        Para la demo mantenemos
+        PresentAR Studio.
+
+        Cuando conectemos Empresas
+        a una organización real,
+        esto se resolverá desde
+        la empresa correspondiente.
+        */
+
+    }
+
+}
+catch(error){
+
+    console.log(
+        "PresentAR Empresas · Demo"
+    );
+
+}
+
+
+/* =========================================
+   EQUIPO
+========================================= */
+
+function renderTeam(){
+
+    const search =
+
+        document
+        .getElementById(
+            "teamSearch"
+        )
+        .value
+        .toLowerCase();
+
+
+    const status =
+
+        document
+        .getElementById(
+            "teamStatus"
+        )
+        .value;
+
+
+    const filtered =
+
+        team.filter(
+            member=>{
+
+                const matchesSearch =
+
+                    (
+                        member.name
+                        +
+                        " "
+                        +
+                        member.role
+                    )
+
+                    .toLowerCase()
+
+                    .includes(
+                        search
+                    );
+
+
+                const matchesStatus =
+
+                    !status
+                    ||
+                    member.status
+                    ===
+                    status;
+
+
+                return (
+                    matchesSearch
+                    &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+
+    document
+    .getElementById(
+        "teamTable"
+    )
+    .innerHTML =
+
+        filtered
+
+        .map(member=>{
+
+            const conversion =
+
+                member.visits
+
+                ?
+
+                (
+                    member.leads
+                    /
+                    member.visits
+                    *
+                    100
+                )
+                .toFixed(1)
+
+                :
+
+                "0.0";
+
+
+            return `
+
+            <tr>
+
+
+                <td>
+
+                    <div
+                        class="member-profile"
+                    >
+
+                        ${avatarHTML(member)}
+
+                        <div
+                            class="member-data"
+                        >
+
+                            <strong>
+                                ${member.name}
+                            </strong>
+
+                            <small>
+                                ${member.role}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="
+                        status
+                        ${
+                            member.status
+                            ===
+                            "Activo"
+
+                            ?
+
+                            "win"
+
+                            :
+
+                            ""
+                        }
+                        "
+                    >
+
+                        ${member.status}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${member.visits}
+
+                </td>
+
+
+                <td>
+
+                    ${member.saved}
+
+                </td>
+
+
+                <td>
+
+                    <strong>
+
+                        ${member.leads}
+
+                    </strong>
+
+                </td>
+
+
+                <td>
+
+                    ${conversion}%
+
+                </td>
+
+
+            </tr>
+
+            `;
+
+        })
+
+        .join("");
+
+}
+
+
+/* =========================================
+   DASHBOARD · EQUIPO
+========================================= */
+
+function renderDashboardTeam(){
+
+    document
+    .getElementById(
+        "dashboardTeam"
+    )
+    .innerHTML =
+
+        team
+
+        .slice(0,4)
+
+        .map(member=>`
+
+            <tr>
+
+
+                <td>
+
+                    <div
+                        class="member-profile"
+                    >
+
+                        ${avatarHTML(member)}
+
+                        <div
+                            class="member-data"
+                        >
+
+                            <strong>
+
+                                ${member.name}
+
+                            </strong>
+
+                            <small>
+
+                                ${member.role}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    ${member.visits}
+
+                </td>
+
+
+                <td>
+
+                    ${member.saved}
+
+                </td>
+
+
+                <td>
+
+                    <strong>
+
+                        ${member.leads}
+
+                    </strong>
+
+                </td>
+
+
+            </tr>
+
+        `)
+
+        .join("");
+
+}
+
+
+/* =========================================
+   LEADS
+========================================= */
+
+function statusClass(status){
+
+    if(status === "Nuevo")
+        return "new";
+
+    if(status === "Contactado")
+        return "contact";
+
+    if(status === "Oportunidad")
+        return "opportunity";
+
+    return "win";
+
+}
+
+
+function renderLeads(){
+
+    document
+    .getElementById(
+        "leadTable"
+    )
+    .innerHTML =
+
+        leads
+
+        .map(lead=>`
+
+            <tr>
+
+
+                <td>
+
+                    <strong>
+
+                        ${lead.name}
+
+                    </strong>
+
+                </td>
+
+
+                <td>
+
+                    ${lead.company}
+
+                </td>
+
+
+                <td>
+
+                    ${lead.interest}
+
+                </td>
+
+
+                <td>
+
+                    <div
+                        class="owner-profile"
+                    >
+
+                        ${ownerAvatar(
+                            lead.owner
+                        )}
+
+                        <span>
+
+                            ${lead.owner}
+
+                        </span>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    ${lead.source}
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="
+                            status
+                            ${statusClass(
+                                lead.status
+                            )}
+                        "
+                    >
+
+                        ${lead.status}
+
+                    </span>
+
+                </td>
+
+
+            </tr>
+
+        `)
+
+        .join("");
+
+
+    document
+    .getElementById(
+        "dashboardLeads"
+    )
+    .innerHTML =
+
+        leads
+
+        .map(lead=>`
+
+            <tr>
+
+
+                <td>
+
+                    <strong>
+
+                        ${lead.name}
+
+                    </strong>
+
+                    <br>
+
+                    <small>
+
+                        ${lead.company}
+
+                    </small>
+
+
+                    <div
+                        class="owner-profile"
+                        style="
+                            margin-top:7px
+                        "
+                    >
+
+                        ${ownerAvatar(
+                            lead.owner
+                        )}
+
+                        <span
+                            style="
+                                font-size:10px;
+                                color:#777
+                            "
+                        >
+
+                            ${lead.owner}
+
+                        </span>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="
+                            status
+                            ${statusClass(
+                                lead.status
+                            )}
+                        "
+                    >
+
+                        ${lead.status}
+
+                    </span>
+
+                </td>
+
+
+            </tr>
+
+        `)
+
+        .join("");
+
+}
+
+
+/* =========================================
+   FILTRO PERÍODO
+========================================= */
+
+function changePeriod(days){
+
+    document
+    .querySelectorAll(
+        ".period-btn"
+    )
+    .forEach(button=>{
+
+        button.classList.remove(
+            "active"
+        );
+
+    });
+
+
+    const selected =
+
+        document
+        .querySelector(
+            `[data-period="${days}"]`
+        );
+
+
+    if(selected){
+
+        selected
+        .classList
+        .add(
+            "active"
+        );
+
+    }
+
+
+    const data =
+        periodData[days];
+
+
+    if(!data)
+        return;
+
+
+    const values =
+
+        document
+        .querySelectorAll(
+            "#dashboard .kpi-value"
+        );
+
+
+    values
+    .forEach(
+        (element,index)=>{
+
+            element.textContent =
+
+                data.kpis[index]
+
+                .toLocaleString(
+                    "es-AR"
+                );
+
+        }
+    );
+
+
+    const bars =
+
+        document
+        .querySelectorAll(
+            "#dashboard .chart div"
+        );
+
+
+    bars
+    .forEach(
+        (bar,index)=>{
+
+            bar.style.height =
+
+                data.bars[index]
+                +
+                "%";
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   FECHA PERSONALIZADA
+========================================= */
+
+function customPeriod(){
+
+    const from =
+
+        document
+        .getElementById(
+            "dateFrom"
+        )
+        .value;
+
+
+    const to =
+
+        document
+        .getElementById(
+            "dateTo"
+        )
+        .value;
+
+
+    if(
+        !from
+        ||
+        !to
+    ){
+
+        alert(
+            "Seleccioná una fecha desde y hasta."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        new Date(from)
+        >
+        new Date(to)
+    ){
+
+        alert(
+            "La fecha inicial no puede ser posterior a la fecha final."
+        );
+
+        return;
+
+    }
+
+
+    document
+    .querySelectorAll(
+        ".period-btn"
+    )
+    .forEach(button=>{
+
+        button
+        .classList
+        .remove(
+            "active"
+        );
+
+    });
+
+
+    /*
+    IMPORTANTE:
+
+    Todavía estamos usando
+    información demo.
+
+    Cuando integremos Supabase,
+    este punto consultará:
+
+    visitas.created_at
+    contactos.created_at
+
+    entre from y to.
+    */
+
+
+    alert(
+        "Período personalizado aplicado en modo demo: "
+        +
+        from
+        +
+        " → "
+        +
+        to
+    );
+
+}
+
+
+/* =========================================
+   EXPORTAR LEADS
+========================================= */
+
+function exportLeads(){
+
+    const rows = [
+
+        [
+            "Nombre",
+            "Empresa",
+            "Interés",
+            "Responsable",
+            "Origen",
+            "Estado"
+        ],
+
+        ...leads.map(
+            lead=>[
+
+                lead.name,
+
+                lead.company,
+
+                lead.interest,
+
+                lead.owner,
+
+                lead.source,
+
+                lead.status
+
+            ]
+        )
+
+    ];
+
+
+    const csv =
+
+        rows
+
+        .map(
+            row=>
+
+                row
+
+                .map(
+                    value=>
+
+                        `"${String(value)
+                        .replaceAll(
+                            '"',
+                            '""'
+                        )}"`
+
+                )
+
+                .join(";")
+
+        )
+
+        .join("\\n");
+
+
+    const blob =
+
+        new Blob(
+
+            [
+                "\\ufeff"
+                +
+                csv
+            ],
+
+            {
+                type:
+                "text/csv;charset=utf-8;"
+            }
+
+        );
+
+
+    const link =
+
+        document
+        .createElement(
+            "a"
+        );
+
+
+    link.href =
+
+        URL.createObjectURL(
+            blob
+        );
+
+
+    link.download =
+
+        "PresentAR-Leads.csv";
+
+
+    link.click();
+
+
+    URL.revokeObjectURL(
+        link.href
+    );
+
+}
+
+
+/* =========================================
+   EXPORTAR REPORTE
+========================================= */
+
+function exportReport(){
+
+    const report = [
+
+        [
+            "Métrica",
+            "Valor"
+        ],
+
+        [
+            "Interacciones",
+            document
+            .querySelectorAll(
+                ".kpi-value"
+            )[0]
+            .textContent
+        ],
+
+        [
+            "Contactos guardados",
+            document
+            .querySelectorAll(
+                ".kpi-value"
+            )[1]
+            .textContent
+        ],
+
+        [
+            "Leads generados",
+            document
+            .querySelectorAll(
+                ".kpi-value"
+            )[2]
+            .textContent
+        ],
+
+        [
+            "Oportunidades",
+            document
+            .querySelectorAll(
+                ".kpi-value"
+            )[3]
+            .textContent
+        ]
+
+    ];
+
+
+    const csv =
+
+        report
+
+        .map(
+            row=>
+
+                row
+                .map(
+                    value=>
+                    `"${value}"`
+                )
+                .join(";")
+
+        )
+
+        .join("\\n");
+
+
+    const blob =
+
+        new Blob(
+
+            [
+                "\\ufeff"
+                +
+                csv
+            ],
+
+            {
+                type:
+                "text/csv;charset=utf-8;"
+            }
+
+        );
+
+
+    const link =
+
+        document
+        .createElement(
+            "a"
+        );
+
+
+    link.href =
+
+        URL.createObjectURL(
+            blob
+        );
+
+
+    link.download =
+
+        "PresentAR-Reporte.csv";
+
+
+    link.click();
+
+}
+
+
+/* =========================================
+   FUNCIONES FUTURAS
+========================================= */
+
+function futureFeature(){
+
+    alert(
+        "Esta función queda preparada para la segunda etapa de PresentAR Empresas."
+    );
+
+}
+
+
+/* =========================================
+   EVENTOS
+========================================= */
+
+document
+.getElementById(
+    "teamSearch"
+)
+.addEventListener(
+    "input",
+    renderTeam
+);
+
+
+document
+.getElementById(
+    "teamStatus"
+)
+.addEventListener(
+    "change",
+    renderTeam
+);
+
+
+/* BOTÓN REPORTE */
+
+const reportButton =
+
+    document
+    .querySelector(
+        "#dashboard .page-header .btn-black"
+    );
+
+
+if(reportButton){
+
+    reportButton.onclick =
+        exportReport;
+
+}
+
+
+/* =========================================
+   INICIO
+========================================= */
+
+renderTeam();
+
+renderDashboardTeam();
+
+renderLeads();
+
+changePeriod(30);
+
+</script>
+
+</body>
+</html>

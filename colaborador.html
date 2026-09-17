@@ -1,0 +1,6099 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PresentAR Empresas | Colaborador</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===========================
+   PRESENTAR EMPRESAS
+   PANEL COLABORADOR
+=========================== */
+
+:root{
+
+    --bg:#f5f5f1;
+    --white:#ffffff;
+
+    --black:#111214;
+    --black-soft:#202226;
+
+    --text:#151515;
+    --muted:#777873;
+
+    --border:#e5e5df;
+
+    --lime:#C7F13B;
+
+    --blue:#EAF2FF;
+    --green:#EEFACF;
+    --orange:#FFF0DE;
+    --violet:#F1ECFF;
+
+    --shadow:
+        0 10px 35px rgba(0,0,0,.05);
+
+}
+
+/* RESET */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    font-family:
+    Inter,
+    Arial,
+    sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+}
+
+button,
+input,
+select{
+
+    font-family:inherit;
+
+}
+
+button{
+    cursor:pointer;
+}
+
+
+/* ===========================
+   SIDEBAR
+=========================== */
+
+.sidebar{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+    bottom:0;
+
+    width:240px;
+
+    background:var(--black);
+
+    color:white;
+
+    padding:24px 18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.logo{
+
+    font-size:25px;
+
+    font-weight:800;
+
+    letter-spacing:-1px;
+
+}
+
+.logo span{
+
+    color:var(--lime);
+
+}
+
+.sidebar-label{
+
+    margin-top:8px;
+
+    margin-bottom:25px;
+
+    font-size:10px;
+
+    letter-spacing:.18em;
+
+    color:#777a80;
+
+}
+
+
+/* MENU */
+
+.menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+
+}
+
+.menu button{
+
+    border:0;
+
+    background:transparent;
+
+    color:#B7B9BE;
+
+    padding:11px 13px;
+
+    border-radius:10px;
+
+    text-align:left;
+
+    font-size:13px;
+
+}
+
+.menu button:hover{
+
+    background:#222428;
+
+    color:white;
+
+}
+
+.menu button.active{
+
+    background:#282A2E;
+
+    color:white;
+
+}
+
+.menu button.active::after{
+
+    content:"";
+
+    float:right;
+
+    width:7px;
+
+    height:7px;
+
+    border-radius:50%;
+
+    background:var(--lime);
+
+    margin-top:5px;
+
+}
+
+.divider{
+
+    height:1px;
+
+    background:#2C2E32;
+
+    margin:12px 0;
+
+}
+
+
+/* PRESENTAR CARD */
+
+.presentar-box{
+
+    margin-top:auto;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #1d1f22,
+        #111214
+    );
+
+    border:1px solid #2d2f33;
+
+}
+
+.presentar-box small{
+
+    color:#83868c;
+
+    font-size:9px;
+
+    letter-spacing:.13em;
+
+}
+
+.presentar-box strong{
+
+    display:block;
+
+    margin-top:8px;
+
+    font-size:14px;
+
+}
+
+.presentar-box p{
+
+    color:#aaa;
+
+    font-size:11px;
+
+    line-height:1.4;
+
+}
+
+.presentar-box button{
+
+    width:100%;
+
+    border:0;
+
+    background:var(--lime);
+
+    padding:9px;
+
+    border-radius:8px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+
+/* USER */
+
+.sidebar-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:18px;
+
+}
+
+.avatar{
+
+    width:38px;
+    height:38px;
+
+    border-radius:50%;
+
+    background:#303238;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:11px;
+
+    font-weight:800;
+
+}
+
+.sidebar-user strong{
+
+    display:block;
+
+    font-size:12px;
+
+}
+
+.sidebar-user small{
+
+    color:#888;
+
+    font-size:10px;
+
+}
+
+
+/* ===========================
+   MAIN
+=========================== */
+
+.main{
+
+    margin-left:240px;
+
+    min-height:100vh;
+
+}
+
+
+/* TOPBAR */
+
+.topbar{
+
+    height:75px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:white;
+
+    border-bottom:
+    1px solid var(--border);
+
+    padding:
+    0 28px;
+
+}
+
+.company strong{
+
+    display:block;
+
+    font-size:12px;
+
+    letter-spacing:.04em;
+
+}
+
+.company small{
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+.top-actions{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.top-pill{
+
+    border:
+    1px solid var(--border);
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:
+    9px 13px;
+
+    font-size:11px;
+
+}
+
+
+/* CONTENT */
+
+.content{
+
+    padding:28px;
+
+    max-width:1450px;
+
+    margin:auto;
+
+}
+
+
+/* PAGE */
+
+.view{
+
+    display:none;
+
+}
+
+.view.active{
+
+    display:block;
+
+}
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:24px;
+
+}
+
+.kicker{
+
+    font-size:10px;
+
+    letter-spacing:.15em;
+
+    font-weight:bold;
+
+    color:#888;
+
+    margin-bottom:8px;
+
+}
+
+h1{
+
+    margin:0;
+
+    font-size:34px;
+
+    letter-spacing:-1.3px;
+
+}
+
+.page-header p{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+
+/* ===========================
+   BANNER
+=========================== */
+
+.banner{
+
+    background:
+    linear-gradient(
+        110deg,
+        #101113,
+        #2A2D31
+    );
+
+    color:white;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    margin-bottom:20px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.banner::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+
+    height:250px;
+
+    border-radius:50%;
+
+    background:
+    rgba(199,241,59,.14);
+
+    right:-70px;
+
+    top:-120px;
+
+}
+
+.banner h2{
+
+    margin:0 0 7px;
+
+    font-size:22px;
+
+}
+
+.banner p{
+
+    margin:0;
+
+    color:#bbb;
+
+    font-size:12px;
+
+}
+
+.banner-number{
+
+    font-size:40px;
+
+    font-weight:800;
+
+    color:var(--lime);
+
+    z-index:2;
+
+}
+
+
+/* ===========================
+   KPI
+=========================== */
+
+.kpis{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:14px;
+
+    margin-bottom:20px;
+
+}
+
+.kpi{
+
+    padding:18px;
+
+    border-radius:16px;
+
+    border:
+    1px solid var(--border);
+
+    background:white;
+
+    box-shadow:var(--shadow);
+
+}
+
+.kpi.orange{
+    background:var(--orange);
+}
+
+.kpi.blue{
+    background:var(--blue);
+}
+
+.kpi.green{
+    background:var(--green);
+}
+
+.kpi.violet{
+    background:var(--violet);
+}
+
+.kpi-label{
+
+    font-size:11px;
+
+    color:#62635f;
+
+}
+
+.kpi-value{
+
+    display:block;
+
+    margin-top:8px;
+
+    font-size:30px;
+
+    font-weight:800;
+
+}
+
+.kpi-note{
+
+    margin-top:5px;
+
+    font-size:10px;
+
+    color:#666;
+
+}
+
+
+/* ===========================
+   GRID
+=========================== */
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    1.5fr .75fr;
+
+    gap:18px;
+
+}
+
+.card{
+
+    background:white;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.card + .card{
+
+    margin-top:18px;
+
+}
+
+.card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:16px;
+
+}
+
+.card-header h3{
+
+    margin:0;
+
+    font-size:15px;
+
+}
+
+.card-header small{
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+
+/* ===========================
+   PRIORIDADES
+=========================== */
+
+.priority-item{
+
+    display:grid;
+
+    grid-template-columns:
+    auto 1fr auto;
+
+    align-items:center;
+
+    gap:12px;
+
+    border:
+    1px solid var(--border);
+
+    padding:13px;
+
+    border-radius:13px;
+
+    margin-bottom:9px;
+
+}
+
+.priority-dot{
+
+    width:9px;
+    height:9px;
+
+    border-radius:50%;
+
+}
+
+.red{
+    background:#E65C55;
+}
+
+.orange-dot{
+    background:#EF9B36;
+}
+
+.green-dot{
+    background:#83A92D;
+}
+
+.person-name{
+
+    font-size:12px;
+
+    font-weight:800;
+
+}
+
+.person-meta{
+
+    margin-top:3px;
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+
+/* BUTTON */
+
+.btn{
+
+    border:
+    1px solid var(--border);
+
+    background:white;
+
+    border-radius:8px;
+
+    padding:
+    7px 9px;
+
+    font-size:10px;
+
+    font-weight:700;
+
+}
+
+.btn-black{
+
+    background:#171819;
+
+    color:white;
+
+    border-color:#171819;
+
+}
+
+
+/* ===========================
+   TASKS
+=========================== */
+
+.task{
+
+    display:grid;
+
+    grid-template-columns:
+    60px 1fr auto;
+
+    gap:10px;
+
+    padding:13px 0;
+
+    border-bottom:
+    1px solid #eee;
+
+}
+
+.task:last-child{
+
+    border-bottom:0;
+
+}
+
+.task-time{
+
+    font-size:11px;
+
+    font-weight:bold;
+
+}
+
+.task strong{
+
+    display:block;
+
+    font-size:11px;
+
+}
+
+.task small{
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+
+/* BADGES */
+
+.badge{
+
+    display:inline-block;
+
+    border-radius:30px;
+
+    padding:
+    5px 8px;
+
+    font-size:9px;
+
+    font-weight:700;
+
+}
+
+.badge-new{
+    background:#FFF1D5;
+}
+
+.badge-manage{
+    background:#E7F2FF;
+}
+
+.badge-opportunity{
+    background:#F1ECFF;
+}
+
+.badge-win{
+    background:#EAF8E6;
+}
+
+
+/* ===========================
+   QUICK ACTIONS
+=========================== */
+
+.quick-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:10px;
+
+}
+
+.quick{
+
+    border:
+    1px solid var(--border);
+
+    border-radius:13px;
+
+    background:#fafaf7;
+
+    padding:13px;
+
+    text-align:left;
+
+}
+
+.quick strong{
+
+    font-size:11px;
+
+}
+
+.quick small{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:var(--muted);
+
+    font-size:9px;
+
+}
+
+
+/* ===========================
+   TABLE
+=========================== */
+
+.toolbar{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:15px;
+
+}
+
+.toolbar input,
+.toolbar select{
+
+    border:
+    1px solid var(--border);
+
+    background:white;
+
+    border-radius:9px;
+
+    padding:
+    9px 11px;
+
+    font-size:11px;
+
+}
+
+.toolbar input{
+
+    width:280px;
+
+}
+
+.table-wrapper{
+
+    overflow:auto;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    text-align:left;
+
+    padding:
+    10px;
+
+    font-size:9px;
+
+    color:#888;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+    border-bottom:
+    1px solid #eee;
+
+}
+
+td{
+
+    padding:
+    12px 10px;
+
+    font-size:11px;
+
+    border-bottom:
+    1px solid #eee;
+
+}
+
+.contact-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+}
+
+.contact-avatar{
+
+    width:30px;
+
+    height:30px;
+
+    border-radius:50%;
+
+    background:#1e2023;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:9px;
+
+    font-weight:bold;
+
+}
+
+.status-select{
+
+    border:
+    1px solid var(--border);
+
+    border-radius:30px;
+
+    padding:
+    6px 8px;
+
+    font-size:9px;
+
+}
+
+
+/* ===========================
+   OPPORTUNITIES
+=========================== */
+
+.opportunity-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:15px;
+
+}
+
+.opportunity-card{
+
+    padding:18px;
+
+    background:white;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:16px;
+
+}
+
+.opportunity-card small{
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+.opportunity-card h3{
+
+    margin:
+    8px 0 5px;
+
+}
+
+.priority{
+
+    font-size:25px;
+
+    font-weight:bold;
+
+}
+
+.progress{
+
+    margin-top:14px;
+
+    height:7px;
+
+    background:#eee;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+}
+
+.progress div{
+
+    height:100%;
+
+    background:#151515;
+
+}
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:1000px){
+
+    .dashboard-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .kpis{
+
+        grid-template-columns:1fr 1fr;
+
+    }
+
+}
+
+@media(max-width:750px){
+
+    .sidebar{
+
+        display:none;
+
+    }
+
+    .main{
+
+        margin-left:0;
+
+    }
+
+    .content{
+
+        padding:18px;
+
+    }
+
+    .opportunity-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+/* ===========================
+   CONTACT DRAWER
+=========================== */
+
+.contact-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.35);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+    .25s;
+
+    z-index:90;
+
+}
+
+.contact-overlay.active{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+
+.contact-drawer{
+
+    position:fixed;
+
+    top:0;
+
+    right:-480px;
+
+    width:460px;
+
+    max-width:
+    95vw;
+
+    height:100vh;
+
+    background:white;
+
+    z-index:100;
+
+    box-shadow:
+    -20px 0 50px
+    rgba(0,0,0,.15);
+
+    transition:
+    right .3s ease;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.contact-drawer.active{
+
+    right:0;
+
+}
+
+
+.drawer-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:
+    24px;
+
+    border-bottom:
+    1px solid var(--border);
+
+}
+
+
+.drawer-person{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+.drawer-avatar{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#161719;
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:800;
+
+}
+
+
+.drawer-header h2{
+
+    margin:0;
+
+    font-size:18px;
+
+}
+
+
+.drawer-header p{
+
+    margin:
+    4px 0 0;
+
+    font-size:11px;
+
+    color:var(--muted);
+
+}
+
+
+.drawer-close{
+
+    width:35px;
+
+    height:35px;
+
+    border-radius:50%;
+
+    border:
+    1px solid var(--border);
+
+    background:white;
+
+    font-size:20px;
+
+}
+
+
+.drawer-body{
+
+    padding:22px;
+
+    overflow-y:auto;
+
+}
+
+
+.drawer-section{
+
+    padding-bottom:22px;
+
+    margin-bottom:22px;
+
+    border-bottom:
+    1px solid #eee;
+
+}
+
+
+.drawer-section label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-size:10px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:#777;
+
+}
+
+
+.drawer-section select{
+
+    width:100%;
+
+    padding:11px;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:9px;
+
+    background:white;
+
+}
+
+
+.drawer-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:10px;
+
+    margin-bottom:22px;
+
+}
+
+
+.drawer-data{
+
+    border:
+    1px solid var(--border);
+
+    border-radius:11px;
+
+    padding:13px;
+
+    background:#fafaf7;
+
+}
+
+
+.drawer-data span{
+
+    display:block;
+
+    font-size:9px;
+
+    color:var(--muted);
+
+    margin-bottom:5px;
+
+}
+
+
+.drawer-data strong{
+
+    font-size:11px;
+
+}
+
+
+.drawer-actions{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:8px;
+
+}
+
+
+.drawer-action{
+
+    border:
+    1px solid var(--border);
+
+    background:white;
+
+    border-radius:9px;
+
+    padding:10px;
+
+    font-size:10px;
+
+    font-weight:700;
+
+}
+
+
+.drawer-action.primary{
+
+    background:#161719;
+
+    color:white;
+
+    border-color:#161719;
+
+}
+
+
+.drawer-followup{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:8px;
+
+}
+
+
+.drawer-followup input{
+
+    width:100%;
+
+    padding:10px;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:9px;
+
+}
+
+
+.drawer-save{
+
+    margin-top:10px;
+
+    width:100%;
+
+    border:0;
+
+    background:var(--lime);
+
+    border-radius:9px;
+
+    padding:10px;
+
+    font-size:10px;
+
+    font-weight:800;
+
+}
+
+
+.drawer-section textarea{
+
+    width:100%;
+
+    min-height:90px;
+
+    resize:vertical;
+
+    padding:11px;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:9px;
+
+}
+
+
+.drawer-history{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+
+.history-item{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:flex-start;
+
+}
+
+
+.history-dot{
+
+    width:8px;
+
+    height:8px;
+
+    margin-top:4px;
+
+    border-radius:50%;
+
+    background:#18191b;
+
+}
+
+
+.history-item strong{
+
+    display:block;
+
+    font-size:10px;
+
+}
+
+
+.history-item span{
+
+    display:block;
+
+    margin-top:2px;
+
+    font-size:9px;
+
+    color:var(--muted);
+
+}
+
+/* ===========================
+   FOOTER DRAWER
+=========================== */
+
+.drawer-footer{
+
+    margin-top:auto;
+
+    display:grid;
+
+    grid-template-columns:
+    120px 1fr;
+
+    gap:10px;
+
+    padding:16px 22px;
+
+    background:white;
+
+    border-top:
+    1px solid var(--border);
+
+}
+
+
+.drawer-cancel{
+
+    border:
+    1px solid var(--border);
+
+    background:white;
+
+    border-radius:10px;
+
+    padding:12px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+
+.drawer-save-all{
+
+    border:0;
+
+    background:var(--lime);
+
+    color:#111;
+
+    border-radius:10px;
+
+    padding:12px;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    transition:.2s;
+
+}
+
+
+.drawer-save-all:hover{
+
+    transform:
+    translateY(-1px);
+
+    filter:
+    brightness(.96);
+
+}
+
+/* ===========================
+   REDISEÑO MINIMAL CORPORATIVO
+=========================== */
+
+:root{
+    --bg:#f4f5f3;
+    --text:#171816;
+    --muted:#6f726c;
+    --border:#dedfd9;
+    --shadow:0 1px 2px rgba(17,18,20,.035);
+}
+
+body{
+    line-height:1.45;
+}
+
+.sidebar{
+    width:224px;
+    padding:28px 18px 22px;
+    border-right:1px solid #292b2e;
+}
+
+.main{
+    margin-left:224px;
+}
+
+.logo{
+    font-size:23px;
+    letter-spacing:-.8px;
+}
+
+.sidebar-label{
+    margin-bottom:32px;
+    font-size:11px;
+}
+
+.menu{
+    gap:4px;
+}
+
+.menu button{
+    min-height:42px;
+    padding:11px 12px;
+    border-radius:8px;
+    font-size:14px;
+    transition:background .18s ease,color .18s ease;
+}
+
+.menu button.active{
+    background:#242629;
+    box-shadow:inset 3px 0 0 var(--lime);
+}
+
+.menu button.active::after{
+    display:none;
+}
+
+.presentar-box{
+    padding:15px;
+    border-radius:12px;
+}
+
+.presentar-box small,
+.sidebar-user small{
+    font-size:12px;
+}
+
+.presentar-box p{
+    font-size:12px;
+}
+
+.presentar-box button{
+    min-height:38px;
+    font-size:12px;
+}
+
+.sidebar-user strong{
+    font-size:13px;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:30;
+    height:68px;
+    padding:0 34px;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(12px);
+}
+
+.company strong{
+    font-size:13px;
+}
+
+.company small,
+.top-pill{
+    font-size:12px;
+}
+
+.top-pill{
+    padding:8px 12px;
+    border-radius:8px;
+    background:#fafbf9;
+}
+
+.content{
+    max-width:1280px;
+    padding:34px 36px 48px;
+}
+
+.page-header{
+    margin-bottom:22px;
+}
+
+.kicker{
+    margin-bottom:7px;
+    font-size:11px;
+    color:#747770;
+}
+
+h1{
+    font-size:32px;
+    letter-spacing:-1px;
+}
+
+.page-header p{
+    margin:7px 0 0;
+    font-size:14px;
+}
+
+.banner{
+    min-height:112px;
+    margin-bottom:16px;
+    padding:24px 26px;
+    border-radius:14px;
+    background:linear-gradient(115deg,#17191b 0%,#24272a 100%);
+    box-shadow:none;
+}
+
+.banner::after{
+    width:190px;
+    height:190px;
+    right:-42px;
+    top:-105px;
+    background:rgba(199,241,59,.12);
+}
+
+.banner::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:22px;
+    bottom:22px;
+    width:4px;
+    border-radius:0 4px 4px 0;
+    background:var(--lime);
+}
+
+.banner h2{
+    font-size:19px;
+    letter-spacing:-.25px;
+}
+
+.banner p{
+    max-width:550px;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.banner-number{
+    font-size:36px;
+}
+
+.kpis{
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.kpi,
+.kpi.orange,
+.kpi.blue,
+.kpi.green,
+.kpi.violet{
+    position:relative;
+    min-height:125px;
+    padding:18px;
+    overflow:hidden;
+    border-radius:12px;
+    background:#fff;
+    box-shadow:var(--shadow);
+}
+
+.kpi::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:18px;
+    right:18px;
+    height:3px;
+    border-radius:0 0 3px 3px;
+    background:#c5c8c1;
+}
+
+.kpi.orange::before{background:#e6a15e;}
+.kpi.blue::before{background:#779bc8;}
+.kpi.violet::before{background:#9885bd;}
+.kpi.green::before{background:#98ba39;}
+
+.kpi-label{
+    font-size:13px;
+    color:#5f625c;
+}
+
+.kpi-value{
+    margin-top:7px;
+    font-size:29px;
+    line-height:1.1;
+}
+
+.kpi-note{
+    margin-top:8px;
+    font-size:12px;
+}
+
+.dashboard-grid{
+    grid-template-columns:minmax(0,1.62fr) minmax(280px,.78fr);
+    gap:16px;
+}
+
+.card{
+    padding:20px;
+    border-radius:14px;
+    box-shadow:var(--shadow);
+}
+
+.card + .card{
+    margin-top:16px;
+}
+
+.card-header{
+    margin-bottom:17px;
+}
+
+.card-header h3{
+    font-size:16px;
+    letter-spacing:-.15px;
+}
+
+.card-header small{
+    font-size:12px;
+}
+
+.priority-item{
+    min-height:66px;
+    padding:12px 13px;
+    margin-bottom:8px;
+    border-radius:10px;
+    background:#fff;
+    transition:border-color .18s ease,background .18s ease;
+}
+
+.priority-item:hover{
+    border-color:#c8cac3;
+    background:#fafbf9;
+}
+
+.person-name{
+    font-size:14px;
+}
+
+.person-meta{
+    font-size:12px;
+}
+
+.btn{
+    min-height:34px;
+    padding:7px 11px;
+    border-radius:7px;
+    font-size:12px;
+}
+
+.task{
+    min-height:59px;
+    align-items:center;
+    padding:12px 2px;
+}
+
+.task-time,
+.task strong{
+    font-size:13px;
+}
+
+.task small,
+.badge{
+    font-size:12px;
+}
+
+.badge{
+    padding:5px 9px;
+}
+
+.quick{
+    min-height:74px;
+    padding:13px;
+    border-radius:10px;
+    background:#fafbf9;
+    transition:transform .18s ease,border-color .18s ease;
+}
+
+.quick:hover{
+    transform:translateY(-1px);
+    border-color:#c8cac3;
+}
+
+.quick strong{
+    font-size:13px;
+}
+
+.quick small{
+    font-size:12px;
+}
+
+.toolbar input,
+.toolbar select,
+td,
+.status-select{
+    font-size:13px;
+}
+
+th{
+    font-size:11px;
+}
+
+.contact-avatar{
+    width:34px;
+    height:34px;
+    font-size:11px;
+}
+
+@media(max-width:1000px){
+    .content{padding:28px 24px 40px;}
+    .dashboard-grid{grid-template-columns:1fr;}
+}
+
+@media(max-width:750px){
+    .main{margin-left:0;}
+    .topbar{padding:0 18px;}
+    .content{padding:22px 16px 36px;}
+    .top-actions .top-pill:first-child{display:none;}
+    .banner{min-height:104px;padding:21px 20px;}
+    .banner-number{font-size:30px;}
+    .kpis{grid-template-columns:1fr 1fr;}
+    .priority-item{grid-template-columns:auto 1fr;}
+    .priority-item > :last-child{grid-column:2;}
+}
+
+@media(max-width:520px){
+    h1{font-size:27px;}
+    .kpis{grid-template-columns:1fr;}
+    .top-actions .top-pill:last-child{max-width:150px;overflow:hidden;white-space:nowrap;}
+}
+
+/* ===========================
+   IDENTIDAD PRESENTAR STUDIO
+=========================== */
+
+:root{
+    --bg:#f2f0ea;
+    --white:#fffdf8;
+    --black:#0a0a0a;
+    --black-soft:#191919;
+    --text:#0a0a0a;
+    --muted:#73716c;
+    --border:rgba(10,10,10,.12);
+    --lime:#c7ff00;
+    --violet:#8f6cff;
+    --orange:#ff6b35;
+    --blue:#e9efff;
+    --green:#efffc4;
+    --shadow:none;
+}
+
+body,
+button,
+input,
+select,
+textarea{
+    font-family:'DM Sans',sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+}
+
+::selection{
+    background:var(--lime);
+    color:#000;
+}
+
+.logo,
+h1,
+.banner-number,
+.kpi-value,
+.priority,
+.opportunity-card h3{
+    font-family:'Archivo Black',sans-serif;
+    font-weight:400;
+}
+
+.sidebar-label,
+.kicker,
+.kpi-label,
+.badge,
+th,
+.drawer-section label,
+.presentar-box small{
+    font-family:'Space Mono',monospace;
+}
+
+.sidebar{
+    background:#0a0a0a;
+    border-right:0;
+}
+
+.logo{
+    letter-spacing:-1.4px;
+}
+
+.sidebar-label{
+    color:#8d8d88;
+    letter-spacing:.11em;
+}
+
+.menu button{
+    color:#aaa;
+    border-radius:999px;
+}
+
+.menu button:hover{
+    background:#202020;
+}
+
+.menu button.active{
+    color:#0a0a0a;
+    background:var(--lime);
+    box-shadow:none;
+    font-weight:700;
+}
+
+.divider{
+    background:rgba(255,255,255,.12);
+}
+
+.presentar-box{
+    background:linear-gradient(145deg,#7557e6,#9a7cff);
+    border:0;
+    color:#fff;
+}
+
+.presentar-box small,
+.presentar-box p{
+    color:rgba(255,255,255,.76);
+}
+
+.presentar-box button{
+    border-radius:999px;
+    background:var(--lime);
+}
+
+.topbar{
+    background:rgba(255,253,248,.9);
+    border-color:var(--border);
+}
+
+.company small{
+    color:var(--muted);
+}
+
+.top-pill{
+    border-color:var(--border);
+    border-radius:999px;
+    background:var(--white);
+}
+
+.kicker{
+    color:#66645f;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+}
+
+h1{
+    letter-spacing:-.05em;
+}
+
+.banner{
+    background:
+        radial-gradient(circle at 88% 15%,rgba(143,108,255,.75),transparent 30%),
+        #0a0a0a;
+}
+
+.banner::after{
+    background:rgba(199,255,0,.17);
+}
+
+.banner h2{
+    font-weight:700;
+}
+
+.banner p{
+    color:rgba(255,255,255,.68);
+}
+
+.kpi,
+.kpi.orange,
+.kpi.blue,
+.kpi.green,
+.kpi.violet,
+.card,
+.opportunity-card{
+    background:var(--white);
+    border-color:var(--border);
+}
+
+.kpi.orange::before{background:var(--orange);}
+.kpi.blue::before{background:#557fd5;}
+.kpi.violet::before{background:var(--violet);}
+.kpi.green::before{background:var(--lime);}
+
+.kpi-label{
+    font-size:11px;
+    letter-spacing:.035em;
+    text-transform:uppercase;
+}
+
+.card,
+.kpi,
+.opportunity-card{
+    border-radius:18px;
+}
+
+.priority-item,
+.quick,
+.drawer-data{
+    background:#f7f5ef;
+    border-color:var(--border);
+}
+
+.btn,
+.drawer-action,
+.drawer-cancel,
+.drawer-save-all{
+    border-radius:999px;
+}
+
+.btn-black,
+.drawer-action.primary{
+    background:#0a0a0a;
+    border-color:#0a0a0a;
+}
+
+.drawer-save-all,
+.drawer-save{
+    background:var(--lime);
+}
+
+.contact-drawer,
+.drawer-header,
+.drawer-footer{
+    background:var(--white);
+}
+
+.drawer-avatar,
+.contact-avatar{
+    background:var(--violet);
+}
+
+.badge-new{background:rgba(255,107,53,.16);}
+.badge-manage{background:rgba(85,127,213,.14);}
+.badge-opportunity{background:rgba(143,108,255,.16);}
+.badge-win{background:rgba(199,255,0,.32);}
+
+.progress div{
+    background:var(--violet);
+}
+
+/* ===========================
+   COMPOSICIÓN TIPO DASHBOARD
+   Referencia: navegación superior,
+   métricas continuas y tablas limpias
+=========================== */
+
+.sidebar{
+    inset:0 0 auto 0;
+    width:auto;
+    height:96px;
+    padding:20px 32px;
+    flex-direction:row;
+    align-items:center;
+    gap:28px;
+    background:rgba(10,10,10,.96);
+    z-index:80;
+}
+
+.logo{
+    flex:0 0 auto;
+    font-size:22px;
+}
+
+.sidebar-label,
+.sidebar .divider,
+.presentar-box{
+    display:none;
+}
+
+.menu{
+    flex:1;
+    flex-direction:row;
+    align-items:center;
+    gap:7px;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+
+.menu::-webkit-scrollbar{
+    display:none;
+}
+
+.menu button{
+    flex:0 0 auto;
+    min-height:44px;
+    padding:11px 17px;
+    color:#d0d0cd;
+    background:#191919;
+    border:1px solid rgba(255,255,255,.09);
+    white-space:nowrap;
+}
+
+.menu button:hover{
+    color:#fff;
+    background:#272727;
+}
+
+.menu button.active{
+    color:#0a0a0a;
+    background:var(--lime);
+    border-color:var(--lime);
+}
+
+.sidebar-user{
+    flex:0 0 auto;
+    margin:0;
+    padding-left:18px;
+    border-left:1px solid rgba(255,255,255,.14);
+}
+
+.sidebar-user .avatar{
+    background:var(--violet);
+}
+
+.sidebar-user strong{
+    color:#fff;
+}
+
+.main{
+    margin-left:0;
+    padding-top:96px;
+}
+
+.topbar{
+    display:none;
+}
+
+.content{
+    max-width:1240px;
+    padding:62px 34px 60px;
+}
+
+#dia.view.active{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 350px;
+    gap:22px 18px;
+    align-items:end;
+}
+
+#dia .page-header{
+    margin:0;
+    padding:0 2px 5px;
+}
+
+#dia .page-header h1{
+    font-family:'DM Sans',sans-serif;
+    font-size:34px;
+    font-weight:500;
+    letter-spacing:-.045em;
+}
+
+#dia .page-header p{
+    color:#85837e;
+}
+
+#dia .banner{
+    min-height:100px;
+    margin:0;
+    padding:20px 22px;
+    border-radius:24px;
+    background:var(--violet);
+    color:#0a0a0a;
+}
+
+#dia .banner::before{
+    display:none;
+}
+
+#dia .banner::after{
+    width:150px;
+    height:150px;
+    right:-48px;
+    top:-82px;
+    background:rgba(255,255,255,.2);
+}
+
+#dia .banner h2{
+    margin-bottom:4px;
+    font-size:16px;
+}
+
+#dia .banner p{
+    max-width:235px;
+    color:rgba(10,10,10,.65);
+    font-size:12px;
+    line-height:1.35;
+}
+
+#dia .banner-number{
+    color:#0a0a0a;
+    font-size:32px;
+}
+
+#dia .kpis,
+#dia .dashboard-grid{
+    grid-column:1 / -1;
+}
+
+.kpis{
+    gap:0;
+    overflow:hidden;
+    margin:0;
+    border:1px solid var(--border);
+    border-radius:24px;
+    background:var(--white);
+}
+
+.kpi,
+.kpi.orange,
+.kpi.blue,
+.kpi.green,
+.kpi.violet{
+    min-height:142px;
+    padding:24px 22px 20px;
+    border:0;
+    border-right:1px solid var(--border);
+    border-radius:0;
+    background:transparent;
+}
+
+.kpi:last-child{
+    border-right:0;
+}
+
+.kpi::before{
+    display:none;
+}
+
+.kpi::after{
+    content:'↗';
+    position:absolute;
+    top:18px;
+    right:18px;
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:#f2f0ea;
+    color:#0a0a0a;
+    font:700 14px 'DM Sans',sans-serif;
+}
+
+.kpi.violet::after{background:rgba(143,108,255,.18);}
+.kpi.orange::after{background:rgba(255,107,53,.16);}
+.kpi.green::after{background:rgba(199,255,0,.42);}
+.kpi.blue::after{background:#e9efff;}
+
+.kpi-label{
+    max-width:calc(100% - 45px);
+}
+
+.kpi-value{
+    margin-top:16px;
+    font-family:'DM Sans',sans-serif;
+    font-size:34px;
+    font-weight:500;
+    letter-spacing:-.05em;
+}
+
+.dashboard-grid{
+    grid-template-columns:minmax(0,1fr) 290px;
+    gap:18px;
+}
+
+.card{
+    border-radius:24px;
+    padding:22px;
+}
+
+.priority-item{
+    min-height:72px;
+    margin:0;
+    padding:14px 4px;
+    border:0;
+    border-top:1px solid var(--border);
+    border-radius:0;
+    background:transparent;
+}
+
+.priority-item:last-child{
+    padding-bottom:4px;
+}
+
+.priority-item:hover{
+    border-color:var(--border);
+    background:transparent;
+}
+
+.priority-dot{
+    width:10px;
+    height:10px;
+}
+
+.task{
+    min-height:66px;
+}
+
+.quick-grid{
+    grid-template-columns:1fr;
+}
+
+.quick{
+    min-height:64px;
+    border-radius:16px;
+}
+
+.table-wrapper{
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:var(--white);
+}
+
+th{
+    padding:15px 14px;
+    background:#f2f0ea;
+}
+
+td{
+    padding:14px;
+}
+
+@media(max-width:1050px){
+    .sidebar{
+        gap:18px;
+        padding-inline:22px;
+    }
+
+    .sidebar-user > div:last-child{
+        display:none;
+    }
+
+    .sidebar-user{
+        padding-left:12px;
+    }
+
+    #dia.view.active{
+        grid-template-columns:1fr 310px;
+    }
+}
+
+@media(max-width:850px){
+    .sidebar{
+        height:82px;
+        padding:14px 16px;
+    }
+
+    .logo{
+        font-size:19px;
+    }
+
+    .menu button{
+        min-height:40px;
+        padding:9px 13px;
+    }
+
+    .sidebar-user{
+        display:none;
+    }
+
+    .main{
+        padding-top:82px;
+    }
+
+    .content{
+        padding:42px 22px 48px;
+    }
+
+    #dia.view.active{
+        grid-template-columns:1fr;
+    }
+
+    #dia .banner,
+    #dia .kpis,
+    #dia .dashboard-grid{
+        grid-column:1;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .kpis{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .kpi:nth-child(2){border-right:0;}
+    .kpi:nth-child(-n+2){border-bottom:1px solid var(--border);}
+}
+
+@media(max-width:620px){
+    .sidebar{
+        position:sticky;
+        overflow:hidden;
+    }
+
+    .logo{
+        display:none;
+    }
+
+    .menu{
+        width:100%;
+    }
+
+    .main{
+        padding-top:0;
+    }
+
+    .content{
+        padding:30px 14px 42px;
+    }
+
+    #dia .page-header h1{
+        font-size:29px;
+    }
+
+    .kpis{
+        grid-template-columns:1fr;
+    }
+
+    .kpi,
+    .kpi.orange,
+    .kpi.blue,
+    .kpi.green,
+    .kpi.violet{
+        min-height:122px;
+        border-right:0;
+        border-bottom:1px solid var(--border);
+    }
+
+    .kpi:last-child{
+        border-bottom:0;
+    }
+
+    .priority-item{
+        grid-template-columns:auto 1fr;
+    }
+
+    .priority-item > :last-child{
+        grid-column:2;
+        margin-top:7px;
+    }
+}
+
+/* ===========================
+   TIPOGRAFÍA DE INTERFAZ
+   Más liviana y cercana a la referencia
+=========================== */
+
+body,
+button,
+input,
+select,
+textarea,
+h1,
+h2,
+h3,
+.banner-number,
+.kpi-value,
+.priority,
+.opportunity-card h3,
+.sidebar-label,
+.kicker,
+.kpi-label,
+.badge,
+th,
+.drawer-section label,
+.presentar-box small{
+    font-family:'DM Sans',sans-serif;
+}
+
+.logo{
+    font-family:'Archivo Black',sans-serif;
+}
+
+h1{
+    font-weight:500;
+    letter-spacing:-.045em;
+}
+
+.banner h2,
+.card-header h3,
+.opportunity-card h3{
+    font-weight:600;
+    letter-spacing:-.025em;
+}
+
+.banner-number,
+.kpi-value,
+.priority{
+    font-weight:500;
+    letter-spacing:-.05em;
+}
+
+.kicker,
+.sidebar-label,
+.kpi-label,
+th,
+.drawer-section label{
+    font-weight:700;
+    letter-spacing:.075em;
+}
+
+.person-name,
+.task strong,
+.quick strong{
+    font-weight:600;
+}
+
+/* ===========================
+   GESTIÓN DE HOY
+=========================== */
+
+.today-card{
+    padding:0;
+    overflow:hidden;
+}
+
+.today-header{
+    min-height:86px;
+    margin:0;
+    padding:20px 22px;
+}
+
+.today-header .btn{
+    padding-inline:14px;
+}
+
+.today-table-wrapper{
+    overflow-x:auto;
+    border-top:1px solid var(--border);
+}
+
+.today-table{
+    min-width:790px;
+}
+
+.today-table th{
+    padding:13px 16px;
+    background:#f2f0ea;
+    color:#77746e;
+    font-size:10px;
+    letter-spacing:.06em;
+}
+
+.today-table td{
+    padding:13px 16px;
+    vertical-align:middle;
+    background:var(--white);
+}
+
+.today-table tbody tr:last-child td{
+    border-bottom:0;
+}
+
+.today-table tbody tr{
+    transition:background .18s ease;
+}
+
+.today-table tbody tr:hover td{
+    background:#faf9f5;
+}
+
+.today-table td > strong,
+.today-contact strong{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.today-table td > small,
+.today-contact small{
+    display:block;
+    margin-top:3px;
+    color:var(--muted);
+    font-size:11px;
+    white-space:nowrap;
+}
+
+.today-contact{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.today-avatar{
+    flex:0 0 auto;
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    color:#0a0a0a;
+    font-size:11px;
+    font-weight:700;
+}
+
+.violet-avatar{background:rgba(143,108,255,.45);}
+.orange-avatar{background:rgba(255,107,53,.38);}
+.lime-avatar{background:rgba(199,255,0,.65);}
+.dark-avatar{background:#0a0a0a;color:#fff;}
+
+.today-time{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.today-time::before{
+    content:'';
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#9b9b96;
+}
+
+.today-time.overdue::before{
+    background:var(--orange);
+}
+
+.today-action{
+    text-align:right;
+}
+
+.today-action .btn{
+    white-space:nowrap;
+}
+
+@media(max-width:850px){
+    .today-card{
+        margin-bottom:0;
+    }
+}
+
+/* ===========================
+   MIS CONTACTOS
+=========================== */
+
+#contactos .page-header{
+    align-items:flex-end;
+}
+
+.contacts-summary{
+    min-width:145px;
+    padding:13px 17px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:var(--white);
+}
+
+.contacts-summary span{
+    display:block;
+    font-size:24px;
+    font-weight:500;
+    letter-spacing:-.04em;
+}
+
+.contacts-summary small{
+    display:block;
+    margin-top:1px;
+    color:var(--muted);
+    font-size:11px;
+}
+
+.contacts-card{
+    padding:0;
+    overflow:hidden;
+}
+
+.contacts-card .toolbar{
+    display:grid;
+    grid-template-columns:minmax(260px,1fr) 190px 180px;
+    gap:10px;
+    margin:0;
+    padding:17px;
+    border-bottom:1px solid var(--border);
+}
+
+.contacts-card .toolbar input,
+.contacts-card .toolbar select{
+    width:100%;
+    min-height:44px;
+    padding:10px 14px;
+    border-color:var(--border);
+    border-radius:999px;
+    background:#f7f5ef;
+    outline:none;
+    transition:border-color .18s ease,background .18s ease;
+}
+
+.contacts-card .toolbar input:focus,
+.contacts-card .toolbar select:focus{
+    border-color:var(--violet);
+    background:var(--white);
+}
+
+.contacts-card .table-wrapper{
+    border:0;
+    border-radius:0;
+}
+
+.contacts-card table{
+    min-width:850px;
+}
+
+.contacts-card th{
+    padding:14px 16px;
+    background:#f2f0ea;
+}
+
+.contacts-card td{
+    padding:15px 16px;
+    vertical-align:middle;
+    background:var(--white);
+}
+
+.contacts-card tbody tr:hover td{
+    background:#faf9f5;
+}
+
+.contacts-card tbody tr:last-child td{
+    border-bottom:0;
+}
+
+.contacts-card .contact-avatar{
+    width:38px;
+    height:38px;
+    background:var(--violet);
+}
+
+.contacts-card .contact-user strong{
+    font-size:13px;
+    font-weight:600;
+}
+
+.source-chip{
+    display:inline-flex;
+    min-width:42px;
+    justify-content:center;
+    padding:5px 9px;
+    border-radius:999px;
+    background:#f2f0ea;
+    font-size:11px;
+    font-weight:600;
+}
+
+.contacts-card .status-select{
+    min-width:125px;
+    padding:8px 11px;
+    background:var(--white);
+    font-size:12px;
+}
+
+@media(max-width:760px){
+    #contactos .page-header{
+        align-items:flex-start;
+        gap:16px;
+    }
+
+    .contacts-summary{
+        min-width:120px;
+    }
+
+    .contacts-card .toolbar{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .contacts-card .toolbar input{
+        grid-column:1 / -1;
+    }
+}
+
+@media(max-width:520px){
+    #contactos .page-header{
+        display:block;
+    }
+
+    .contacts-summary{
+        display:inline-block;
+        margin-top:16px;
+    }
+
+    .contacts-card .toolbar{
+        grid-template-columns:1fr;
+    }
+
+    .contacts-card .toolbar input{
+        grid-column:auto;
+    }
+}
+
+/* ===========================
+   HISTORIAL AMPLIADO
+=========================== */
+
+.history-section{
+    min-height:310px;
+    padding-bottom:10px;
+    border-bottom:0;
+}
+
+.drawer-history{
+    min-height:230px;
+    max-height:330px;
+    padding:6px 14px;
+    overflow-y:auto;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:#f7f5ef;
+}
+
+.history-item{
+    position:relative;
+    gap:12px;
+    padding:14px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.history-item:last-child{
+    border-bottom:0;
+}
+
+.history-item > div:last-child{
+    min-width:0;
+}
+
+.history-item strong{
+    font-size:12px;
+}
+
+.history-item span{
+    max-width:330px;
+    overflow-wrap:anywhere;
+    font-size:11px;
+    line-height:1.45;
+}
+
+.history-item time{
+    display:block;
+    margin-top:5px;
+    color:#96938d;
+    font-size:10px;
+}
+
+.history-dot{
+    flex:0 0 auto;
+    background:var(--violet);
+}
+
+/* ===========================
+   ESTADO Y PRÓXIMA ACCIÓN
+=========================== */
+
+.conditional-section{
+    display:none;
+    padding:16px;
+    border:1px solid rgba(255,107,53,.28);
+    border-radius:16px;
+    background:rgba(255,107,53,.07);
+}
+
+.conditional-section.active{
+    display:block;
+}
+
+.conditional-section select,
+.conditional-input,
+.followup-detail{
+    width:100%;
+    min-height:43px;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:var(--white);
+    font-size:12px;
+    outline:none;
+}
+
+.conditional-input{
+    display:none;
+    margin-top:10px;
+}
+
+.conditional-input.active{
+    display:block;
+}
+
+#nextAction{
+    margin-bottom:10px;
+}
+
+.followup-detail{
+    margin-top:10px;
+}
+
+#seguimientos .task{
+    grid-template-columns:70px minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:12px;
+}
+
+#seguimientos .task .btn{
+    white-space:nowrap;
+}
+
+@media(max-width:650px){
+    #seguimientos .task{
+        grid-template-columns:55px minmax(0,1fr) auto;
+    }
+
+    #seguimientos .task .btn{
+        grid-column:2 / -1;
+        justify-self:start;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        Present<span>AR</span>
+
+    </div>
+
+    <div class="sidebar-label">
+
+        EMPRESAS · COLABORADOR
+
+    </div>
+
+
+    <div class="menu">
+
+        <button
+            class="active"
+            data-page="dia">
+
+            ⌂ Mi día
+
+        </button>
+
+
+        <button data-page="contactos">
+
+            ◎ Mis contactos
+
+        </button>
+
+
+        <button data-page="seguimientos">
+
+            ◌ Seguimientos
+
+        </button>
+
+
+        <button data-page="oportunidades">
+
+            ◇ Oportunidades
+
+        </button>
+
+
+        <div class="divider"></div>
+
+
+        <button data-page="rendimiento">
+
+            ▥ Mi rendimiento
+
+        </button>
+
+
+        <button onclick="futureFeature()">
+
+            ▣ Mi PresentAR
+
+        </button>
+
+    </div>
+
+
+    <div class="presentar-box">
+
+        <small>MI PRESENTAR</small>
+
+        <strong>
+            Tu tarjeta está activa
+        </strong>
+
+        <p>
+            Compartí tu perfil y convertí
+            cada encuentro en un contacto.
+        </p>
+
+        <button onclick="futureFeature()">
+
+            Ver mi PresentAR
+
+        </button>
+
+    </div>
+
+
+    <div class="sidebar-user">
+
+        <div class="avatar">
+
+            LM
+
+        </div>
+
+        <div>
+
+            <strong>
+                Lucas Martínez
+            </strong>
+
+            <small>
+                Comercial
+            </small>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+    <div class="company">
+
+        <strong>
+            PRESENTAR STUDIO
+        </strong>
+
+        <small>
+            Mi espacio de trabajo
+        </small>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <div class="top-pill">
+
+            🔔 2 pendientes
+
+        </div>
+
+        <div class="top-pill">
+
+            LM · Comercial ▾
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="content">
+
+
+<!-- =========================
+     MI DIA
+========================= -->
+
+<section
+    id="dia"
+    class="view active">
+
+
+<div class="page-header">
+
+    <div>
+
+        <div class="kicker">
+
+            PRESENTAR EMPRESAS · MI GESTIÓN
+
+        </div>
+
+        <h1>
+
+            Hola, Lucas 👋
+
+        </h1>
+
+        <p>
+
+            Esto requiere tu atención hoy.
+
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<div class="banner">
+
+    <div>
+
+        <h2>
+            Tenés 4 acciones pendientes
+        </h2>
+
+        <p>
+            Priorizamos automáticamente
+            los contactos que requieren seguimiento.
+        </p>
+
+    </div>
+
+    <div class="banner-number">
+
+        04
+
+    </div>
+
+</div>
+
+
+
+<!-- KPI -->
+
+<div class="kpis">
+
+
+<div class="kpi orange">
+
+    <div class="kpi-label">
+
+        Nuevos contactos
+
+    </div>
+
+    <strong class="kpi-value">
+
+        4
+
+    </strong>
+
+    <div class="kpi-note">
+
+        2 requieren atención
+
+    </div>
+
+</div>
+
+
+
+<div class="kpi blue">
+
+    <div class="kpi-label">
+
+        Seguimientos hoy
+
+    </div>
+
+    <strong class="kpi-value">
+
+        3
+
+    </strong>
+
+    <div class="kpi-note">
+
+        1 vencido
+
+    </div>
+
+</div>
+
+
+
+<div class="kpi violet">
+
+    <div class="kpi-label">
+
+        Oportunidades activas
+
+    </div>
+
+    <strong class="kpi-value">
+
+        5
+
+    </strong>
+
+    <div class="kpi-note">
+
+        2 necesitan seguimiento
+
+    </div>
+
+</div>
+
+
+
+<div class="kpi green">
+
+    <div class="kpi-label">
+
+        Gestión a tiempo
+
+    </div>
+
+    <strong class="kpi-value">
+
+        91%
+
+    </strong>
+
+    <div class="kpi-note">
+
+        últimos 30 días
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="dashboard-grid">
+
+
+<div>
+
+
+<!-- GESTIÓN DE HOY -->
+
+<div class="card today-card">
+
+    <div class="card-header today-header">
+        <div>
+            <h3>Gestión de hoy</h3>
+            <small>Contactos y tareas que requieren tu atención</small>
+        </div>
+
+        <button class="btn" onclick="showPage('contactos')">
+            Ver todos ↗
+        </button>
+    </div>
+
+    <div class="today-table-wrapper">
+        <table class="today-table">
+            <thead>
+                <tr>
+                    <th>Contacto</th>
+                    <th>Próxima acción</th>
+                    <th>Estado</th>
+                    <th>Horario</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody id="todayTableBody">
+                <tr>
+                    <td>
+                        <div class="today-contact">
+                            <span class="today-avatar violet-avatar">JP</span>
+                            <div>
+                                <strong>Juan Pérez</strong>
+                                <small>Empresa Industrial</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong>Realizar primer contacto</strong>
+                        <small>Ingresó por NFC hace 35 min</small>
+                    </td>
+                    <td><span class="badge badge-new">Nuevo</span></td>
+                    <td><span class="today-time overdue">09:30</span></td>
+                    <td class="today-action">
+                        <button class="btn btn-black" onclick="manageContact(0)">Gestionar</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="today-contact">
+                            <span class="today-avatar orange-avatar">CR</span>
+                            <div>
+                                <strong>Carlos Ruiz</strong>
+                                <small>Estudio Profesional</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong>Retomar seguimiento</strong>
+                        <small>Sin actividad hace 3 días</small>
+                    </td>
+                    <td><span class="badge badge-manage">En gestión</span></td>
+                    <td><span class="today-time">11:00</span></td>
+                    <td class="today-action">
+                        <button class="btn" onclick="manageContact(3)">Seguimiento</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="today-contact">
+                            <span class="today-avatar lime-avatar">LM</span>
+                            <div>
+                                <strong>Laura Méndez</strong>
+                                <small>Grupo Comercial</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong>Preparar próxima reunión</strong>
+                        <small>Reunión programada para mañana</small>
+                    </td>
+                    <td><span class="badge badge-opportunity">Oportunidad</span></td>
+                    <td><span class="today-time">15:30</span></td>
+                    <td class="today-action">
+                        <button class="btn" onclick="manageContact(2)">Ver oportunidad</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="today-contact">
+                            <span class="today-avatar dark-avatar">ML</span>
+                            <div>
+                                <strong>María López</strong>
+                                <small>Servicios del Sur</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong>Realizar llamada comercial</strong>
+                        <small>Confirmar interés y próximos pasos</small>
+                    </td>
+                    <td><span class="badge badge-manage">Contactado</span></td>
+                    <td><span class="today-time">17:30</span></td>
+                    <td class="today-action">
+                        <button class="btn" onclick="manageContact(1)">Gestionar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</div>
+
+
+
+<!-- RIGHT -->
+
+<div>
+
+
+<div class="card">
+
+<div class="card-header">
+
+    <div>
+
+        <h3>
+            Acciones rápidas
+        </h3>
+
+        <small>
+            Tu trabajo en un clic
+        </small>
+
+    </div>
+
+</div>
+
+
+<div class="quick-grid">
+
+<button
+class="quick"
+onclick="showPage('contactos')">
+
+    <strong>
+        ＋ Nuevo contacto
+    </strong>
+
+    <small>
+        Carga manual
+    </small>
+
+</button>
+
+
+<button
+class="quick"
+onclick="showPage('seguimientos')">
+
+    <strong>
+        ✓ Seguimiento
+    </strong>
+
+    <small>
+        Programar tarea
+    </small>
+
+</button>
+
+
+<button
+class="quick"
+onclick="showPage('oportunidades')">
+
+    <strong>
+        ◇ Oportunidades
+    </strong>
+
+    <small>
+        Abrir pipeline
+    </small>
+
+</button>
+
+
+<button
+class="quick"
+onclick="futureFeature()">
+
+    <strong>
+        ▣ Mi PresentAR
+    </strong>
+
+    <small>
+        Ver tarjeta
+    </small>
+
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="card-header">
+
+    <div>
+
+        <h3>
+
+            Mi actividad
+
+        </h3>
+
+        <small>
+
+            últimos 30 días
+
+        </small>
+
+    </div>
+
+</div>
+
+
+<div class="kpi-label">
+
+    Contactos gestionados
+
+</div>
+
+<div
+style="
+font-size:35px;
+font-weight:bold;
+margin-top:8px;
+">
+
+    31
+
+</div>
+
+
+
+<div
+style="
+height:1px;
+background:#eee;
+margin:18px 0;
+">
+</div>
+
+
+<div class="kpi-label">
+
+    Tiempo medio de respuesta
+
+</div>
+
+<div
+style="
+font-size:35px;
+font-weight:bold;
+margin-top:8px;
+">
+
+    38m
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<!-- =========================
+     CONTACTOS
+========================= -->
+
+<section
+id="contactos"
+class="view">
+
+
+<div class="page-header">
+
+<div>
+
+<div class="kicker">
+
+MI GESTIÓN
+
+</div>
+
+<h1>
+
+Mis contactos
+
+</h1>
+
+<p>
+
+Contactos asignados a tu usuario.
+
+</p>
+
+</div>
+
+<div class="contacts-summary">
+    <span id="contactsCount">4</span>
+    <small>contactos visibles</small>
+</div>
+
+</div>
+
+
+
+<div class="card contacts-card">
+
+
+<div class="toolbar">
+
+
+<input
+id="search"
+placeholder="Buscar contacto..."
+oninput="renderContacts()">
+
+
+<select
+id="statusFilter"
+onchange="renderContacts()">
+
+<option value="">
+Todos los estados
+</option>
+
+<option>
+Nuevo
+</option>
+
+<option>
+Contactado
+</option>
+
+<option>
+Interesado
+</option>
+
+<option>
+Evaluando
+</option>
+
+<option>
+No interesado
+</option>
+
+<option>
+Convertido
+</option>
+
+</select>
+
+
+<select
+id="sourceFilter"
+onchange="renderContacts()">
+
+<option value="">
+Todos los orígenes
+</option>
+
+<option>NFC</option>
+
+<option>QR</option>
+
+<option>Link</option>
+
+<option>Manual</option>
+
+</select>
+
+
+</div>
+
+
+
+<div class="table-wrapper">
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>Contacto</th>
+
+<th>Interés</th>
+
+<th>Origen</th>
+
+<th>Actividad</th>
+
+<th>Estado</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="contactsTable">
+
+</tbody>
+
+
+</table>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+<!-- =========================
+     SEGUIMIENTOS
+========================= -->
+
+<section
+id="seguimientos"
+class="view">
+
+
+<div class="page-header">
+
+<div>
+
+<div class="kicker">
+
+MI GESTIÓN
+
+</div>
+
+<h1>
+
+Seguimientos
+
+</h1>
+
+<p>
+
+Tu agenda comercial y próximos contactos.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="kpis">
+
+<div class="kpi orange">
+
+<div class="kpi-label">
+
+Vencidos
+
+</div>
+
+<strong class="kpi-value" id="overdueTasksCount">
+
+1
+
+</strong>
+
+</div>
+
+
+<div class="kpi blue">
+
+<div class="kpi-label">
+
+Para hoy
+
+</div>
+
+<strong class="kpi-value" id="todayTasksCount">
+
+3
+
+</strong>
+
+</div>
+
+
+<div class="kpi green">
+
+<div class="kpi-label">
+
+Próximos 7 días
+
+</div>
+
+<strong class="kpi-value" id="upcomingTasksCount">
+
+8
+
+</strong>
+
+</div>
+
+
+<div class="kpi violet">
+
+<div class="kpi-label">
+
+Completados este mes
+
+</div>
+
+<strong class="kpi-value">
+
+24
+
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+<div class="card">
+
+
+<div class="card-header">
+
+<div>
+
+<h3>
+
+Agenda comercial
+
+</h3>
+
+<small>
+
+Actividades programadas
+
+</small>
+
+</div>
+
+</div>
+
+
+
+<div id="tasksContainer"></div>
+
+
+</div>
+
+</section>
+
+
+
+
+<!-- =========================
+     OPORTUNIDADES
+========================= -->
+
+<section
+id="oportunidades"
+class="view">
+
+
+<div class="page-header">
+
+<div>
+
+<div class="kicker">
+
+MI GESTIÓN
+
+</div>
+
+<h1>
+
+Oportunidades
+
+</h1>
+
+<p>
+
+Contactos con potencial comercial.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="opportunity-grid">
+
+
+<div class="opportunity-card">
+
+<small>
+
+GRUPO COMERCIAL
+
+</small>
+
+<h3>
+
+Laura Méndez
+
+</h3>
+
+<div class="priority">
+
+Alta
+
+</div>
+
+<small>
+
+Reunión mañana · 11:00
+
+</small>
+
+<div class="progress">
+
+<div style="width:78%"></div>
+
+</div>
+
+</div>
+
+
+
+<div class="opportunity-card">
+
+<small>
+
+EMPRESA INDUSTRIAL
+
+</small>
+
+<h3>
+
+Juan Pérez
+
+</h3>
+
+<div class="priority">
+
+Media
+
+</div>
+
+<small>
+
+Seguimiento hoy · 17:30
+
+</small>
+
+<div class="progress">
+
+<div style="width:58%"></div>
+
+</div>
+
+</div>
+
+
+
+<div class="opportunity-card">
+
+<small>
+
+ESTUDIO PROFESIONAL
+
+</small>
+
+<h3>
+
+Carlos Ruiz
+
+</h3>
+
+<div class="priority">
+
+Media
+
+</div>
+
+<small>
+
+Sin actividad hace 3 días
+
+</small>
+
+<div class="progress">
+
+<div style="width:42%"></div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+<!-- =========================
+     RENDIMIENTO
+========================= -->
+
+<section
+id="rendimiento"
+class="view">
+
+
+<div class="page-header">
+
+<div>
+
+<div class="kicker">
+
+MI PRESENTAR
+
+</div>
+
+<h1>
+
+Mi rendimiento
+
+</h1>
+
+<p>
+
+Tus resultados personales.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="kpis">
+
+
+<div class="kpi blue">
+
+<div class="kpi-label">
+
+Interacciones
+
+</div>
+
+<strong class="kpi-value">
+
+382
+
+</strong>
+
+<div class="kpi-note">
+
+↑ 16%
+
+</div>
+
+</div>
+
+
+
+<div class="kpi green">
+
+<div class="kpi-label">
+
+Contactos generados
+
+</div>
+
+<strong class="kpi-value">
+
+73
+
+</strong>
+
+<div class="kpi-note">
+
+19% conversión
+
+</div>
+
+</div>
+
+
+
+<div class="kpi orange">
+
+<div class="kpi-label">
+
+Gestionados
+
+</div>
+
+<strong class="kpi-value">
+
+31
+
+</strong>
+
+</div>
+
+
+
+<div class="kpi violet">
+
+<div class="kpi-label">
+
+Oportunidades
+
+</div>
+
+<strong class="kpi-value">
+
+9
+
+</strong>
+
+</div>
+
+
+</div>
+
+
+<div class="card">
+
+<div class="card-header">
+
+<div>
+
+<h3>
+
+Embudo personal
+
+</h3>
+
+<small>
+
+Últimos 30 días
+
+</small>
+
+</div>
+
+</div>
+
+
+<p>
+
+Interacciones · 382
+
+</p>
+
+<div class="progress">
+
+<div style="width:100%"></div>
+
+</div>
+
+
+<p>
+
+Contactos · 73
+
+</p>
+
+<div class="progress">
+
+<div style="width:70%"></div>
+
+</div>
+
+
+<p>
+
+Gestionados · 31
+
+</p>
+
+<div class="progress">
+
+<div style="width:45%"></div>
+
+</div>
+
+
+<p>
+
+Oportunidades · 9
+
+</p>
+
+<div class="progress">
+
+<div style="width:25%"></div>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+</div>
+
+</main>
+
+<script>
+
+/* =================================
+   DATOS DEMO
+================================= */
+
+let contacts = JSON.parse(
+    localStorage.getItem(
+        "presentar_contacts_demo"
+    )
+);
+
+
+if(!contacts){
+
+contacts = [
+
+{
+
+    name:"Juan Pérez",
+
+    company:"Empresa Industrial",
+
+    interest:"Servicio corporativo",
+
+    source:"NFC",
+
+    activity:"Hace 35 min",
+
+    status:"Nuevo"
+
+},
+
+{
+
+    name:"María López",
+
+    company:"Servicios del Sur",
+
+    interest:"Presupuesto",
+
+    source:"QR",
+
+    activity:"Hoy 12:20",
+
+    status:"En gestión"
+
+},
+
+{
+
+    name:"Laura Méndez",
+
+    company:"Grupo Comercial",
+
+    interest:"Solución empresarial",
+
+    source:"NFC",
+
+    activity:"Hoy 10:15",
+
+    status:"Oportunidad"
+
+},
+
+{
+
+    name:"Carlos Ruiz",
+
+    company:"Estudio Profesional",
+
+    interest:"Implementación",
+
+    source:"Link",
+
+    activity:"Hace 3 días",
+
+    status:"Contactado"
+
+},
+
+{
+
+    name:"Federico Gómez",
+
+    company:"Empresa Regional",
+
+    interest:"Información",
+
+    source:"NFC",
+
+    activity:"Ayer",
+
+    status:"Contactado"
+
+}
+
+];
+
+}
+
+/* DATOS DE CONTACTO DEMO
+   Luego serán reemplazados por Supabase. */
+
+const demoChannels = [
+    { phone:"+5492915550101", email:"juan.perez@empresa.com" },
+    { phone:"+5492915550102", email:"maria.lopez@empresa.com" },
+    { phone:"+5492915550103", email:"laura.mendez@empresa.com" },
+    { phone:"+5492915550104", email:"carlos.ruiz@empresa.com" },
+    { phone:"+5492915550105", email:"federico.gomez@empresa.com" }
+];
+
+contacts = contacts.map((contact,index) => ({
+    ...contact,
+    status:({
+        "En gestión":"Evaluando",
+        "Oportunidad":"Interesado",
+        "Ganado":"Convertido",
+        "Perdido":"No interesado"
+    })[contact.status] || contact.status,
+    phone:contact.phone || demoChannels[index]?.phone || "",
+    email:contact.email || demoChannels[index]?.email || "",
+    lossReason:contact.lossReason || "",
+    lossReasonOther:contact.lossReasonOther || "",
+    nextAction:contact.nextAction || "",
+    followupDate:contact.followupDate || "",
+    followupTime:contact.followupTime || "",
+    followupDetail:contact.followupDetail || "",
+    history:Array.isArray(contact.history)
+        ? contact.history
+        : [{
+            title:"Contacto generado",
+            detail:`Mediante ${contact.source}`,
+            date:"Registro inicial"
+        }]
+}));
+
+localStorage.setItem(
+    "presentar_contacts_demo",
+    JSON.stringify(contacts)
+);
+
+
+
+/* =================================
+   NAVIGATION
+================================= */
+
+document
+.querySelectorAll(
+".menu button[data-page]"
+)
+.forEach(button => {
+
+button.addEventListener(
+"click",
+function(){
+
+showPage(
+this.dataset.page
+);
+
+}
+);
+
+});
+
+
+function showPage(page){
+
+document
+.querySelectorAll(
+".view"
+)
+.forEach(view => {
+
+view.classList.remove(
+"active"
+);
+
+});
+
+
+document
+.getElementById(page)
+.classList.add(
+"active"
+);
+
+
+document
+.querySelectorAll(
+".menu button[data-page]"
+)
+.forEach(button => {
+
+button.classList.remove(
+"active"
+);
+
+});
+
+
+const button = document
+.querySelector(
+`.menu button[data-page="${page}"]`
+);
+
+
+if(button){
+
+button.classList.add(
+"active"
+);
+
+}
+
+
+if(page === "contactos"){
+
+renderContacts();
+
+}
+
+
+window.scrollTo(
+0,
+0
+);
+
+}
+
+
+
+/* =================================
+   CONTACTS
+================================= */
+
+function initials(name){
+
+return name
+.split(" ")
+.map(word => word[0])
+.slice(0,2)
+.join("")
+.toUpperCase();
+
+}
+
+
+
+function renderContacts(){
+
+const search =
+(
+document
+.getElementById("search")
+?.value || ""
+)
+.toLowerCase();
+
+
+const status =
+document
+.getElementById(
+"statusFilter"
+)
+?.value || "";
+
+
+const source =
+document
+.getElementById(
+"sourceFilter"
+)
+?.value || "";
+
+
+
+const filtered =
+contacts.filter(contact => {
+
+
+const matchesSearch =
+
+contact.name
+.toLowerCase()
+.includes(search)
+
+||
+
+contact.company
+.toLowerCase()
+.includes(search);
+
+
+
+const matchesStatus =
+
+!status
+
+||
+
+contact.status === status;
+
+
+
+const matchesSource =
+
+!source
+
+||
+
+contact.source === source;
+
+
+
+return
+
+matchesSearch
+
+&&
+
+matchesStatus
+
+&&
+
+matchesSource;
+
+});
+
+const contactsCount =
+document.getElementById(
+"contactsCount"
+);
+
+if(contactsCount){
+    contactsCount.textContent =
+    filtered.length;
+}
+
+
+
+const tbody =
+document
+.getElementById(
+"contactsTable"
+);
+
+
+
+tbody.innerHTML =
+filtered
+.map(contact => {
+
+
+const index =
+contacts.indexOf(contact);
+
+
+return `
+
+<tr>
+
+<td>
+
+<div class="contact-user">
+
+<div class="contact-avatar">
+
+${initials(contact.name)}
+
+</div>
+
+<div>
+
+<strong>
+
+${contact.name}
+
+</strong>
+
+<div class="person-meta">
+
+${contact.company}
+
+</div>
+
+</div>
+
+</div>
+
+</td>
+
+
+<td>
+
+${contact.interest}
+
+</td>
+
+
+<td>
+
+<span class="source-chip">
+${contact.source}
+</span>
+
+</td>
+
+
+<td>
+
+${contact.activity}
+
+</td>
+
+
+<td>
+
+<select
+class="status-select"
+onchange="
+changeStatus(
+${index},
+this.value
+)
+">
+
+<option
+${contact.status==="Nuevo"
+?"selected":""}>
+
+Nuevo
+
+</option>
+
+
+<option
+${contact.status==="Contactado"
+?"selected":""}>
+
+Contactado
+
+</option>
+
+
+<option
+${contact.status==="Interesado"
+?"selected":""}>
+
+Interesado
+
+</option>
+
+
+<option
+${contact.status==="Evaluando"
+?"selected":""}>
+
+Evaluando
+
+</option>
+
+
+<option
+${contact.status==="No interesado"
+?"selected":""}>
+
+No interesado
+
+</option>
+
+
+<option
+${contact.status==="Convertido"
+?"selected":""}>
+
+Convertido
+
+</option>
+
+</select>
+
+</td>
+
+
+<td>
+
+<button
+class="btn"
+onclick="
+manageContact(
+${index}
+)
+">
+
+Gestionar
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+})
+.join("");
+
+}
+
+
+
+/* CAMBIAR ESTADO */
+
+function changeStatus(
+index,
+status
+){
+
+if(status === "No interesado"){
+    manageContact(index);
+    document.getElementById("drawerStatus").value = status;
+    updateDrawerStatus();
+    return;
+}
+
+const previousStatus = contacts[index].status;
+
+contacts[index].status =
+status;
+
+
+contacts[index].activity =
+"Actualizado recién";
+
+
+localStorage.setItem(
+"presentar_contacts_demo",
+JSON.stringify(
+contacts
+)
+);
+
+
+renderContacts();
+renderTodayDashboard();
+
+if(previousStatus !== status){
+    contacts[index].history = Array.isArray(contacts[index].history)
+        ? contacts[index].history
+        : [];
+
+    contacts[index].history.unshift({
+        title:"Estado actualizado",
+        detail:`${previousStatus} → ${status}`,
+        date:new Date().toLocaleString("es-AR",{
+            day:"2-digit",
+            month:"2-digit",
+            hour:"2-digit",
+            minute:"2-digit"
+        })
+    });
+
+    localStorage.setItem(
+        "presentar_contacts_demo",
+        JSON.stringify(contacts)
+    );
+}
+
+}
+
+
+
+/* FICHA DEMO */
+
+let currentContactIndex = null;
+let drawerHasUnsavedChanges = false;
+
+
+function manageContact(index){
+
+    const contact = contacts[index];
+
+    if(!contact){
+        return;
+    }
+
+
+    currentContactIndex = index;
+
+    document.getElementById("drawerNote").value = "";
+    document.getElementById("followupDate").value = contact.followupDate || "";
+    document.getElementById("followupTime").value = contact.followupTime || "";
+    document.getElementById("followupDetail").value = contact.followupDetail || "";
+    document.getElementById("nextAction").value = contact.nextAction || "";
+    document.getElementById("lossReason").value = contact.lossReason || "";
+    document.getElementById("lossReasonOther").value = contact.lossReasonOther || "";
+
+
+    document
+    .getElementById(
+        "drawerName"
+    )
+    .textContent =
+    contact.name;
+
+
+    document
+    .getElementById(
+        "drawerCompany"
+    )
+    .textContent =
+    contact.company;
+
+
+    document
+    .getElementById(
+        "drawerInterest"
+    )
+    .textContent =
+    contact.interest;
+
+
+    document
+    .getElementById(
+        "drawerSource"
+    )
+    .textContent =
+    contact.source;
+
+
+    document
+    .getElementById(
+        "drawerStatus"
+    )
+    .value =
+    contact.status;
+
+
+    document
+    .getElementById(
+        "drawerAvatar"
+    )
+    .textContent =
+    initials(
+        contact.name
+    );
+
+    renderContactHistory(contact);
+    toggleNoInterestFields();
+    toggleOtherReasonField();
+
+
+    document
+    .getElementById(
+        "contactOverlay"
+    )
+    .classList
+    .add(
+        "active"
+    );
+
+
+    document
+    .getElementById(
+        "contactDrawer"
+    )
+    .classList
+    .add(
+        "active"
+    );
+
+    drawerHasUnsavedChanges = false;
+
+}
+
+
+
+/* CERRAR */
+
+function closeContactDrawer(forceClose = false){
+
+    if(drawerHasUnsavedChanges && !forceClose){
+        const discardChanges = confirm(
+            "Tenés cambios sin guardar. ¿Querés descartarlos?"
+        );
+
+        if(!discardChanges){
+            return;
+        }
+    }
+
+    drawerHasUnsavedChanges = false;
+
+    document
+    .getElementById(
+        "contactOverlay"
+    )
+    .classList
+    .remove(
+        "active"
+    );
+
+
+    document
+    .getElementById(
+        "contactDrawer"
+    )
+    .classList
+    .remove(
+        "active"
+    );
+
+}
+
+
+
+/* CAMBIAR ESTADO DESDE FICHA */
+
+function updateDrawerStatus(){
+    drawerHasUnsavedChanges = true;
+    toggleNoInterestFields();
+
+}
+
+
+function markDrawerChanged(){
+    drawerHasUnsavedChanges = true;
+}
+
+
+function toggleNoInterestFields(){
+    const status = document.getElementById("drawerStatus").value;
+    const section = document.getElementById("notInterestedFields");
+
+    section.classList.toggle(
+        "active",
+        status === "No interesado"
+    );
+}
+
+
+function updateLossReason(){
+    drawerHasUnsavedChanges = true;
+    toggleOtherReasonField();
+}
+
+
+function toggleOtherReasonField(){
+    const reason = document.getElementById("lossReason").value;
+    const field = document.getElementById("lossReasonOther");
+
+    field.classList.toggle("active",reason === "Otro");
+}
+
+
+
+/* ACCIONES DEMO */
+
+function demoAction(action){
+
+    if(currentContactIndex === null){
+        return;
+    }
+
+    const contact = contacts[currentContactIndex];
+    let target = "";
+
+    if(action === "WhatsApp"){
+        const phone = (contact.phone || "").replace(/\D/g,"");
+
+        if(!phone){
+            alert("Este contacto no tiene un número de WhatsApp cargado.");
+            return;
+        }
+
+        const message = encodeURIComponent(
+            `Hola ${contact.name}, te contacto desde PresentAR Studio.`
+        );
+
+        target = `https://wa.me/${phone}?text=${message}`;
+    }
+
+    if(action === "Llamar"){
+        if(!contact.phone){
+            alert("Este contacto no tiene un teléfono cargado.");
+            return;
+        }
+
+        target = `tel:${contact.phone}`;
+    }
+
+    if(action === "Email"){
+        if(!contact.email){
+            alert("Este contacto no tiene un email cargado.");
+            return;
+        }
+
+        const subject = encodeURIComponent("Contacto desde PresentAR Studio");
+        target = `mailto:${contact.email}?subject=${subject}`;
+    }
+
+    addHistory(
+        `${action} iniciado`,
+        action === "Email" ? contact.email : contact.phone
+    );
+
+    if(action === "Llamar" || action === "Email"){
+        window.location.href = target;
+    }else{
+        window.open(target,"_blank","noopener,noreferrer");
+    }
+
+}
+
+
+
+/* SEGUIMIENTO */
+
+function saveFollowup(){
+
+    const date =
+
+    document
+    .getElementById(
+        "followupDate"
+    )
+    .value;
+
+
+    const time =
+
+    document
+    .getElementById(
+        "followupTime"
+    )
+    .value;
+
+
+    if(!date){
+
+        alert(
+            "Seleccioná una fecha."
+        );
+
+        return;
+
+    }
+
+
+    addHistory(
+
+        "Seguimiento programado",
+
+        date
+
+        +
+
+        (
+
+            time
+            ? " · " + time
+            : ""
+
+        )
+
+    );
+
+}
+
+
+
+/* NOTAS */
+
+function saveNote(){
+
+    const textarea =
+
+    document
+    .getElementById(
+        "drawerNote"
+    );
+
+
+    const note =
+
+    textarea
+    .value
+    .trim();
+
+
+    if(!note){
+
+        return;
+
+    }
+
+
+    addHistory(
+
+        "Nota agregada",
+
+        note
+
+    );
+
+
+    textarea.value = "";
+
+}
+
+
+
+/* HISTORIAL */
+
+function addHistory(
+    title,
+    detail
+){
+
+    if(currentContactIndex === null){
+        return;
+    }
+
+    const contact = contacts[currentContactIndex];
+    contact.history = Array.isArray(contact.history)
+        ? contact.history
+        : [];
+
+    contact.history.unshift({
+        title,
+        detail,
+        date:new Date().toLocaleString("es-AR",{
+            day:"2-digit",
+            month:"2-digit",
+            hour:"2-digit",
+            minute:"2-digit"
+        })
+    });
+
+    localStorage.setItem(
+        "presentar_contacts_demo",
+        JSON.stringify(contacts)
+    );
+
+    renderContactHistory(contact);
+
+}
+
+
+function renderContactHistory(contact){
+
+    const history = document.getElementById("drawerHistory");
+
+    if(!history){
+        return;
+    }
+
+    history.innerHTML = "";
+
+    const entries = Array.isArray(contact.history)
+        ? contact.history
+        : [];
+
+    entries.forEach(entry => {
+        const item = document.createElement("div");
+        const dot = document.createElement("div");
+        const content = document.createElement("div");
+        const title = document.createElement("strong");
+        const detail = document.createElement("span");
+        const date = document.createElement("time");
+
+        item.className = "history-item";
+        dot.className = "history-dot";
+        title.textContent = entry.title;
+        detail.textContent = entry.detail;
+        date.textContent = entry.date || "";
+
+        content.append(title,detail,date);
+        item.append(dot,content);
+        history.append(item);
+    });
+
+}
+
+
+
+/* =================================
+   TASKS
+================================= */
+
+const tasks = [
+
+{
+
+time:"09:30",
+
+title:"Contactar a Juan Pérez",
+
+company:"Empresa Industrial",
+
+status:"Vencido"
+
+},
+
+{
+
+time:"11:00",
+
+title:"Seguimiento Laura Méndez",
+
+company:"Grupo Comercial",
+
+status:"Hoy"
+
+},
+
+{
+
+time:"15:30",
+
+title:"Llamar María López",
+
+company:"Servicios del Sur",
+
+status:"Hoy"
+
+},
+
+{
+
+time:"17:30",
+
+title:"Enviar propuesta Carlos Ruiz",
+
+company:"Estudio Profesional",
+
+status:"Hoy"
+
+},
+
+{
+
+time:"Mañana",
+
+title:"Reunión Grupo Comercial",
+
+company:"Laura Méndez",
+
+status:"Próximo"
+
+}
+
+];
+
+
+
+function renderTasks(){
+
+    const container = document.getElementById("tasksContainer");
+
+    if(!container){
+        return;
+    }
+
+    const today = new Date();
+    const localToday = new Date(
+        today.getTime() - today.getTimezoneOffset() * 60000
+    );
+    const todayString = localToday.toISOString().slice(0,10);
+
+    const scheduledTasks = contacts
+        .map((contact,index) => ({ contact,index }))
+        .filter(({contact}) => contact.nextAction && contact.followupDate)
+        .sort((a,b) => {
+            const first = `${a.contact.followupDate}T${a.contact.followupTime || "23:59"}`;
+            const second = `${b.contact.followupDate}T${b.contact.followupTime || "23:59"}`;
+            return first.localeCompare(second);
+        })
+        .map(({contact,index}) => ({
+            time:contact.followupTime || "—",
+            title:`${contact.nextAction} · ${contact.name}`,
+            company:contact.followupDetail || contact.company,
+            status:contact.followupDate < todayString
+                ? "Vencido"
+                : contact.followupDate === todayString
+                    ? "Hoy"
+                    : "Próximo",
+            index
+        }));
+
+    const items = scheduledTasks.length ? scheduledTasks : tasks;
+
+    if(scheduledTasks.length){
+        const overdue = scheduledTasks.filter(task => task.status === "Vencido").length;
+        const dueToday = scheduledTasks.filter(task => task.status === "Hoy").length;
+        const upcoming = scheduledTasks.filter(task => task.status === "Próximo").length;
+
+        document.getElementById("overdueTasksCount").textContent = overdue;
+        document.getElementById("todayTasksCount").textContent = dueToday;
+        document.getElementById("upcomingTasksCount").textContent = upcoming;
+    }
+
+    container.innerHTML = items.map(task => `
+
+<div class="task">
+
+<div class="task-time">
+
+${task.time}
+
+</div>
+
+<div>
+
+<strong>
+
+${task.title}
+
+</strong>
+
+<small>
+
+${task.company}
+
+</small>
+
+</div>
+
+<span class="badge badge-manage">
+
+${task.status}
+
+</span>
+
+${Number.isInteger(task.index)
+    ? `<button class="btn" onclick="manageContact(${task.index})">Gestionar</button>`
+    : ""}
+
+</div>
+
+`)
+.join("");
+
+}
+
+
+function renderTodayDashboard(){
+
+    const tbody = document.getElementById("todayTableBody");
+
+    if(!tbody){
+        return;
+    }
+
+    const fallbackActions = [
+        "Realizar primer contacto",
+        "Realizar llamada comercial",
+        "Preparar próxima reunión",
+        "Retomar seguimiento"
+    ];
+
+    const avatarClasses = [
+        "violet-avatar",
+        "dark-avatar",
+        "lime-avatar",
+        "orange-avatar"
+    ];
+
+    tbody.innerHTML = contacts.slice(0,4).map((contact,index) => {
+        const nextAction = contact.nextAction || fallbackActions[index];
+        const detail = contact.followupDetail || contact.activity;
+        const time = contact.followupTime || "—";
+        const statusClass = contact.status === "No interesado"
+            ? "badge-new"
+            : contact.status === "Interesado" || contact.status === "Evaluando"
+                ? "badge-opportunity"
+                : contact.status === "Convertido"
+                    ? "badge-win"
+                    : "badge-manage";
+
+        return `
+            <tr>
+                <td>
+                    <div class="today-contact">
+                        <span class="today-avatar ${avatarClasses[index]}">${initials(contact.name)}</span>
+                        <div>
+                            <strong>${contact.name}</strong>
+                            <small>${contact.company}</small>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <strong>${nextAction}</strong>
+                    <small>${detail}</small>
+                </td>
+                <td><span class="badge ${statusClass}">${contact.status}</span></td>
+                <td><span class="today-time">${time}</span></td>
+                <td class="today-action">
+                    <button class="btn" onclick="manageContact(${index})">Gestionar</button>
+                </td>
+            </tr>
+        `;
+    }).join("");
+}
+
+
+
+/* =================================
+   FUTURE
+================================= */
+
+function futureFeature(){
+
+alert(
+
+"Este módulo se conectará en la siguiente etapa. Por ahora estamos trabajando en modo demo y no modifica ninguna tarjeta ni usuario existente."
+
+);
+
+}
+
+
+
+/* START */
+
+function saveContactChanges(){
+    if(currentContactIndex === null){
+        return;
+    }
+
+    const contact = contacts[currentContactIndex];
+    const newStatus = document.getElementById("drawerStatus").value;
+    const lossReason = document.getElementById("lossReason").value;
+    const lossReasonOther = document.getElementById("lossReasonOther").value.trim();
+    const nextAction = document.getElementById("nextAction").value;
+    const followupDate = document.getElementById("followupDate").value;
+    const followupTime = document.getElementById("followupTime").value;
+    const followupDetail = document.getElementById("followupDetail").value.trim();
+    const note = document.getElementById("drawerNote").value.trim();
+
+    if(newStatus === "No interesado" && !lossReason){
+        alert("Seleccioná por qué el contacto no está interesado.");
+        document.getElementById("lossReason").focus();
+        return;
+    }
+
+    if(newStatus === "No interesado" && lossReason === "Otro" && !lossReasonOther){
+        alert("Especificá el motivo en el campo Otro.");
+        document.getElementById("lossReasonOther").focus();
+        return;
+    }
+
+    if(nextAction && !followupDate){
+        alert("Seleccioná una fecha para la próxima acción.");
+        document.getElementById("followupDate").focus();
+        return;
+    }
+
+    const previousStatus = contact.status;
+    const previousAction = [
+        contact.nextAction,
+        contact.followupDate,
+        contact.followupTime,
+        contact.followupDetail
+    ].join("|");
+
+    contact.status = newStatus;
+    contact.activity = "Actualizado recién";
+    contact.lossReason = newStatus === "No interesado" ? lossReason : "";
+    contact.lossReasonOther =
+        newStatus === "No interesado" && lossReason === "Otro"
+        ? lossReasonOther
+        : "";
+    contact.nextAction = nextAction;
+    contact.followupDate = nextAction ? followupDate : "";
+    contact.followupTime = nextAction ? followupTime : "";
+    contact.followupDetail = nextAction ? followupDetail : "";
+
+    if(previousStatus !== newStatus){
+        addHistory(
+            "Estado actualizado",
+            `${previousStatus} → ${newStatus}`
+        );
+    }
+
+    if(newStatus === "No interesado"){
+        addHistory(
+            "Motivo de desinterés",
+            lossReason === "Otro" ? lossReasonOther : lossReason
+        );
+    }
+
+    const currentAction = [
+        contact.nextAction,
+        contact.followupDate,
+        contact.followupTime,
+        contact.followupDetail
+    ].join("|");
+
+    if(nextAction && previousAction !== currentAction){
+        addHistory(
+            "Próxima acción programada",
+            `${nextAction} · ${followupDate}${followupTime ? " · " + followupTime : ""}${followupDetail ? " · " + followupDetail : ""}`
+        );
+    }
+
+    if(note){
+        addHistory("Nota agregada", note);
+    }
+
+    localStorage.setItem(
+        "presentar_contacts_demo",
+        JSON.stringify(contacts)
+    );
+
+    renderContacts();
+    renderTasks();
+    renderTodayDashboard();
+
+    document.getElementById("drawerNote").value = "";
+
+    const button = document.querySelector(".drawer-save-all");
+    const originalText = button.textContent;
+    button.textContent = "✓ Cambios guardados";
+
+    setTimeout(() => {
+        button.textContent = originalText;
+        drawerHasUnsavedChanges = false;
+        closeContactDrawer(true);
+    }, 800);
+}
+
+renderContacts();
+
+renderTasks();
+
+renderTodayDashboard();
+
+document.addEventListener("DOMContentLoaded", () => {
+    const pendingFields = [
+        "followupDate",
+        "followupTime",
+        "followupDetail",
+        "drawerNote"
+    ];
+
+    pendingFields.forEach((fieldId) => {
+        document
+            .getElementById(fieldId)
+            .addEventListener("input", () => {
+                drawerHasUnsavedChanges = true;
+            });
+    });
+});
+
+document.addEventListener("keydown", (event) => {
+    if(
+        event.key === "Escape" &&
+        document.getElementById("contactDrawer")?.classList.contains("active")
+    ){
+        closeContactDrawer();
+    }
+});
+
+</script>
+
+<!-- =========================
+     DRAWER GESTION CONTACTO
+========================= -->
+
+<div id="contactOverlay" class="contact-overlay" onclick="closeContactDrawer()"></div>
+
+<aside id="contactDrawer" class="contact-drawer">
+
+    <div class="drawer-header">
+
+        <div class="drawer-person">
+
+            <div class="drawer-avatar" id="drawerAvatar">
+                JP
+            </div>
+
+            <div>
+                <h2 id="drawerName">
+                    Juan Pérez
+                </h2>
+
+                <p id="drawerCompany">
+                    Empresa Industrial
+                </p>
+            </div>
+
+        </div>
+
+        <button
+            class="drawer-close"
+            onclick="closeContactDrawer()"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="drawer-body">
+
+        <div class="drawer-section">
+
+            <label>
+                Estado
+            </label>
+
+            <select
+                id="drawerStatus"
+                onchange="updateDrawerStatus()"
+            >
+
+                <option>Nuevo</option>
+                <option>Contactado</option>
+                <option>Interesado</option>
+                <option>Evaluando</option>
+                <option>No interesado</option>
+                <option>Convertido</option>
+
+            </select>
+
+        </div>
+
+        <div id="notInterestedFields" class="drawer-section conditional-section">
+
+            <label>
+                Motivo de desinterés
+            </label>
+
+            <select id="lossReason" onchange="updateLossReason()">
+                <option value="">Seleccionar motivo</option>
+                <option>Precio o presupuesto</option>
+                <option>No es prioridad ahora</option>
+                <option>Ya trabaja con otro proveedor</option>
+                <option>No necesita la solución</option>
+                <option>No responde</option>
+                <option>Otro</option>
+            </select>
+
+            <input
+                id="lossReasonOther"
+                class="conditional-input"
+                placeholder="Especificar otro motivo..."
+                oninput="markDrawerChanged()"
+            >
+
+        </div>
+
+
+        <div class="drawer-grid">
+
+            <div class="drawer-data">
+
+                <span>
+                    Interés
+                </span>
+
+                <strong id="drawerInterest">
+                    Servicio corporativo
+                </strong>
+
+            </div>
+
+
+            <div class="drawer-data">
+
+                <span>
+                    Origen
+                </span>
+
+                <strong id="drawerSource">
+                    NFC
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="drawer-section">
+
+            <label>
+                Acciones
+            </label>
+
+            <div class="drawer-actions">
+
+                <button
+                    class="drawer-action primary"
+                    onclick="demoAction('WhatsApp')"
+                >
+                    WhatsApp
+                </button>
+
+                <button
+                    class="drawer-action"
+                    onclick="demoAction('Llamar')"
+                >
+                    Llamar
+                </button>
+
+                <button
+                    class="drawer-action"
+                    onclick="demoAction('Email')"
+                >
+                    Email
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="drawer-section">
+
+            <label>
+                Próxima acción
+            </label>
+
+            <select id="nextAction" onchange="markDrawerChanged()">
+                <option value="">Sin próxima acción</option>
+                <option>Enviar WhatsApp</option>
+                <option>Realizar llamada</option>
+                <option>Enviar email</option>
+                <option>Enviar propuesta</option>
+                <option>Programar reunión</option>
+                <option>Hacer seguimiento</option>
+            </select>
+
+            <div class="drawer-followup">
+
+                <input
+                    type="date"
+                    id="followupDate"
+                >
+
+                <input
+                    type="time"
+                    id="followupTime"
+                >
+
+            </div>
+
+            <input
+                id="followupDetail"
+                class="followup-detail"
+                placeholder="Detalle de la próxima acción..."
+                oninput="markDrawerChanged()"
+            >
+
+        </div>
+
+
+        <div class="drawer-section">
+
+            <label>
+                Nota
+            </label>
+
+            <textarea
+                id="drawerNote"
+                placeholder="Escribí una nota sobre este contacto..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="drawer-section history-section">
+
+            <label>
+                Historial
+            </label>
+
+            <div id="drawerHistory" class="drawer-history">
+
+                <div class="history-item">
+
+                    <div class="history-dot"></div>
+
+                    <div>
+                        <strong>
+                            Contacto generado
+                        </strong>
+
+                        <span>
+                            Mediante NFC
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="drawer-footer">
+
+    <button
+        class="drawer-cancel"
+        onclick="closeContactDrawer()"
+    >
+        Cancelar
+    </button>
+
+    <button
+        class="drawer-save-all"
+        onclick="saveContactChanges()"
+    >
+        Guardar cambios
+    </button>
+
+</div>
+
+</aside>
+
+</body>
+
+</html>

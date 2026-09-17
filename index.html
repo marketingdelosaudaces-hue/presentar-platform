@@ -1821,6 +1821,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
       </div>
       <button class="login-btn" onclick="doLogin()">Iniciar sesión →</button>
       <div class="login-forgot" onclick="showPage('forgot')">¿Olvidaste tu contraseña?</div>
+      <div class="login-demos">
+        <button class="demo-btn" onclick="demoLogin('admin')">👑 Demo Admin</button>
+        <button class="demo-btn" onclick="demoLogin('client')">👤 Demo Cliente</button>
+      </div>
       <div style="margin-top:20px;text-align:center"><span class="footer-link" onclick="window.location.href='https://presentarstudio.com'">← Ir a PresentAR Studio</span></div>
     </div>
   </div>
@@ -2182,7 +2186,12 @@ async function loadDashboardData(slug) {
   }
 }
 
-// Autenticación: exclusivamente contra la tabla usuarios de Supabase.
+const USERS = {
+  'admin@presentar.com':{pass:'admin123',role:'admin',name:'Administrador'},
+  'lucas@autovia3.com':{pass:'lucas123',role:'client',name:'Lucas Martinez',company:'AUTOVIA3',slug:'lucas-martinez'},
+  'maf@mafargentina.com':{pass:'maf123',role:'client',name:'MAF Argentina',company:'MAF Argentina',slug:'maf-argentina'},
+  'administracion@andamios-maf.com':{pass:'Maf2024*',role:'client',name:'MAF Argentina',company:'MAF Argentina',slug:'maf-argentina'},
+};
 const CLIENTS = [
   {id:1,name:'Lucas Martinez',email:'lucas@autovia3.com',company:'AUTOVIA3',visits:247,forms:14,active:true,ini:'LM',color:'#6450dc',slug:'lucas-martinez'},
   {id:2,name:'MAF Argentina',email:'maf@mafargentina.com',company:'MAF Argentina',visits:183,forms:9,active:true,ini:'MA',color:'#e8192c',slug:'maf-argentina'},
@@ -2208,8 +2217,15 @@ function doLogin() {
   document.getElementById('login-error').classList.remove('show');
   if (!email || !pass) { showAlert('login-error', 'Completá todos los campos'); return; }
 
-  // Todos los accesos (clientes y admin) se validan contra Supabase.
-  // No hay credenciales hardcodeadas en el frontend.
+  // Primero intentar con usuarios locales (admin)
+  const u = USERS[email];
+  if (u && u.pass === pass) {
+    currentUser = {email, ...u};
+    afterLogin(u, email);
+    return;
+  }
+
+  // Si no matchea localmente, buscar en Supabase
   loginWithSupabase(email, pass);
 }
 
@@ -2281,11 +2297,22 @@ function afterLogin(u, email) {
     document.getElementById('dash-av').textContent = u.name.charAt(0);
     const url = `app.presentarstudio.com/tarjeta.html?slug=${slug}`;
     document.getElementById('dash-url').textContent = url;
-    document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`https://app.presentarstudio.com/tarjeta.html?slug=${slug}`, '_blank');
+    document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`tarjeta.html?slug=${slug}`, '_blank');
     showPage('dashboard');
     loadDashboardData(slug);
   }
   showToast('✓ Bienvenido/a ' + u.name.split(' ')[0] + '!');
+}
+
+function demoLogin(t) {
+  if (t === 'admin') {
+    document.getElementById('login-email').value = 'admin@presentar.com';
+    document.getElementById('login-pass').value = 'admin123';
+  } else {
+    document.getElementById('login-email').value = 'administracion@andamios-maf.com';
+    document.getElementById('login-pass').value = 'Maf2024*';
+  }
+  doLogin();
 }
 
 function doForgot() {
@@ -2319,7 +2346,7 @@ function copyUrl() {
 }
 function abrirTarjeta() {
   const slug = currentUser?.slug || 'maf-argentina';
-  window.open(`https://app.presentarstudio.com/tarjeta.html?slug=${slug}`, '_blank');
+  window.open(`tarjeta.html?slug=${slug}`, '_blank');
 }
 
 function renderClients() {
@@ -2399,7 +2426,7 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
         document.getElementById('dash-nav-name').textContent = saved.nombre?.split(' ')[0] || '';
         document.getElementById('dash-av').textContent = saved.nombre?.charAt(0) || '?';
         document.getElementById('dash-url').textContent = `app.presentarstudio.com/tarjeta.html?slug=${slug}`;
-        document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`https://app.presentarstudio.com/tarjeta.html?slug=${slug}`, '_blank');
+        document.getElementById('btn-ver-tarjeta').onclick = () => window.open(`tarjeta.html?slug=${slug}`, '_blank');
         showPage('dashboard');
         loadDashboardData(slug);
       }
