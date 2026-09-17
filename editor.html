@@ -701,9 +701,9 @@ button[onclick="addProject()"]:hover{
         <input class="field-input" id="color-hex" value="#e8192c" style="flex:1" oninput="setColor(this.value,null)">
       </div>
       <div class="section-label" style="margin-top:24px">Redes sociales</div>
-      <div class="field-group"><label class="field-label">Instagram</label><input class="field-input" id="f-instagram" placeholder="https://instagram.com/..." oninput="liveUpdate()"></div>
-      <div class="field-group"><label class="field-label">LinkedIn</label><input class="field-input" id="f-linkedin" placeholder="https://linkedin.com/..." oninput="liveUpdate()"></div>
-      <div class="field-group"><label class="field-label">Facebook</label><input class="field-input" id="f-facebook" placeholder="https://facebook.com/..." oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label">Instagram</label><input class="field-input" id="f-instagram" placeholder="https://instagram.com/..."></div>
+      <div class="field-group"><label class="field-label">LinkedIn</label><input class="field-input" id="f-linkedin" placeholder="https://linkedin.com/..."></div>
+      <div class="field-group"><label class="field-label">Facebook</label><input class="field-input" id="f-facebook" placeholder="https://facebook.com/..."></div>
     </div>
 
     <!-- TAB LINKS -->
@@ -738,10 +738,10 @@ button[onclick="addProject()"]:hover{
     </div>
     <div style="width:340px;max-height:calc(100vh - 140px);background:#000;border-radius:36px;padding:10px;box-shadow:0 30px 60px rgba(0,0,0,.5);position:relative">
       <div style="position:absolute;top:18px;left:50%;transform:translateX(-50%);width:80px;height:20px;background:#000;border-radius:0 0 14px 14px;z-index:2"></div>
-      <iframe id="preview-iframe" src="about:blank" onload="setTimeout(liveUpdate,80)" style="width:100%;height:calc(100vh - 200px);min-height:600px;border:none;border-radius:28px;background:#fafaf9;display:block" loading="lazy"></iframe>
+      <iframe id="preview-iframe" src="about:blank" style="width:100%;height:calc(100vh - 200px);min-height:600px;border:none;border-radius:28px;background:#fafaf9;display:block" loading="lazy"></iframe>
     </div>
     <div style="margin-top:12px;text-align:center;font-size:11px;color:var(--gray);max-width:340px">
-      💡 La vista previa cambia mientras editás. <strong>Guardar cambios</strong> confirma y publica la información.
+      💡 Guardá los cambios para verlos aquí. Tocá <strong>Recargar</strong> para actualizar.
     </div>
   </div>
 </div>
@@ -927,59 +927,10 @@ function switchTab(name) {
 }
 
 // ── LIVE UPDATE ──
-function getPreviewDraft() {
-  const value = id => document.getElementById(id)?.value ?? '';
-  return {
-    id: cardId || 'preview',
-    nombre: value('f-name'),
-    cargo: value('f-role'),
-    empresa: value('f-company'),
-    tagline: value('f-tagline'),
-    telefono: value('f-phone'),
-    email: value('f-email'),
-    direccion: value('f-address'),
-    web: value('f-web'),
-    horarios: value('f-hours'),
-    about: value('f-about'),
-    instagram: value('f-instagram'),
-    linkedin: value('f-linkedin'),
-    facebook: value('f-facebook'),
-    color: cardColor,
-    cover_url: coverUrl,
-    logo_url: logoUrl,
-    certificaciones: certsList.map(c => c.name).filter(Boolean).join(', '),
-    certs_json: JSON.stringify(certsList.filter(c => c.name)),
-    beneficio_titulo: value('f-ben-titulo'),
-    beneficio_desc: value('f-ben-desc'),
-    beneficio_codigo: value('f-ben-codigo').toUpperCase(),
-    beneficio_imagen: benefitImage,
-    stories_json: JSON.stringify(storiesList.filter(s => s.name && s.img)),
-    proyectos_json: JSON.stringify(proyectosList.filter(p => p.titulo && p.img)),
-    activa: true,
-  };
-}
-
 function liveUpdate() {
-  const iframe = document.getElementById('preview-iframe');
-  if (!iframe?.contentWindow) return;
-
-  const payload = {
-    type: 'presentar-preview-update',
-    draft: getPreviewDraft(),
-    links: links.map(l => ({...l})),
-    sections: Object.fromEntries(SECTIONS.map(s => [s.id, !!s.on]))
-  };
-
-  // postMessage permite que tarjeta.html regenere la tarjeta completa:
-  // textos, contacto, ubicación, redes, imágenes, links, beneficios,
-  // certificaciones, stories, proyectos y secciones.
-  iframe.contentWindow.postMessage(payload, '*');
-}
-
-let _liveTimer = null;
-function scheduleLiveUpdate(delay = 40) {
-  clearTimeout(_liveTimer);
-  _liveTimer = setTimeout(liveUpdate, delay);
+  // El preview ahora es un iframe con la tarjeta real
+  // Esta función solo actualiza el color global
+  applyColor();
 }
 
 function reloadPreview() {
@@ -990,18 +941,8 @@ function reloadPreview() {
     showToast('Guardá la tarjeta primero');
     return;
   }
-  iframe.onload = () => scheduleLiveUpdate(120);
   iframe.src = `tarjeta.html?slug=${slug}&preview=1&t=${Date.now()}`;
 }
-
-// Cualquier campo editable dispara el preview sin necesidad de agregar
-// oninput manualmente a cada input/textarea/select dinámico.
-document.addEventListener('input', e => {
-  if (e.target.closest('.edit-panel')) scheduleLiveUpdate();
-});
-document.addEventListener('change', e => {
-  if (e.target.closest('.edit-panel')) scheduleLiveUpdate();
-});
 
 // ── UPLOAD IMAGES ──
 async function uploadImage(input, type) {
@@ -1063,14 +1004,12 @@ function showCoverPreview(url) {
   prev.src = url; prev.classList.add('show');
   const ph = document.getElementById('cover-ph');
   if (ph) ph.style.display = 'none';
-  scheduleLiveUpdate();
 }
 function showLogoPreview(url) {
   const prev = document.getElementById('logo-preview');
   prev.src = url; prev.classList.add('show');
   const ph = document.getElementById('logo-ph');
   if (ph) ph.style.display = 'none';
-  scheduleLiveUpdate();
 }
 function removeImage(type) {
   if (type === 'cover') {
@@ -1112,15 +1051,10 @@ function setColor(hex, el) {
   document.querySelectorAll('.preset').forEach(p => p.classList.remove('active'));
   if (el) el.classList.add('active');
   applyColor();
-  scheduleLiveUpdate();
 }
 function applyColor() {
+  // El color se ve en el iframe real al recargar
   renderLinksPreview();
-  const iframe = document.getElementById('preview-iframe');
-  try {
-    const doc = iframe?.contentDocument || iframe?.contentWindow?.document;
-    if (doc?.documentElement) doc.documentElement.style.setProperty('--accent', cardColor);
-  } catch (e) {}
 }
 
 // ── LINKS ──
@@ -1149,20 +1083,18 @@ function renderLinksPreview() {
 function addLink() {
   links.push({ id: linkId++, label: 'Nuevo link', url: 'https://', active: true });
   renderLinks();
-  scheduleLiveUpdate();
 }
 function updateLink(id, field, val) {
   const l = links.find(x => x.id === id);
-  if (l) { l[field] = val; if (field === 'label') renderLinksPreview(); scheduleLiveUpdate(); }
+  if (l) { l[field] = val; if (field === 'label') renderLinksPreview(); }
 }
 function toggleLink(id, btn) {
   const l = links.find(x => x.id === id);
-  if (l) { l.active = !l.active; btn.classList.toggle('on'); renderLinksPreview(); scheduleLiveUpdate(); }
+  if (l) { l.active = !l.active; btn.classList.toggle('on'); renderLinksPreview(); }
 }
 function deleteLink(id) {
   links = links.filter(x => x.id !== id);
   renderLinks();
-  scheduleLiveUpdate();
   showToast('Link eliminado');
 }
 
@@ -1196,7 +1128,6 @@ function addCert() {
   const id = Date.now() + '_' + Math.random();
   certsList.push({id, name: '', desc: '', logo: null});
   renderCertsList();
-  scheduleLiveUpdate();
 }
 
 function updateCertName(id, val) {
@@ -1282,7 +1213,6 @@ function removeBenefitImage() {
   document.getElementById('ben-img-preview').classList.remove('show');
   document.getElementById('ben-img-ph').style.display = 'block';
   document.getElementById('ben-img-remove').style.display = 'none';
-  scheduleLiveUpdate();
   showToast('Imagen quitada');
 }
 
@@ -1319,7 +1249,6 @@ function addStory() {
   const id = Date.now() + '_' + Math.random();
   storiesList.push({id, name: '', img: null});
   renderStoriesList();
-  scheduleLiveUpdate();
 }
 
 function updateStoryName(id, val) {
@@ -1395,7 +1324,6 @@ function addProyecto() {
   const id = Date.now() + '_' + Math.random();
   proyectosList.push({id, titulo: '', ubicacion: '', anio: '', tag: '', img: null});
   renderProyectosList();
-  scheduleLiveUpdate();
 }
 
 function updateProyecto(id, field, val) {
@@ -1451,7 +1379,7 @@ function renderSections() {
 }
 function toggleSection(id, btn) {
   const s = SECTIONS.find(x => x.id === id);
-  if (s) { s.on = !s.on; btn.classList.toggle('on'); scheduleLiveUpdate(); showToast(s.on ? `✓ "${s.name}" activada` : `"${s.name}" desactivada`); }
+  if (s) { s.on = !s.on; btn.classList.toggle('on'); showToast(s.on ? `✓ "${s.name}" activada` : `"${s.name}" desactivada`); }
 }
 
 // ── SAVE ──
