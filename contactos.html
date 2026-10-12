@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Contactos y oportunidades de tu tarjeta PresentAR">
+  <title>Mis contactos | PresentAR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard-v8.css">
+  <link rel="stylesheet" href="contactos-v8.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="page-dashboard" class="page show">
+    <svg width="0" height="0" class="pc-symbols" aria-hidden="true"><defs>
+      <symbol id="p-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
+      <symbol id="p-card" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M6 17c.5-3 5.5-3 6 0m3-9h3m-3 4h3"/></symbol>
+      <symbol id="p-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 3.8-7 8-7s7 2 8 7"/></symbol>
+      <symbol id="p-trend" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-9"/><path d="M15 6h6v6"/></symbol>
+      <symbol id="p-bars" viewBox="0 0 24 24"><path d="M5 21V11m7 10V3m7 18V7"/></symbol>
+      <symbol id="p-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"/></symbol>
+      <symbol id="p-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.4 2.4 0 1 1 3.3 2.2c-.8.4-1.1.9-1.1 1.8m0 4h.01"/></symbol>
+      <symbol id="p-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+      <symbol id="p-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/></symbol>
+      <symbol id="p-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 21h16"/></symbol>
+      <symbol id="p-tag" viewBox="0 0 24 24"><path d="m3 12 9 9 9-9-9-9H3z"/><circle cx="8" cy="8" r="1"/></symbol>
+      <symbol id="p-close" viewBox="0 0 24 24"><path d="m5 5 14 14M19 5 5 19"/></symbol>
+      <symbol id="p-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+      <symbol id="p-phone" viewBox="0 0 24 24"><path d="M6.5 3h3l1.5 5-2 1.5a15 15 0 0 0 5.5 5.5l1.5-2 5 1.5v3A3.5 3.5 0 0 1 17.5 21C9.5 21 3 14.5 3 6.5A3.5 3.5 0 0 1 6.5 3z"/></symbol>
+    </defs></svg>
+
+    <div class="pd-shell pc-shell">
+      <aside class="pd-sidebar">
+        <div class="pd-brand"><span class="pd-brand-mark"><i></i><i></i><i></i></span><span><b>Present</b><em>AR</em></span></div>
+        <nav class="pd-nav" aria-label="Navegación principal">
+          <button onclick="location.href='index.html'"><svg class="pd-icon"><use href="#p-home"/></svg>Inicio</button>
+          <button onclick="location.href='editor.html'"><svg class="pd-icon"><use href="#p-card"/></svg>Mi tarjeta</button>
+          <button class="active"><svg class="pd-icon"><use href="#p-user"/></svg>Contactos</button>
+          <button onclick="location.href='estadisticas.html'"><svg class="pd-icon"><use href="#p-bars"/></svg>Estadísticas</button>
+          <div class="pd-nav-sep"></div>
+          <button onclick="window.open('https://presentarstudio.com/#contacto','_blank')"><svg class="pd-icon"><use href="#p-help"/></svg>Ayuda</button>
+        </nav>
+        <div class="pd-account"><div class="pd-avatar" id="userAvatar">?</div><div class="pd-account-copy"><strong id="userName">Usuario</strong><span>Mi cuenta</span></div><button onclick="logout()" aria-label="Cerrar sesión" title="Salir">→</button></div>
+      </aside>
+
+      <main class="pd-main pc-main">
+        <header class="pc-header">
+          <div><span class="pc-kicker">GESTIÓN COMERCIAL</span><h1>Mis contactos <span id="contactCount">0</span></h1><p>Organizá las personas que conectaron con tu PresentAR y continuá cada conversación.</p></div>
+          <div class="pc-header-actions"><button class="pc-btn secondary" onclick="loadContacts()">Actualizar ↻</button><button class="pc-btn primary" onclick="exportCSV()">Exportar CSV</button></div>
+        </header>
+        <section class="pc-summary" aria-label="Resumen de contactos"><div><span>Total</span><strong id="summaryTotal">0</strong></div><div><span>Nuevos</span><strong id="summaryNew">0</strong></div><div><span>En seguimiento</span><strong id="summaryActive">0</strong></div><div class="accent"><span>Oportunidades</span><strong id="summaryOpportunity">0</strong></div></section>
+        <section class="pc-card">
+          <div class="pc-toolbar"><label class="pc-search"><svg class="pd-icon"><use href="#p-search"/></svg><input id="searchInput" type="search" placeholder="Buscar por nombre, email o empresa..." oninput="applyFilters()"></label><select class="pc-filter" id="statusFilter" onchange="applyFilters()" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option value="new">Nuevos</option><option value="contactado">Contactados</option><option value="interesado">Interesados</option><option value="oportunidad">Oportunidades</option><option value="no interesado">No interesados</option></select></div>
+          <div class="pc-loading" id="loading">Cargando contactos…</div>
+          <div class="pc-empty" id="empty" hidden><span>◎</span><h2>Todavía no hay contactos</h2><p>Cuando alguien complete el formulario de tu tarjeta, sus datos aparecerán aquí.</p></div>
+          <div class="pc-table-wrap" id="tableWrap" hidden><table class="pc-table"><thead><tr><th>Contacto</th><th>Empresa</th><th>Estado</th><th>Origen</th><th>Fecha de captura</th><th aria-label="Acciones"></th></tr></thead><tbody id="contactsBody"></tbody></table></div>
+          <div class="pc-footer" id="tableFooter" hidden><span id="resultText">0 contactos</span><span>Seleccioná una fila para ver y editar el detalle</span></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="pc-backdrop" id="contactBackdrop" hidden onclick="closeContact(event)"></div>
+  <aside class="pc-drawer" id="contactDrawer" aria-hidden="true" aria-labelledby="drawerTitle">
+    <header class="pc-drawer-head"><div><span class="pc-kicker">DETALLE DEL CONTACTO</span><h2 id="drawerTitle">Contacto</h2><p id="drawerSubtitle">Información capturada desde PresentAR</p></div><button class="pc-icon-btn" onclick="closeContact()" aria-label="Cerrar"><svg class="pd-icon"><use href="#p-close"/></svg></button></header>
+    <div class="pc-detail-actions"><button id="editContactButton" onclick="setEditorMode(true)"><svg class="pd-icon"><use href="#p-edit"/></svg>Editar</button><button onclick="downloadVCard()"><svg class="pd-icon"><use href="#p-download"/></svg>Guardar contacto</button><button onclick="addTag()"><svg class="pd-icon"><use href="#p-tag"/></svg>Agregar etiqueta</button></div>
+    <form id="contactForm" class="pc-detail-grid" onsubmit="saveContact(event)">
+      <label><span>Nombre completo</span><input name="nombre" required readonly></label><label><span>Email</span><input name="email" type="email" readonly></label>
+      <label><span>Cargo</span><input name="cargo" readonly></label><label><span>Empresa</span><input name="empresa" readonly></label>
+      <label><span>Celular</span><input name="celular" readonly></label><label><span>Sitio web</span><input name="web" type="url" readonly></label>
+      <label><span>Fecha de captura</span><input name="created_at" readonly disabled></label><label><span>Estado comercial</span><select name="estado" disabled><option value="new">Nuevo</option><option value="contactado">Contactado</option><option value="interesado">Interesado</option><option value="oportunidad">Oportunidad</option><option value="no interesado">No interesado</option></select></label>
+      <label><span>País</span><input name="pais" readonly></label><label><span>Ciudad</span><input name="ciudad" readonly></label>
+      <label><span>Dirección</span><input name="direccion" readonly></label><label><span>Provincia</span><input name="provincia" readonly></label>
+      <label><span>Código postal</span><input name="codigo_postal" readonly></label><label><span>Método de captura</span><input name="origen" readonly></label>
+      <label class="wide"><span>Etiquetas</span><input name="etiquetas" placeholder="Ej.: cliente, seguimiento, presupuesto" readonly></label>
+      <label class="wide"><span>Notas</span><textarea name="notas" rows="4" placeholder="Agregá contexto o la próxima acción…" readonly></textarea></label>
+      <div class="pc-form-actions wide" id="formActions" hidden><button type="button" class="pc-btn secondary" onclick="cancelEdit()">Cancelar</button><button class="pc-btn primary" type="submit" id="saveContactButton">Guardar cambios</button></div>
+    </form>
+    <footer class="pc-drawer-footer"><a id="contactEmailAction"><svg class="pd-icon"><use href="#p-mail"/></svg>Enviar email</a><a id="contactPhoneAction" target="_blank" rel="noopener"><svg class="pd-icon"><use href="#p-phone"/></svg>WhatsApp</a></footer>
+  </aside>
+  <div class="pc-toast" id="toast"></div>
+
+  <script>
+    const SUPABASE_URL='https://eldiuxxqqxjpwjtrxqfg.supabase.co';
+    const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA';
+    const authClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY)||null;
+    const session=JSON.parse(localStorage.getItem('presentar_user')||'null');
+    const form=document.getElementById('contactForm');
+    let contacts=[],filtered=[],selectedContact=null,activeCardId=null,toastTimer=null;
+
+    if(!session?.email)location.replace('login.html');
+    else if(session.plan==='basic'||session.rol==='cliente_basic'){sessionStorage.setItem('presentar_plan_notice','Contactos está disponible desde el plan Pro.');location.replace('index.html')}
+    else{document.getElementById('userName').textContent=session.nombre||session.email;document.getElementById('userAvatar').textContent=(session.nombre||session.email||'?').charAt(0).toUpperCase();loadContacts()}
+
+    async function apiHeaders(extra={}){let token=SUPABASE_KEY;try{const {data}=await authClient?.auth.getSession();token=data?.session?.access_token||SUPABASE_KEY}catch(_){}return{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`,...extra}}
+    async function loadContacts(){
+      const loading=document.getElementById('loading'),empty=document.getElementById('empty'),table=document.getElementById('tableWrap'),footer=document.getElementById('tableFooter');loading.hidden=false;empty.hidden=true;table.hidden=true;footer.hidden=true;
+      try{const headers=await apiHeaders();let cards=[];if(session.slug){const response=await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?slug=eq.${encodeURIComponent(session.slug)}&select=id&limit=1`,{headers});cards=await response.json()}if(!cards?.length&&session.id){const response=await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?usuario_id=eq.${encodeURIComponent(session.id)}&select=id&limit=1`,{headers});cards=await response.json()}if(!cards?.length)throw new Error('No se encontró la tarjeta');activeCardId=cards[0].id;const response=await fetch(`${SUPABASE_URL}/rest/v1/contactos?tarjeta_id=eq.${encodeURIComponent(activeCardId)}&select=*&order=created_at.desc`,{headers});const data=await response.json();if(!response.ok)throw new Error(data?.message||'No se pudieron cargar los contactos');contacts=Array.isArray(data)?data.map(normalizeContact):[];applyFilters();showToast('Contactos actualizados')}
+      catch(error){console.error(error);contacts=[];applyFilters();showToast(error.message||'Error al cargar contactos')}finally{loading.hidden=true}
+    }
+    function normalizeContact(contact){return{id:contact.id,nombre:contact.nombre||'',empresa:contact.empresa||'',email:contact.email||'',cargo:contact.cargo||'',celular:contact.celular||'',estado:(contact.estado||'new').toLowerCase(),origen:contact.origen||'Formulario',created_at:contact.created_at||null,web:contact.web||'',pais:contact.pais||'',direccion:contact.direccion||'',ciudad:contact.ciudad||'',provincia:contact.provincia||'',codigo_postal:contact.codigo_postal||'',etiquetas:Array.isArray(contact.etiquetas)?contact.etiquetas:[],notas:contact.notas||''}}
+    function applyFilters(){const query=(document.getElementById('searchInput').value||'').trim().toLowerCase(),status=document.getElementById('statusFilter').value;filtered=contacts.filter(contact=>{const haystack=[contact.nombre,contact.empresa,contact.email,contact.cargo,contact.celular,...contact.etiquetas].join(' ').toLowerCase();return(!query||haystack.includes(query))&&(!status||contact.estado===status)});renderContacts()}
+    function renderContacts(){
+      const empty=document.getElementById('empty'),table=document.getElementById('tableWrap'),footer=document.getElementById('tableFooter'),body=document.getElementById('contactsBody'),countBy=status=>contacts.filter(c=>status.includes(c.estado)).length;document.getElementById('contactCount').textContent=contacts.length;document.getElementById('summaryTotal').textContent=contacts.length;document.getElementById('summaryNew').textContent=countBy(['new','nuevo']);document.getElementById('summaryActive').textContent=countBy(['contactado','interesado']);document.getElementById('summaryOpportunity').textContent=countBy(['oportunidad']);document.getElementById('resultText').textContent=`${filtered.length} ${filtered.length===1?'contacto':'contactos'}`;
+      if(!filtered.length){body.innerHTML='';empty.hidden=false;table.hidden=true;footer.hidden=true;return}empty.hidden=true;table.hidden=false;footer.hidden=false;
+      body.innerHTML=filtered.map(contact=>{const initials=(contact.nombre||'Contacto').split(/\s+/).slice(0,2).map(p=>p[0]).join('').toUpperCase();return`<tr tabindex="0" onclick="openContact('${escapeAttribute(contact.id)}')" onkeydown="if(event.key==='Enter')openContact('${escapeAttribute(contact.id)}')"><td><div class="pc-person"><span>${escapeHTML(initials)}</span><div><strong>${escapeHTML(contact.nombre||'Sin nombre')}</strong><small>${escapeHTML(contact.email||contact.celular||'Sin datos de contacto')}</small></div></div></td><td><strong>${escapeHTML(contact.empresa||'—')}</strong><small>${escapeHTML(contact.cargo||'Sin cargo')}</small></td><td><span class="pc-status ${statusClass(contact.estado)}">${escapeHTML(statusLabel(contact.estado))}</span></td><td>${escapeHTML(contact.origen||'Formulario')}</td><td>${formatDate(contact.created_at)}</td><td><button class="pc-row-open" aria-label="Ver ${escapeAttribute(contact.nombre||'contacto')}">→</button></td></tr>`}).join('')
+    }
+    function openContact(id){selectedContact=contacts.find(contact=>String(contact.id)===String(id));if(!selectedContact)return;fillForm(selectedContact);setEditorMode(false);document.getElementById('drawerTitle').textContent=selectedContact.nombre||'Contacto';document.getElementById('drawerSubtitle').textContent=[selectedContact.cargo,selectedContact.empresa].filter(Boolean).join(' · ')||'Información capturada desde PresentAR';const emailAction=document.getElementById('contactEmailAction'),phoneAction=document.getElementById('contactPhoneAction');emailAction.href=selectedContact.email?`mailto:${selectedContact.email}`:'#';emailAction.classList.toggle('disabled',!selectedContact.email);const phone=selectedContact.celular.replace(/\D/g,'');phoneAction.href=phone?`https://wa.me/${phone}`:'#';phoneAction.classList.toggle('disabled',!phone);document.getElementById('contactBackdrop').hidden=false;document.getElementById('contactDrawer').classList.add('open');document.getElementById('contactDrawer').setAttribute('aria-hidden','false');document.body.classList.add('drawer-open')}
+    function closeContact(event){if(event&&event.target!==event.currentTarget)return;document.getElementById('contactDrawer').classList.remove('open');document.getElementById('contactDrawer').setAttribute('aria-hidden','true');document.getElementById('contactBackdrop').hidden=true;document.body.classList.remove('drawer-open');selectedContact=null}
+    function fillForm(contact){['nombre','email','cargo','empresa','celular','web','pais','ciudad','direccion','provincia','codigo_postal','origen','notas'].forEach(key=>{form.elements[key].value=contact[key]||''});form.elements.estado.value=contact.estado||'new';form.elements.created_at.value=formatDateTime(contact.created_at);form.elements.etiquetas.value=(contact.etiquetas||[]).join(', ')}
+    function setEditorMode(editing){form.classList.toggle('is-editing',editing);form.querySelectorAll('input:not([name="created_at"]),textarea').forEach(field=>field.readOnly=!editing);form.querySelectorAll('select').forEach(field=>field.disabled=!editing);document.getElementById('formActions').hidden=!editing;document.getElementById('editContactButton').hidden=editing;if(editing)form.elements.nombre.focus()}
+    function cancelEdit(){if(selectedContact)fillForm(selectedContact);setEditorMode(false)}
+    async function saveContact(event){event.preventDefault();if(!selectedContact||!activeCardId)return;const button=document.getElementById('saveContactButton');button.disabled=true;button.textContent='Guardando…';const payload={nombre:clean(form.elements.nombre.value),email:clean(form.elements.email.value),cargo:clean(form.elements.cargo.value),empresa:clean(form.elements.empresa.value),celular:clean(form.elements.celular.value),web:clean(form.elements.web.value),pais:clean(form.elements.pais.value),ciudad:clean(form.elements.ciudad.value),direccion:clean(form.elements.direccion.value),provincia:clean(form.elements.provincia.value),codigo_postal:clean(form.elements.codigo_postal.value),origen:clean(form.elements.origen.value)||'Formulario',estado:form.elements.estado.value,etiquetas:form.elements.etiquetas.value.split(',').map(v=>v.trim()).filter(Boolean),notas:clean(form.elements.notas.value),updated_at:new Date().toISOString()};try{const headers=await apiHeaders({'Content-Type':'application/json','Prefer':'return=representation'}),response=await fetch(`${SUPABASE_URL}/rest/v1/contactos?id=eq.${encodeURIComponent(selectedContact.id)}&tarjeta_id=eq.${encodeURIComponent(activeCardId)}`,{method:'PATCH',headers,body:JSON.stringify(payload)}),data=await response.json();if(!response.ok)throw new Error(data?.message||'No se pudieron guardar los cambios');if(!Array.isArray(data)||!data.length)throw new Error('No se encontró el contacto para actualizar');const updated=normalizeContact(data[0]),index=contacts.findIndex(c=>String(c.id)===String(updated.id));if(index>=0)contacts[index]=updated;selectedContact=updated;applyFilters();fillForm(updated);setEditorMode(false);document.getElementById('drawerTitle').textContent=updated.nombre||'Contacto';showToast('Contacto actualizado')}catch(error){console.error(error);showToast(error.message||'Error al guardar')}finally{button.disabled=false;button.textContent='Guardar cambios'}}
+    function addTag(){if(!selectedContact)return;const value=prompt('Escribí una etiqueta para este contacto:');if(!value)return;setEditorMode(true);const tags=form.elements.etiquetas.value.split(',').map(v=>v.trim()).filter(Boolean);if(!tags.includes(value.trim()))tags.push(value.trim());form.elements.etiquetas.value=tags.join(', ')}
+    function downloadVCard(){if(!selectedContact)return;const c=selectedContact,lines=['BEGIN:VCARD','VERSION:3.0',`FN:${vCardEscape(c.nombre)}`,`ORG:${vCardEscape(c.empresa)}`,`TITLE:${vCardEscape(c.cargo)}`,`EMAIL:${vCardEscape(c.email)}`,`TEL:${vCardEscape(c.celular)}`,`URL:${vCardEscape(c.web)}`,'END:VCARD'],blob=new Blob([lines.join('\r\n')],{type:'text/vcard;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`${(c.nombre||'contacto').replace(/[^a-z0-9]+/gi,'-').toLowerCase()}.vcf`;a.click();URL.revokeObjectURL(url)}
+    function exportCSV(){if(!filtered.length){showToast('No hay contactos para exportar');return}const rows=[['Nombre','Empresa','Email','Cargo','Celular','Estado','Origen','Fecha'],...filtered.map(c=>[c.nombre,c.empresa,c.email,c.cargo,c.celular,statusLabel(c.estado),c.origen,formatDate(c.created_at)])],csv='\ufeff'+rows.map(row=>row.map(value=>`"${String(value||'').replace(/"/g,'""')}"`).join(',')).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='contactos-presentar.csv';link.click();URL.revokeObjectURL(url)}
+    async function logout(){try{await authClient?.auth.signOut()}catch(_){}localStorage.removeItem('presentar_user');Object.keys(localStorage).forEach(key=>{if(key.startsWith('sb-')&&key.endsWith('-auth-token'))localStorage.removeItem(key)});sessionStorage.clear();location.replace('login.html')}
+    function statusLabel(status){return({new:'Nuevo',nuevo:'Nuevo',contactado:'Contactado',interesado:'Interesado',oportunidad:'Oportunidad','no interesado':'No interesado',read:'Leído',replied:'Respondido'})[status]||status}
+    function statusClass(status){return String(status||'new').replace(/\s+/g,'-')}
+    function formatDate(value){if(!value)return'—';return new Intl.DateTimeFormat('es-AR',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(value))}
+    function formatDateTime(value){if(!value)return'—';return new Intl.DateTimeFormat('es-AR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(value))}
+    function clean(value){const result=String(value||'').trim();return result||null}
+    function escapeHTML(value){return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]))}
+    function escapeAttribute(value){return escapeHTML(value)}
+    function vCardEscape(value){return String(value||'').replace(/[\\,;]/g,'\\$&').replace(/\n/g,'\\n')}
+    function showToast(message){const toast=document.getElementById('toast');toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2400)}
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('contactDrawer').classList.contains('open'))closeContact()});
+  </script>
+</body>
+</html>

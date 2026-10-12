@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Comprar PresentAR</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Anton&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ee;
+  --surface:#fff;
+  --black:#0a0a0a;
+  --text2:#5a5852;
+  --text3:#7a7872;
+  --border:rgba(0,0,0,.09);
+  --accent:#ad7fff;
+  --soft:#eee9fb;
+  --lime:#d4ff3d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--black);min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+
+.nav{
+  position:sticky;top:0;z-index:30;
+  height:84px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 38px;background:rgba(245,243,238,.92);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border)
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:-1px;cursor:pointer}
+.brand-mark{display:flex;gap:2px}
+.brand-mark i{width:15px;height:18px;background:var(--accent);clip-path:polygon(0 0,58% 0,100% 50%,58% 100%,0 100%,42% 50%)}
+.brand span{color:var(--accent)}
+.nav-note{font-size:12px;color:var(--text3);font-weight:600}
+.nav-back{border:1px solid var(--border);background:#fff;padding:10px 16px;border-radius:999px;font-weight:700}
+
+.shell{max-width:1420px;margin:0 auto;padding:36px 36px 72px}
+.stepper{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px
+}
+.step{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;
+  color:#aaa49d;background:rgba(255,255,255,.45);border:1px solid transparent
+}
+.step.active{background:#fff;color:#111;border-color:var(--border)}
+.step.done{color:#111}
+.step-num{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  background:#e9e5de;font-size:11px;font-weight:800
+}
+.step.active .step-num{background:#111;color:#fff}
+.step.done .step-num{background:var(--accent);color:#fff}
+.step-label{font-size:12px;font-weight:700}
+
+.layout{display:grid;grid-template-columns:minmax(0,1.65fr) 390px;gap:22px;align-items:start}
+.main-card,.summary{
+  background:#fff;border:1px solid var(--border);border-radius:28px
+}
+.main-card{padding:42px}
+.summary{padding:24px;position:sticky;top:108px}
+
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#7d7870;margin-bottom:14px}
+h1{font-family:Anton,sans-serif;font-size:clamp(48px,5.6vw,82px);line-height:.94;font-weight:400;text-transform:uppercase;letter-spacing:-1px;max-width:860px}
+h1 em{font-style:normal;color:var(--accent)}
+.lead{font-size:16px;color:var(--text2);line-height:1.6;max-width:700px;margin-top:18px}
+
+.plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:34px}
+.plan{
+  border:1.5px solid var(--border);border-radius:22px;padding:24px;position:relative;
+  transition:.18s;background:#fff
+}
+.plan:hover{transform:translateY(-2px);border-color:#bdb6c9}
+.plan.selected{border-color:#111;box-shadow:0 0 0 2px #111 inset}
+.plan.featured{background:#111;color:#fff;border-color:#111}
+.plan-tag{display:inline-block;background:var(--accent);color:#fff;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:800;margin-bottom:16px}
+.plan-title{font-size:21px;font-weight:800;letter-spacing:-.4px}
+.plan-desc{font-size:13px;line-height:1.45;color:var(--text3);margin-top:5px;min-height:38px}
+.featured .plan-desc{color:#aaa}
+.plan-price{font-size:38px;font-weight:800;letter-spacing:-1.5px;margin:22px 0 4px}
+.plan-price small{font-size:12px;font-weight:600;letter-spacing:0;color:var(--text3)}
+.featured .plan-price small{color:#999}
+.plan-features{display:grid;gap:9px;margin:18px 0 22px}
+.plan-feature{font-size:13px;color:var(--text2);display:flex;gap:8px}
+.featured .plan-feature{color:#ddd}
+.check{font-weight:900;color:var(--accent)}
+.featured .check{color:var(--lime)}
+.plan-btn{width:100%;border:0;border-radius:999px;padding:13px 16px;font-weight:800;background:#111;color:#fff}
+.featured .plan-btn{background:#fff;color:#111}
+.plan.selected .plan-btn{background:var(--accent);color:#fff}
+.plan.business{background:#f2f0f6}
+.plan.business .plan-btn{background:#111;color:#fff}
+.subscription-line{display:none}
+.subscription-line.visible{display:flex}
+
+.note-card{
+  margin-top:18px;background:#f7f5f0;border:1px solid var(--border);border-radius:18px;
+  padding:16px 18px;display:flex;gap:12px;align-items:flex-start
+}
+.note-icon{width:28px;height:28px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-size:12px;flex:0 0 auto}
+.note-card strong{display:block;font-size:13px;margin-bottom:3px}
+.note-card p{font-size:12px;color:var(--text3);line-height:1.45}
+
+.section{display:none}
+.section.active{display:block}
+
+.card-preview-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;margin-top:28px}
+.preview-stage{
+  border-radius:24px;background:#0d0d10;min-height:360px;display:grid;place-items:center;overflow:hidden;
+  position:relative
+}
+.preview-stage:before{
+  content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,var(--accent),transparent 62%);
+  filter:blur(25px);opacity:.38;right:-140px;top:-120px
+}
+.digital-card{
+  width:min(82%,460px);aspect-ratio:1.58;background:linear-gradient(145deg,#15151a,#08080b);
+  border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:24px;color:#fff;position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);transform:rotate(-4deg)
+}
+.card-chev{display:flex;gap:4px}
+.card-chev i{width:30px;height:38px;background:var(--accent);clip-path:polygon(0 0,58% 0,100% 50%,58% 100%,0 100%,42% 50%)}
+.card-name{position:absolute;left:24px;bottom:28px;font-size:18px;font-weight:800}
+.card-sub{position:absolute;left:24px;bottom:12px;font-size:9px;color:#aaa}
+.card-nfc{position:absolute;right:24px;top:24px;font-size:24px}
+.form-grid{display:grid;gap:14px}
+.field label{display:block;font-size:11px;font-weight:800;color:#777;margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}
+.field input{
+  width:100%;padding:13px 14px;border:1px solid var(--border);border-radius:12px;outline:none;background:#fff
+}
+.field input:focus{border-color:#111;box-shadow:0 0 0 1px #111}
+.color-row{display:flex;gap:10px}
+.swatch{width:42px;height:42px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ccc}
+.swatch.active{box-shadow:0 0 0 2px #111}
+.upload{
+  padding:20px;border:1.5px dashed #cfcac1;border-radius:16px;text-align:center;font-size:12px;color:#777;background:#faf9f6
+}
+
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.data-grid .full{grid-column:1/-1}
+
+.pay-placeholder{
+  margin-top:28px;border:1px solid var(--border);border-radius:20px;padding:26px;background:#faf9f6
+}
+.pay-placeholder strong{font-size:16px}
+.pay-placeholder p{font-size:13px;color:var(--text3);margin-top:6px;line-height:1.5}
+
+.summary-kicker{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888;font-weight:800}
+.summary h3{font-size:20px;margin-top:8px}
+.summary-card{
+  margin-top:18px;background:#111;border-radius:18px;padding:18px;color:#fff;min-height:148px;position:relative;overflow:hidden
+}
+.summary-card:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:var(--accent);filter:blur(45px);opacity:.35;right:-70px;top:-60px}
+.summary-card .mini-logo{font-size:12px;font-weight:800;position:relative;z-index:2}
+.summary-card .mini-plan{font-size:28px;font-weight:800;letter-spacing:-1px;margin-top:38px;position:relative;z-index:2}
+.summary-card .mini-sub{font-size:11px;color:#aaa;margin-top:3px;position:relative;z-index:2}
+.summary-lines{margin-top:20px;display:grid;gap:11px}
+.sum-line{display:flex;justify-content:space-between;font-size:13px;color:var(--text2)}
+.sum-line strong{color:#111}
+.total{border-top:1px solid var(--border);padding-top:15px;margin-top:4px;font-size:16px}
+.total strong{font-size:22px}
+.primary{
+  width:100%;margin-top:18px;padding:15px;border:0;border-radius:999px;background:#111;color:#fff;font-weight:800;font-size:14px
+}
+.primary:hover{background:var(--accent)}
+.secure{font-size:11px;color:#888;text-align:center;margin-top:10px}
+.micro{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.micro div{background:#f5f3ee;border-radius:12px;padding:10px;font-size:10px;font-weight:700;color:#666;text-align:center}
+
+.nav-bottom{display:flex;justify-content:space-between;gap:10px;margin-top:30px}
+.back-step,.next-step{padding:13px 20px;border-radius:999px;font-weight:800}
+.back-step{background:#fff;border:1px solid var(--border)}
+.next-step{background:#111;color:#fff;border:1px solid #111}
+.next-step:hover{background:var(--accent);border-color:var(--accent)}
+
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .summary{position:relative;top:auto}
+  .step-label{display:none}
+  .plan-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .nav{height:70px;padding:0 16px}.nav-note{display:none}
+  .shell{padding:22px 14px 50px}.main-card{padding:24px 18px}.summary{padding:18px}
+  .plan-grid,.card-preview-wrap,.data-grid{grid-template-columns:1fr}
+  h1{font-size:50px}
+  .stepper{gap:5px}.step{justify-content:center;padding:9px 6px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand" onclick="location.href='index.html'">
+    <span class="brand-mark"><i></i><i></i><i></i></span>
+    Present<span>AR</span>
+  </div>
+  <div class="nav-note">Configurador de compra</div>
+  <button class="nav-back" onclick="location.href='https://presentarstudio.com/#planes'">← Volver al producto</button>
+</nav>
+
+<div class="shell">
+  <div class="stepper">
+    <div class="step active" data-step="1"><span class="step-num">01</span><span class="step-label">Tu PresentAR</span></div>
+    <div class="step" data-step="2"><span class="step-num">02</span><span class="step-label">Personalización</span></div>
+    <div class="step" data-step="3"><span class="step-num">03</span><span class="step-label">Tus datos</span></div>
+    <div class="step" data-step="4"><span class="step-num">04</span><span class="step-label">Pago</span></div>
+  </div>
+
+  <div class="layout">
+    <main class="main-card">
+
+      <section class="section active" data-section="1">
+        <div class="eyebrow">01 · Elegí tu PresentAR</div>
+        <h1>UNA TARJETA.<br><em>TU FORMA DE CONECTAR.</em></h1>
+        <p class="lead">Elegí la versión que mejor se adapta a vos. Después la personalizamos con tu identidad y la dejamos lista para comprar.</p>
+
+        <div class="plan-grid">
+          <article class="plan selected" data-plan="Basic" data-price="49900">
+            <div class="plan-title">PresentAR Basic</div>
+            <div class="plan-desc">Tu identidad digital siempre actualizada, sin abono mensual.</div>
+            <div class="plan-price">$49.900 <small>pago único</small></div>
+            <div class="plan-features">
+              <div class="plan-feature"><span class="check">✓</span>NFC + QR</div>
+              <div class="plan-feature"><span class="check">✓</span>Perfil digital editable</div>
+              <div class="plan-feature"><span class="check">✓</span>WhatsApp, email, redes y web</div>
+              <div class="plan-feature"><span class="check">✓</span>Guardar contacto</div>
+            </div>
+            <button class="plan-btn">Elegir Basic</button>
+          </article>
+
+          <article class="plan featured" data-plan="Pro" data-price="59900" data-subscription="12900">
+            <div class="plan-tag">MÁS ELEGIDA</div>
+            <div class="plan-title">PresentAR Pro</div>
+            <div class="plan-desc">Capturá contactos, medí interacciones y organizá oportunidades.</div>
+            <div class="plan-price">$59.900 <small>tarjeta + $12.900/mes</small></div>
+            <div class="plan-features">
+              <div class="plan-feature"><span class="check">✓</span>Todo lo de Basic</div>
+              <div class="plan-feature"><span class="check">✓</span>Formulario y base de contactos</div>
+              <div class="plan-feature"><span class="check">✓</span>Estadísticas completas</div>
+              <div class="plan-feature"><span class="check">✓</span>Seguimiento comercial</div>
+            </div>
+            <button class="plan-btn">Elegir Pro</button>
+          </article>
+
+          <article class="plan business" data-plan="Business" data-price="0" data-contact="true">
+            <div class="plan-tag">PARA EQUIPOS</div>
+            <div class="plan-title">PresentAR Business</div>
+            <div class="plan-desc">Identidad unificada, múltiples tarjetas y panel gerencial.</div>
+            <div class="plan-price">Desde $59.000 <small>por mes</small></div>
+            <div class="plan-features">
+              <div class="plan-feature"><span class="check">✓</span>Todo lo de Pro</div>
+              <div class="plan-feature"><span class="check">✓</span>Gestión centralizada del equipo</div>
+              <div class="plan-feature"><span class="check">✓</span>Métricas por colaborador</div>
+              <div class="plan-feature"><span class="check">✓</span>Implementación personalizada</div>
+            </div>
+            <button class="plan-btn">Solicitar propuesta</button>
+          </article>
+        </div>
+
+        <div class="note-card">
+          <div class="note-icon">i</div>
+          <div><strong>¿Necesitás tarjetas para un equipo?</strong><p>La compra por cantidad tendrá un recorrido comercial aparte para poder cotizar volumen, identidad y funcionalidades.</p></div>
+        </div>
+      </section>
+
+      <section class="section" data-section="2">
+        <div class="eyebrow">02 · Personalización</div>
+        <h1>QUE SE VEA<br><em>COMO TU MARCA.</em></h1>
+        <p class="lead">Definí la base visual de tu tarjeta física. El perfil digital completo lo vas a poder editar después desde tu panel.</p>
+
+        <div class="card-preview-wrap">
+          <div class="preview-stage">
+            <div class="digital-card" id="preview-card">
+              <div class="card-chev"><i></i><i></i><i></i></div>
+              <div class="card-nfc">⌁</div>
+              <div class="card-name" id="preview-name">TU NOMBRE</div>
+              <div class="card-sub" id="preview-company">Tu marca / profesión</div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field"><label>Nombre en la tarjeta</label><input id="name-card" placeholder="Ej. Lucas Martínez"></div>
+            <div class="field"><label>Marca / profesión</label><input id="company-card" placeholder="Ej. Marketing & Estrategia"></div>
+            <div class="field">
+              <label>Color principal</label>
+              <div class="color-row">
+                <button class="swatch active" data-color="#ad7fff" style="background:#ad7fff"></button>
+                <button class="swatch" data-color="#d4ff3d" style="background:#d4ff3d"></button>
+                <button class="swatch" data-color="#111111" style="background:#111111"></button>
+                <button class="swatch" data-color="#e8192c" style="background:#e8192c"></button>
+              </div>
+            </div>
+            <div class="field"><label>Logo</label><div class="upload">Subí tu logo o identidad visual<br><strong>PNG, JPG o SVG</strong></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-section="3">
+        <div class="eyebrow">03 · Datos de compra</div>
+        <h1>YA CASI<br><em>ES TUYA.</em></h1>
+        <p class="lead">Necesitamos estos datos para gestionar tu compra y envío. La información del perfil digital se configura después.</p>
+
+        <div class="data-grid">
+          <div class="field"><label for="buyer-first-name">Nombre</label><input id="buyer-first-name" autocomplete="given-name" placeholder="Nombre" required></div>
+          <div class="field"><label for="buyer-last-name">Apellido</label><input id="buyer-last-name" autocomplete="family-name" placeholder="Apellido" required></div>
+          <div class="field"><label for="buyer-email">Email</label><input id="buyer-email" type="email" autocomplete="email" placeholder="tu@email.com" required></div>
+          <div class="field"><label for="buyer-phone">WhatsApp</label><input id="buyer-phone" autocomplete="tel" placeholder="+54 9..."></div>
+          <div class="field full"><label for="buyer-address">Dirección</label><input id="buyer-address" autocomplete="street-address" placeholder="Calle y número"></div>
+          <div class="field"><label for="buyer-city">Ciudad</label><input id="buyer-city" autocomplete="address-level2" placeholder="Ciudad"></div>
+          <div class="field"><label for="buyer-province">Provincia</label><input id="buyer-province" autocomplete="address-level1" placeholder="Provincia"></div>
+          <div class="field"><label for="buyer-postal-code">Código postal</label><input id="buyer-postal-code" autocomplete="postal-code" placeholder="CP"></div>
+          <div class="field"><label for="buyer-dni">DNI / CUIT</label><input id="buyer-dni" placeholder="Opcional"></div>
+        </div>
+      </section>
+
+      <section class="section" data-section="4">
+        <div class="eyebrow">04 · Pago</div>
+        <h1>CONFIRMÁ.<br><em>Y EMPEZÁ A CONECTAR.</em></h1>
+        <p class="lead">Revisá tu pedido. Al continuar vas a ingresar al checkout seguro de Mercado Pago.</p>
+
+        <div class="pay-placeholder">
+          <strong>Checkout seguro</strong>
+          <p>Vas a completar el pago en Mercado Pago. Nunca guardamos los datos de tu tarjeta.</p>
+          <div id="payment-message" style="margin-top:12px;font-size:13px;color:#b42318" role="alert" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <div class="nav-bottom">
+        <button class="back-step" id="backBtn" onclick="go(-1)" style="visibility:hidden">← Atrás</button>
+        <button class="next-step" id="nextBtn" onclick="go(1)">Continuar →</button>
+      </div>
+    </main>
+
+    <aside class="summary">
+      <div class="summary-kicker">Tu pedido</div>
+      <h3>Resumen</h3>
+
+      <div class="summary-card">
+        <div class="mini-logo">PresentAR</div>
+        <div class="mini-plan" id="sum-plan">Basic</div>
+        <div class="mini-sub">Tarjeta NFC + perfil digital</div>
+      </div>
+
+      <div class="summary-lines">
+        <div class="sum-line"><span>Producto</span><strong id="sum-product">PresentAR Basic</strong></div>
+        <div class="sum-line"><span>Diseño</span><strong>Personalizado</strong></div>
+        <div class="sum-line"><span>Cantidad</span><strong>1 unidad</strong></div>
+        <div class="sum-line"><span>Envío</span><strong>A calcular</strong></div>
+        <div class="sum-line subscription-line" id="sum-subscription"><span>Abono Pro</span><strong>$12.900/mes</strong></div>
+        <div class="sum-line total"><span>Total</span><strong id="sum-total">$49.900</strong></div>
+      </div>
+
+      <button class="primary" onclick="goToPayment()">Continuar con mi PresentAR →</button>
+      <div class="secure">Pago seguro · Datos protegidos</div>
+
+      <div class="micro">
+        <div>NFC + QR</div><div>Editable</div><div>Estadísticas</div><div>Reutilizable</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+let step=1;
+let currentPlan={name:'Basic',price:49900,subscription:0,contact:false};
+
+function money(v){return '$'+Number(v).toLocaleString('es-AR')}
+
+function selectPlan(el){
+  document.querySelectorAll('.plan').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+  currentPlan={name:el.dataset.plan,price:Number(el.dataset.price),subscription:Number(el.dataset.subscription||0),contact:el.dataset.contact==='true'};
+  document.getElementById('sum-plan').textContent=currentPlan.name;
+  document.getElementById('sum-product').textContent='PresentAR '+currentPlan.name;
+  document.getElementById('sum-total').textContent=currentPlan.contact?'A cotizar':money(currentPlan.price);
+  document.getElementById('sum-subscription').classList.toggle('visible',currentPlan.subscription>0);
+  document.querySelector('.primary').textContent=currentPlan.contact?'Solicitar propuesta →':'Continuar con mi PresentAR →';
+}
+
+document.querySelectorAll('.plan').forEach(p=>{
+  p.addEventListener('click',()=>selectPlan(p));
+});
+
+function renderStep(){
+  document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',Number(s.dataset.section)===step));
+  document.querySelectorAll('.step').forEach(s=>{
+    const n=Number(s.dataset.step);
+    s.classList.toggle('active',n===step);
+    s.classList.toggle('done',n<step);
+  });
+  document.getElementById('backBtn').style.visibility=step===1?'hidden':'visible';
+  document.getElementById('nextBtn').textContent=step===4?'Ir al pago →':'Continuar →';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function go(dir){
+  if(step===4 && dir>0){goToPayment();return}
+  step=Math.min(4,Math.max(1,step+dir));
+  renderStep();
+}
+
+async function goToPayment(){
+  if(step<4){step=4;renderStep();return}
+
+  const button=document.querySelector('.primary');
+  const message=document.getElementById('payment-message');
+  const firstName=document.getElementById('buyer-first-name').value.trim();
+  const lastName=document.getElementById('buyer-last-name').value.trim();
+  const email=document.getElementById('buyer-email').value.trim().toLowerCase();
+
+  message.textContent='';
+  if(!firstName||!lastName||!email||!email.includes('@')){
+    message.textContent='Completá nombre, apellido y un email válido antes de continuar.';
+    step=3;renderStep();
+    return;
+  }
+
+  if(currentPlan.contact){
+    const params=new URLSearchParams({motivo:'business',nombre:`${firstName} ${lastName}`,email});
+    location.href=`https://presentarstudio.com/?${params.toString()}#contacto`;
+    return;
+  }
+
+  button.disabled=true;
+  button.textContent='Conectando con Mercado Pago…';
+  try{
+    const response=await fetch('/api/crear-preferencia',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        plan:currentPlan.name,
+        cantidad:1,
+        model_id:'Modelo 01',
+        full_name:(document.getElementById('name-card').value.trim()||`${firstName} ${lastName}`),
+        company_name:document.getElementById('company-card').value.trim()||null,
+        buyer_first_name:firstName,
+        buyer_last_name:lastName,
+        email,
+        phone:document.getElementById('buyer-phone').value.trim(),
+        address:document.getElementById('buyer-address').value.trim(),
+        city:document.getElementById('buyer-city').value.trim(),
+        province:document.getElementById('buyer-province').value.trim(),
+        postal_code:document.getElementById('buyer-postal-code').value.trim(),
+        dni_cuit:document.getElementById('buyer-dni').value.trim()
+      })
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.init_point) throw new Error(data.error||'No pudimos iniciar el pago.');
+    location.href=data.init_point;
+  }catch(error){
+    message.textContent=error.message||'No pudimos iniciar el pago. Intentá nuevamente.';
+    button.disabled=false;
+    button.textContent='Continuar con mi PresentAR →';
+  }
+}
+
+const nameInput=document.getElementById('name-card');
+const companyInput=document.getElementById('company-card');
+nameInput.addEventListener('input',e=>document.getElementById('preview-name').textContent=e.target.value||'TU NOMBRE');
+companyInput.addEventListener('input',e=>document.getElementById('preview-company').textContent=e.target.value||'Tu marca / profesión');
+
+document.querySelectorAll('.swatch').forEach(s=>{
+  s.addEventListener('click',()=>{
+    document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active'));
+    s.classList.add('active');
+    document.documentElement.style.setProperty('--accent',s.dataset.color);
+  })
+});
+
+// Permite abrir /comprar?plan=basic, /comprar?plan=pro o /comprar?plan=business
+const qp=new URLSearchParams(location.search).get('plan');
+if(qp){
+  const plan=[...document.querySelectorAll('.plan')].find(p=>p.dataset.plan.toLowerCase()===qp.toLowerCase());
+  if(plan)selectPlan(plan);
+}
+</script>
+</body>
+</html>

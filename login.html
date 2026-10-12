@@ -1,45 +1,81 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ingresar | PresentAR</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Acceso al panel PresentAR">
+  <title>Iniciar sesión | PresentAR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root{--violet:#5c3d9b;--ink:#111;--muted:#6b6b72;--line:#e7e7eb;--bg:#f6f6f8}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-    .wrap{min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(460px,100%);background:#fff;border:1px solid var(--line);border-radius:24px;padding:34px;box-shadow:0 20px 60px rgba(0,0,0,.06)}
-    .brand{font-weight:900;font-size:24px;margin-bottom:30px}.brand span{color:var(--violet)} h1{font-size:40px;line-height:1;margin:0 0 12px}.lead{color:var(--muted);line-height:1.5;margin-bottom:26px}
-    label{display:block;font-weight:700;margin-bottom:8px} input{width:100%;padding:15px 16px;border:1px solid var(--line);border-radius:12px;font-size:16px;outline:none} input:focus{border-color:var(--violet)}
-    button{width:100%;margin-top:14px;padding:15px;border:0;border-radius:12px;background:#111;color:#fff;font-size:16px;font-weight:800;cursor:pointer}.msg{margin-top:16px;color:var(--muted);font-size:14px;line-height:1.45}.error{color:#b42318}.ok{color:#067647}
+    :root{--violet:#8a63ff;--lime:#caff29;--ink:#101012;--muted:#706c74;--line:#dedbd5;--paper:#f4f2ed;--white:#fff}
+    *{box-sizing:border-box}html,body{min-height:100%;width:100%;overflow-x:hidden}body{margin:0;font-family:"DM Sans",Arial,sans-serif;color:var(--ink);background:#fff}button,input{font:inherit}
+    .layout{width:100vw;min-height:100vh;display:grid;grid-template-columns:minmax(430px,42%) 1fr;overflow:hidden}
+    .access{background:#fff;display:flex;flex-direction:column;padding:34px clamp(34px,7vw,112px)}
+    .brand{font-size:25px;font-weight:800;letter-spacing:-1.2px;text-decoration:none;color:var(--ink)}.brand span{color:var(--violet)}
+    .form-wrap{width:min(420px,100%);margin:auto 0}
+    .eyebrow{display:inline-flex;margin-bottom:18px;padding:7px 11px;border-radius:999px;background:#f0ebff;color:#6035e6;font-size:10px;font-weight:800;letter-spacing:.08em}
+    h1{margin:0 0 11px;font-size:clamp(42px,5vw,62px);line-height:.94;letter-spacing:-3px}.intro{margin:0 0 34px;color:var(--muted);font-size:15px;line-height:1.55}
+    .field{margin-bottom:18px}.field-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}label{font-size:12px;font-weight:800}.forgot{border:0;background:none;padding:0;color:#5f42bf;font-size:12px;font-weight:700;cursor:pointer}
+    .input-wrap{position:relative}.input-wrap input{width:100%;height:52px;padding:0 48px 0 16px;border:1px solid var(--line);border-radius:13px;background:#f8f7f5;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s,background .2s}.input-wrap input:focus{border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px rgba(138,99,255,.12)}
+    .eye{position:absolute;right:9px;top:8px;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:#77717c;cursor:pointer;font-size:17px}
+    .submit{width:100%;height:52px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-weight:800;cursor:pointer;transition:transform .2s,background .2s}.submit:hover{background:#28242d;transform:translateY(-1px)}.submit:disabled{opacity:.65;cursor:wait;transform:none}
+    .message{display:none;margin-top:16px;padding:13px 14px;border-radius:13px;font-size:13px;line-height:1.45}.message.show{display:block}.message.error{background:#fff0ee;color:#a63a2f}.message.ok{background:#f0f9dc;color:#365b08}
+    .support{margin-top:24px;padding-top:20px;border-top:1px solid #eeeae5;color:#807b83;font-size:12px;text-align:center}.support a{color:var(--ink);font-weight:700;text-decoration:none}.legal{margin-top:auto;color:#aaa5ac;font-size:11px}
+    .showcase{position:relative;width:100%;min-width:0;min-height:100vh;margin:0;overflow:hidden;background:#3b18a9}.showcase:after{display:none}
+    .visual{position:absolute;inset:0;overflow:hidden}.visual video{position:absolute;inset:0;display:block;width:100%;height:100%;min-width:100%;min-height:100%;object-fit:cover;object-position:center;border:0;border-radius:0;box-shadow:none;background:#3b18a9}
+    .recovery{display:none}.recovery.active{display:block}.login-form.hidden{display:none}
+    @media(max-width:900px){.layout{grid-template-columns:1fr;grid-template-rows:230px auto}.showcase{order:-1;width:100%;min-height:230px;height:230px;margin-right:0}.visual video{object-position:center 55%}.access{min-height:calc(100vh - 230px);padding:26px 24px}.form-wrap{width:100%;max-width:480px;margin:42px auto}.legal{text-align:center;margin-top:26px}h1{letter-spacing:-2px}}
+    @media(max-width:520px){.layout{grid-template-rows:180px auto}.showcase{min-height:180px;height:180px}.access{min-height:calc(100vh - 180px);padding:22px 18px}.form-wrap{margin:34px auto}.brand{font-size:22px}h1{font-size:42px}.intro{margin-bottom:26px}.input-wrap input,.submit{height:50px}.support{margin-top:20px}}
   </style>
 </head>
 <body>
-<div class="wrap"><main class="card">
-  <div class="brand">Present<span>AR</span></div>
-  <h1>Tu PresentAR.</h1>
-  <p class="lead">Ingresá con el mismo email que usaste en tu compra. Te enviaremos un enlace seguro, sin contraseña.</p>
-  <form id="loginForm">
-    <label for="email">Email</label>
-    <input id="email" type="email" autocomplete="email" required placeholder="tu@email.com" />
-    <button id="sendBtn" type="submit">Enviar enlace de acceso</button>
-  </form>
-  <div id="message" class="msg"></div>
-</main></div>
-<script>
-const SUPABASE_URL='https://eldiuxxqqxjpwjtrxqfg.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA';
-const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const form=document.getElementById('loginForm'), msg=document.getElementById('message'), btn=document.getElementById('sendBtn');
-(async()=>{ const {data}=await client.auth.getSession(); if(data.session) location.href='/editor.html'; })();
-form.addEventListener('submit',async(e)=>{
- e.preventDefault(); btn.disabled=true; btn.textContent='Enviando...'; msg.textContent=''; msg.className='msg';
- const email=document.getElementById('email').value.trim().toLowerCase();
- const {error}=await client.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:'https://presentarstudio.com/editor.html'}});
- if(error){msg.textContent='No pudimos enviar el enlace. Verificá que el email corresponda a una cuenta PresentAR activa.';msg.className='msg error';}
- else {msg.textContent='Listo. Revisá tu correo y abrí el enlace para entrar a tu PresentAR.';msg.className='msg ok';}
- btn.disabled=false; btn.textContent='Enviar enlace de acceso';
-});
-</script>
+  <main class="layout">
+    <section class="access">
+      <a class="brand" href="https://presentarstudio.com">Present<span>AR</span></a>
+      <div class="form-wrap">
+        <div class="login-form" id="loginView">
+          <h1>Bienvenido.</h1>
+          <p class="intro">Ingresá con el email y la contraseña de tu cuenta PresentAR.</p>
+          <form id="loginForm">
+            <div class="field"><div class="field-head"><label for="email">Email</label></div><div class="input-wrap"><input id="email" type="email" autocomplete="email" required placeholder="tu@email.com"></div></div>
+            <div class="field"><div class="field-head"><label for="password">Contraseña</label><button class="forgot" id="forgotBtn" type="button">¿Olvidaste tu contraseña?</button></div><div class="input-wrap"><input id="password" type="password" autocomplete="current-password" required placeholder="Ingresá tu contraseña"><button class="eye" id="eyeBtn" type="button" aria-label="Mostrar contraseña">◉</button></div></div>
+            <button class="submit" id="loginBtn" type="submit">Iniciar sesión →</button>
+          </form>
+          <div id="loginMessage" class="message" role="status" aria-live="polite"></div>
+        </div>
+        <div class="recovery" id="recoveryView">
+          <span class="eyebrow">RECUPERAR ACCESO</span><h1>Nueva contraseña.</h1><p class="intro">Creá una nueva contraseña para volver a ingresar a tu cuenta.</p>
+          <form id="recoveryForm"><div class="field"><div class="field-head"><label for="newPassword">Nueva contraseña</label></div><div class="input-wrap"><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres"></div></div><button class="submit" id="recoveryBtn" type="submit">Guardar contraseña →</button></form>
+          <div id="recoveryMessage" class="message" role="status" aria-live="polite"></div>
+        </div>
+        <div class="support">¿Necesitás ayuda? <a href="https://presentarstudio.com/#contacto">Contactanos</a></div>
+      </div>
+      <div class="legal">© 2026 PresentAR · Bahía Blanca, Argentina</div>
+    </section>
+    <section class="showcase" aria-label="Experiencia PresentAR"><div class="visual"><video autoplay muted loop playsinline preload="metadata" poster="presentar-dashboard-banner.png" aria-label="Experiencia digital PresentAR"><source src="video-login-presentar.mp4" type="video/mp4">Tu navegador no puede reproducir este video.</video></div></section>
+  </main>
+  <script>
+    const SUPABASE_URL='https://eldiuxxqqxjpwjtrxqfg.supabase.co';
+    const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA';
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const loginForm=document.getElementById('loginForm'),loginBtn=document.getElementById('loginBtn'),loginMessage=document.getElementById('loginMessage');
+    const setMessage=(el,text,type)=>{el.textContent=text;el.className=`message ${type} show`};
+    function sessionRoute(role){const normalized=String(role||'').toLowerCase();if(normalized==='empresa_colaborador')return 'colaborador.html';if(['empresa_admin','empresa_gerencia'].includes(normalized))return 'empresas.html';return 'index.html'}
+    async function savePresentarSession(session){
+      const email=session?.user?.email?.trim().toLowerCase();if(!email)return false;
+      const headers={'apikey':SUPABASE_KEY,'Authorization':`Bearer ${session.access_token||SUPABASE_KEY}`};let profile=null,card=null;
+      try{const profileResponse=await fetch(`${SUPABASE_URL}/rest/v1/usuarios?email=eq.${encodeURIComponent(email)}&select=id,nombre,empresa,rol,activo&limit=1`,{headers});const profiles=await profileResponse.json();profile=profiles?.[0]||null;if(profile?.activo===false){await client.auth.signOut();throw new Error('inactive');}const userId=profile?.id||session.user.id;const cardResponse=await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?usuario_id=eq.${encodeURIComponent(userId)}&select=slug,plan&limit=1`,{headers});const cards=await cardResponse.json();card=cards?.[0]||null}catch(error){if(error.message==='inactive')throw error;console.warn('No se pudo completar el perfil de sesión',error)}
+      const metadata=session.user.user_metadata||{},appMetadata=session.user.app_metadata||{};const role=appMetadata.rol||profile?.rol||metadata.rol||'client';const plan=appMetadata.plan||metadata.plan||card?.plan||(role==='cliente_basic'?'basic':role==='cliente_pro'?'pro':String(role).startsWith('empresa_')?'business':'legacy');localStorage.setItem('presentar_user',JSON.stringify({id:profile?.id||session.user.id,email,nombre:profile?.nombre||metadata.nombre||email.split('@')[0],empresa:profile?.empresa||metadata.empresa||'',rol:role,plan:plan,slug:card?.slug||metadata.slug||email.split('@')[0],organizacion_id:appMetadata.organizacion_id||metadata.organizacion_id||''}));return sessionRoute(role);
+    }
+    document.getElementById('eyeBtn').addEventListener('click',()=>{const field=document.getElementById('password');field.type=field.type==='password'?'text':'password'});
+    client.auth.onAuthStateChange(event=>{if(event==='PASSWORD_RECOVERY'){document.getElementById('loginView').classList.add('hidden');document.getElementById('recoveryView').classList.add('active')}});
+    (async()=>{const {data}=await client.auth.getSession();if(data.session&&!location.hash.includes('type=recovery')){try{const destination=await savePresentarSession(data.session);window.location.replace(destination)}catch(_){setMessage(loginMessage,'Tu cuenta está inactiva. Contactá a PresentAR.','error')}}})();
+    loginForm.addEventListener('submit',async event=>{event.preventDefault();loginBtn.disabled=true;loginBtn.textContent='Ingresando...';loginMessage.className='message';const email=document.getElementById('email').value.trim().toLowerCase(),password=document.getElementById('password').value;const {data,error}=await client.auth.signInWithPassword({email,password});if(error){setMessage(loginMessage,'El email o la contraseña no son correctos.','error');loginBtn.disabled=false;loginBtn.textContent='Iniciar sesión →';return}try{const destination=await savePresentarSession(data.session);window.location.replace(destination)}catch(_){setMessage(loginMessage,'Tu cuenta está inactiva. Contactá a PresentAR.','error');loginBtn.disabled=false;loginBtn.textContent='Iniciar sesión →'}});
+    document.getElementById('forgotBtn').addEventListener('click',async()=>{const email=document.getElementById('email').value.trim().toLowerCase();if(!email){setMessage(loginMessage,'Ingresá tu email para enviarte el enlace de recuperación.','error');document.getElementById('email').focus();return}const origin=location.protocol==='file:'?'https://app.presentarstudio.com':location.origin;const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:`${origin}/login.html`});setMessage(loginMessage,error?'No pudimos enviar el enlace. Intentá nuevamente.':'Te enviamos un enlace para crear una nueva contraseña.',error?'error':'ok')});
+    document.getElementById('recoveryForm').addEventListener('submit',async event=>{event.preventDefault();const button=document.getElementById('recoveryBtn'),message=document.getElementById('recoveryMessage'),password=document.getElementById('newPassword').value;button.disabled=true;button.textContent='Guardando...';const {error}=await client.auth.updateUser({password});if(error){setMessage(message,'No pudimos actualizar la contraseña. Solicitá un nuevo enlace.','error');button.disabled=false;button.textContent='Guardar contraseña →';return}const {data}=await client.auth.getSession();const destination=data.session?await savePresentarSession(data.session):'index.html';setMessage(message,'Contraseña actualizada. Ingresando a tu panel…','ok');setTimeout(()=>window.location.replace(destination),900)});
+  </script>
 </body>
 </html>
