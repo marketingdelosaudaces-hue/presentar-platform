@@ -1451,7 +1451,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 </style>
 
 <link rel="stylesheet" href="dashboard-v8.css">
-</head>
+<style>.dash-link-row[data-contact-url]{cursor:pointer}.dash-link-row[data-contact-url]:focus-visible{outline:2px solid #8964ff;outline-offset:2px}.pd-contact-menu{position:relative}.pd-contact-menu summary{list-style:none;cursor:pointer;font-weight:800;padding:8px;color:#53617a}.pd-contact-menu summary::-webkit-details-marker{display:none}.pd-contact-menu[open]{z-index:20}.pd-contact-menu>div{position:absolute;right:0;top:100%;min-width:170px;background:white;border:1px solid #e5e5ef;border-radius:12px;padding:6px;box-shadow:0 8px 24px #17132522}.pd-contact-menu a{display:block;padding:10px;text-decoration:none;color:#171325;font:500 13px 'DM Sans',sans-serif;border-radius:8px}.pd-contact-menu a:hover,.pd-contact-menu a:focus-visible{background:#f1edff}</style></head>
 <body>
 
 <!-- NAVBAR -->
@@ -2471,16 +2471,15 @@ async function loadDashboardData(slug, silentRefresh = false) {
       const empresa = c.empresa || 'Contacto PresentAR';
       const email = c.email || c.celular || 'Sin datos de contacto';
       const initials = nombre.split(/\s+/).slice(0,2).map(part => part.charAt(0)).join('').toUpperCase();
-      const states = [
-        {label:'Nuevo', className:'new'},
-        {label:'Contactado', className:'contact'},
-        {label:'Oportunidad', className:'opportunity'}
-      ];
-      const state = states[index % states.length];
-      return `<div class="dash-link-row">
-        <div class="pd-contact-person"><span class="pd-contact-avatar">${initials}</span><span><strong>${nombre}</strong><small>${empresa}</small></span></div>
-        <div class="pd-contact-mail"><span>${email}</span><small>${cuando}</small></div>
-        <span class="pd-status ${state.className}">${state.label}</span><span class="pd-more">···</span>
+      const status=String(c.estado||'new').toLowerCase();
+      const states={new:['Nuevo','new'],nuevo:['Nuevo','new'],contactado:['Contactado','contact'],interesado:['Interesado','contact'],oportunidad:['Oportunidad','opportunity'],'no interesado':['No interesado','contact']};
+      const state=states[status]||[status,'contact'];
+      const base='contactos.html?contacto='+encodeURIComponent(c.id);
+      return `<div class="dash-link-row" data-contact-url="${dashboardEscape(base)}" tabindex="0" role="link" aria-label="Ver contacto ${dashboardEscape(nombre)}" onclick="if(!event.target.closest('a,button,details'))location.href=this.dataset.contactUrl" onkeydown="if(event.target===this&&event.key==='Enter'){event.preventDefault();location.href=this.dataset.contactUrl}">
+        <div class="pd-contact-person"><span class="pd-contact-avatar">${dashboardEscape(initials)}</span><span><strong>${dashboardEscape(nombre)}</strong><small>${dashboardEscape(empresa)}</small></span></div>
+        <div class="pd-contact-mail"><span>${dashboardEscape(email)}</span><small>${cuando}</small></div>
+        <span class="pd-status ${state[1]}">${dashboardEscape(state[0])}</span>
+        <details class="pd-contact-menu"><summary aria-label="Acciones de ${dashboardEscape(nombre)}">···</summary><div><a href="${dashboardEscape(base)}">Ver contacto</a><a href="${dashboardEscape(base+'&accion=editar')}">Editar contacto</a><a href="${dashboardEscape(base+'&accion=historial')}">Ver historial</a></div></details>
       </div>`;
     }).join('');
 
@@ -2489,6 +2488,7 @@ async function loadDashboardData(slug, silentRefresh = false) {
   }
 }
 
+function dashboardEscape(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function openEditorTab(tab) {
   window.location.href = `editor.html?tab=${encodeURIComponent(tab)}`;
 }
