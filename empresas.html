@@ -228,6 +228,32 @@ body{
     z-index:10;
 }
 
+.topbar-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.company-logout{
+    height:40px;
+    padding:0 18px;
+    border:1px solid #DDD8EC;
+    border-radius:999px;
+    background:#FFFFFF;
+    color:#5F43DF;
+    font-family:"DM Sans",sans-serif;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+
+.company-logout:hover{
+    background:#F2EEFF;
+    border-color:#CFC3FF;
+    transform:translateY(-1px);
+}
+
 .company strong{
     display:block;
 
@@ -849,6 +875,24 @@ td{
 
 @media(max-width:700px){
 
+    .topbar{
+        height:68px;
+        padding:0 16px;
+    }
+
+    .company small{
+        display:none;
+    }
+
+    .topbar-actions > strong{
+        display:none;
+    }
+
+    .company-logout{
+        height:38px;
+        padding:0 15px;
+    }
+
     .dashboard-filter{
         align-items:flex-start;
         flex-direction:column;
@@ -889,9 +933,24 @@ td{
 
 </style>
 
+<link rel="stylesheet" href="empresas-v9.css">
+
 </head>
 
 <body>
+
+<svg class="company-svg-sprite" aria-hidden="true" focusable="false">
+    <defs>
+        <symbol id="company-icon-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="3" width="7" height="7" rx="2"></rect><rect x="3" y="14" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect></symbol>
+        <symbol id="company-icon-team" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3.5 19c.6-3.7 2.4-5.5 5.5-5.5s4.9 1.8 5.5 5.5M16 6.5a2.5 2.5 0 0 1 0 5M16 14c2.6.2 4 1.8 4.5 5"></path></symbol>
+        <symbol id="company-icon-leads" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="4.5"></circle><circle cx="12" cy="12" r="1"></circle><path d="m18.5 5.5 2-2M18 6l-3 3"></path></symbol>
+        <symbol id="company-icon-contacts" viewBox="0 0 24 24"><rect x="5" y="3" width="15" height="18" rx="3"></rect><path d="M5 8H3M5 12H3M5 16H3"></path><circle cx="12.5" cy="9" r="2"></circle><path d="M9.5 16c.5-2 1.5-3 3-3s2.5 1 3 3"></path></symbol>
+        <symbol id="company-icon-analytics" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></symbol>
+        <symbol id="company-icon-events" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M7 3v4M17 3v4M3 10h18"></path></symbol>
+        <symbol id="company-icon-badge" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"></rect><circle cx="12" cy="9" r="3"></circle><path d="M8 17c.6-2.7 2-4 4-4s3.4 1.3 4 4"></path></symbol>
+        <symbol id="company-icon-training" viewBox="0 0 24 24"><path d="m3 9 9-5 9 5-9 5-9-5Z"></path><path d="M7 12v5c2.7 2.2 7.3 2.2 10 0v-5M21 9v6"></path></symbol>
+    </defs>
+</svg>
 
 <div class="app">
 
@@ -908,37 +967,37 @@ td{
     <div class="menu">
 
         <button class="active" data-page="dashboard">
-            ⌂ Dashboard
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-dashboard"></use></svg><span>Dashboard</span>
         </button>
 
         <button data-page="equipo">
-            ◎ Equipo
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-team"></use></svg><span>Equipo</span>
         </button>
 
         <button data-page="leads">
-            ◌ Leads
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-leads"></use></svg><span>Leads</span>
         </button>
 
         <button data-page="contactos">
-            ▣ Contactos
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-contacts"></use></svg><span>Contactos</span>
         </button>
 
         <button data-page="analytics">
-            ▥ Analytics
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-analytics"></use></svg><span>Analytics</span>
         </button>
 
         <div class="divider"></div>
 
         <button class="future">
-            □ Eventos · Próximamente
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-events"></use></svg><span>Eventos · Próximamente</span>
         </button>
 
         <button class="future">
-            ◇ Credenciales · Próximamente
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-badge"></use></svg><span>Credenciales · Próximamente</span>
         </button>
 
         <button class="future">
-            ✓ Capacitaciones · Próximamente
+            <svg class="company-nav-icon" aria-hidden="true"><use href="#company-icon-training"></use></svg><span>Capacitaciones · Próximamente</span>
         </button>
 
     </div>
@@ -985,9 +1044,15 @@ td{
 
     </div>
 
-    <strong>
-        PresentAR Empresas
-    </strong>
+    <div class="topbar-actions">
+        <strong>
+            PresentAR Empresas
+        </strong>
+
+        <button class="company-logout" type="button" onclick="logoutEmpresa()">
+            Salir
+        </button>
+    </div>
 
 </div>
 
@@ -1035,7 +1100,7 @@ td{
     </p>
 
     <div class="demo-badge">
-        PANEL DEMO · DATOS DE MUESTRA
+        DATOS DEL EQUIPO · EN TIEMPO REAL
     </div>
 
 </div>
@@ -1280,7 +1345,7 @@ Equipo
 </h1>
 
 <p>
-Administrá las PresentAR de tu organización.
+Administrá las PresentAR de tu organización y consultá los contactos captados por cada integrante.
 </p>
 
 </div>
@@ -1327,6 +1392,7 @@ Inactivos
 <th>Guardados</th>
 <th>Leads</th>
 <th>Conversión</th>
+<th>Datos captados</th>
 
 </tr>
 
@@ -1339,6 +1405,77 @@ Inactivos
 </div>
 
 </section>
+
+<!-- DETALLE GERENCIAL DEL INTEGRANTE -->
+
+<div class="member-detail-backdrop" id="memberDetailBackdrop" hidden></div>
+
+<aside
+    class="member-detail"
+    id="memberDetail"
+    aria-hidden="true"
+    aria-labelledby="memberDetailTitle"
+>
+
+<div class="member-detail-head">
+
+<div class="member-detail-identity" id="memberDetailIdentity"></div>
+
+<button
+    class="member-detail-close"
+    id="memberDetailClose"
+    type="button"
+    aria-label="Cerrar detalle"
+>
+×
+</button>
+
+</div>
+
+<div class="member-detail-body">
+
+<div class="member-detail-title-row">
+
+<div>
+<span class="member-detail-kicker">DATOS DE LA TARJETA</span>
+<h2 id="memberDetailTitle">Actividad del integrante</h2>
+<p>Información captada desde su PresentAR mediante NFC, QR o enlace.</p>
+</div>
+
+<button class="btn btn-black" id="memberExportButton" type="button">
+↓ Exportar CSV
+</button>
+
+</div>
+
+<div class="member-detail-kpis" id="memberDetailKpis"></div>
+
+<div class="member-detail-toolbar">
+
+<label class="member-detail-search">
+<span>Buscar contacto</span>
+<input id="memberContactSearch" type="search" placeholder="Nombre, empresa o email">
+</label>
+
+<label>
+<span>Estado</span>
+<select id="memberContactStatus">
+<option value="">Todos</option>
+<option value="Nuevo">Nuevo</option>
+<option value="Contactado">Contactado</option>
+<option value="Oportunidad">Oportunidad</option>
+<option value="Interesado">Interesado</option>
+<option value="No interesado">No interesado</option>
+</select>
+</label>
+
+</div>
+
+<div class="member-contact-list" id="memberContactList"></div>
+
+</div>
+
+</aside>
 
 <!-- LEADS -->
 
@@ -1487,20 +1624,44 @@ Embudo comercial
 
 /* =========================================
    PRESENTAR EMPRESAS
-   DEMO GERENCIAL
+   PANEL GERENCIAL
 ========================================= */
+
+const SUPABASE_URL = 'https://eldiuxxqqxjpwjtrxqfg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA';
+
+function companyAccessToken(){
+    for(const key of Object.keys(localStorage)){
+        if(!key.startsWith('sb-') || !key.endsWith('-auth-token')) continue;
+        try{
+            const value = JSON.parse(localStorage.getItem(key) || 'null');
+            const token = value?.access_token || value?.currentSession?.access_token || value?.session?.access_token;
+            if(token) return token;
+        }catch(_){}
+    }
+    return null;
+}
+
+function companyHeaders(){
+    return {
+        apikey:SUPABASE_KEY,
+        Authorization:`Bearer ${companyAccessToken() || SUPABASE_KEY}`
+    };
+}
 
 
 /* =========================================
    EQUIPO
 ========================================= */
 
-const team = [
+let team = [
 
     {
+        id:"lucas-martinez",
         name:"Lucas Martínez",
         role:"Administrador / Comercial",
         status:"Activo",
+        email:"lucas@presentarstudio.com",
 
         visits:382,
         saved:73,
@@ -1515,9 +1676,11 @@ const team = [
     },
 
     {
+        id:"miembro-2",
         name:"Miembro 2",
         role:"Comercial",
         status:"Activo",
+        email:"comercial@presentarstudio.com",
 
         visits:297,
         saved:54,
@@ -1533,12 +1696,16 @@ const team = [
    LEADS DEMO
 ========================================= */
 
-const leads = [
+let leads = [
 
     {
+        id:"lead-01",
         name:"Juan Pérez",
         company:"Empresa Industrial",
         interest:"PresentAR Empresas",
+        email:"juan@empresaindustrial.com",
+        phone:"+54 9 291 555 0101",
+        createdAt:"2026-10-06T14:30:00-03:00",
 
         owner:"Lucas Martínez",
 
@@ -1547,9 +1714,13 @@ const leads = [
     },
 
     {
+        id:"lead-02",
         name:"Federico Gómez",
         company:"Servicios del Sur",
         interest:"Credenciales NFC",
+        email:"federico@serviciosdelsur.com",
+        phone:"+54 9 291 555 0142",
+        createdAt:"2026-10-05T11:15:00-03:00",
 
         owner:"Lucas Martínez",
 
@@ -1558,9 +1729,13 @@ const leads = [
     },
 
     {
+        id:"lead-03",
         name:"Laura Méndez",
         company:"Grupo Comercial",
         interest:"Tarjetas para equipo",
+        email:"laura@grupocomercial.com",
+        phone:"+54 9 11 5555 0198",
+        createdAt:"2026-10-04T17:40:00-03:00",
 
         owner:"Miembro 2",
 
@@ -1569,9 +1744,13 @@ const leads = [
     },
 
     {
+        id:"lead-04",
         name:"Carlos Ruiz",
         company:"Estudio Profesional",
         interest:"PresentAR Personal",
+        email:"carlos@estudioprofesional.com",
+        phone:"+54 9 291 555 0160",
+        createdAt:"2026-10-03T09:20:00-03:00",
 
         owner:"Miembro 2",
 
@@ -1586,7 +1765,7 @@ const leads = [
    DATOS DEMO POR PERÍODO
 ========================================= */
 
-const periodData = {
+let periodData = {
 
     7:{
 
@@ -1817,6 +1996,50 @@ document
    SESIÓN PRESENTAR
 ========================================= */
 
+async function logoutEmpresa(){
+
+    const token = companyAccessToken();
+    if(token){
+        try{
+            await fetch(`${SUPABASE_URL}/auth/v1/logout`,{
+                method:'POST',
+                headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${token}`}
+            });
+        }catch(error){
+            console.warn('PresentAR: no se pudo cerrar la sesión remota',error);
+        }
+    }
+
+    localStorage.removeItem(
+        "presentar_user"
+    );
+
+
+    Object.keys(localStorage)
+    .forEach(key=>{
+
+        if(
+            key.startsWith("sb-")
+            &&
+            key.endsWith("-auth-token")
+        ){
+
+            localStorage.removeItem(key);
+
+        }
+
+    });
+
+
+    sessionStorage.clear();
+
+
+    window.location.replace(
+        "login.html"
+    );
+
+}
+
 try{
 
     const session =
@@ -1830,6 +2053,15 @@ try{
             || "null"
 
         );
+
+
+    if(!session || !['empresa_admin','empresa_gerencia'].includes(String(session.rol || ''))){
+
+        window.location.replace(
+            "login.html"
+        );
+
+    }
 
 
     if(session){
@@ -1853,24 +2085,30 @@ try{
             firstName;
 
 
-        /*
-        Para la demo mantenemos
-        PresentAR Studio.
+        const companyName =
 
-        Cuando conectemos Empresas
-        a una organización real,
-        esto se resolverá desde
-        la empresa correspondiente.
-        */
+            document.getElementById(
+                "companyName"
+            );
+
+
+        if(companyName){
+
+            companyName.textContent =
+
+                session.empresa
+                ||
+                "PresentAR Empresas";
+
+        }
+
 
     }
 
 }
 catch(error){
 
-    console.log(
-        "PresentAR Empresas · Demo"
-    );
+    console.warn("PresentAR Empresas: no se pudo leer la sesión",error);
 
 }
 
@@ -1878,6 +2116,35 @@ catch(error){
 /* =========================================
    EQUIPO
 ========================================= */
+
+let activeMemberName = "";
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+function formatContactDate(value){
+
+    if(!value) return "Sin fecha";
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())) return "Sin fecha";
+
+    return date.toLocaleDateString("es-AR",{
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+    });
+
+}
 
 function renderTeam(){
 
@@ -2063,6 +2330,20 @@ function renderTeam(){
                 </td>
 
 
+                <td>
+
+                    <button
+                        class="member-detail-trigger"
+                        type="button"
+                        data-member="${encodeURIComponent(member.name)}"
+                    >
+                        Ver contactos
+                        <span aria-hidden="true">→</span>
+                    </button>
+
+                </td>
+
+
             </tr>
 
             `;
@@ -2070,6 +2351,245 @@ function renderTeam(){
         })
 
         .join("");
+
+
+    document
+    .querySelectorAll(".member-detail-trigger")
+    .forEach(button=>{
+
+        button.addEventListener("click",()=>{
+
+            openMemberDetail(
+                decodeURIComponent(button.dataset.member)
+            );
+
+        });
+
+    });
+
+}
+
+
+function getMemberContacts(memberName){
+
+    return leads.filter(
+        lead => lead.owner === memberName
+    );
+
+}
+
+
+function openMemberDetail(memberName){
+
+    const member = findMember(memberName);
+
+    if(!member) return;
+
+    activeMemberName = memberName;
+
+    document
+    .getElementById("memberDetailIdentity")
+    .innerHTML = `
+        ${avatarHTML(member)}
+        <div>
+            <strong>${escapeHTML(member.name)}</strong>
+            <small>${escapeHTML(member.role)}</small>
+        </div>
+    `;
+
+    const contacts = getMemberContacts(memberName);
+    const conversion = member.visits
+        ? ((member.leads / member.visits) * 100).toFixed(1)
+        : "0.0";
+
+    document
+    .getElementById("memberDetailKpis")
+    .innerHTML = `
+        <article>
+            <span>Visitas</span>
+            <strong>${member.visits}</strong>
+        </article>
+        <article>
+            <span>Guardados</span>
+            <strong>${member.saved}</strong>
+        </article>
+        <article>
+            <span>Contactos</span>
+            <strong>${contacts.length}</strong>
+        </article>
+        <article>
+            <span>Conversión</span>
+            <strong>${conversion}%</strong>
+        </article>
+    `;
+
+    document.getElementById("memberContactSearch").value = "";
+    document.getElementById("memberContactStatus").value = "";
+
+    renderMemberContacts();
+
+    const backdrop = document.getElementById("memberDetailBackdrop");
+    const detail = document.getElementById("memberDetail");
+
+    backdrop.hidden = false;
+    requestAnimationFrame(()=>{
+        backdrop.classList.add("is-open");
+        detail.classList.add("is-open");
+    });
+
+    detail.setAttribute("aria-hidden","false");
+    document.body.classList.add("member-detail-open");
+    document.getElementById("memberDetailClose").focus();
+
+}
+
+
+function closeMemberDetail(){
+
+    const backdrop = document.getElementById("memberDetailBackdrop");
+    const detail = document.getElementById("memberDetail");
+
+    backdrop.classList.remove("is-open");
+    detail.classList.remove("is-open");
+    detail.setAttribute("aria-hidden","true");
+    document.body.classList.remove("member-detail-open");
+
+    window.setTimeout(()=>{
+        backdrop.hidden = true;
+    },220);
+
+}
+
+
+function renderMemberContacts(){
+
+    const search = document
+        .getElementById("memberContactSearch")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const status = document
+        .getElementById("memberContactStatus")
+        .value;
+
+    const contacts = getMemberContacts(activeMemberName)
+        .filter(contact=>{
+
+            const haystack = [
+                contact.name,
+                contact.company,
+                contact.email,
+                contact.phone,
+                contact.interest
+            ]
+            .join(" ")
+            .toLowerCase();
+
+            return (
+                (!search || haystack.includes(search))
+                &&
+                (!status || contact.status === status)
+            );
+
+        });
+
+    const container = document.getElementById("memberContactList");
+
+    if(!contacts.length){
+
+        container.innerHTML = `
+            <div class="member-contact-empty">
+                <strong>No hay contactos para mostrar.</strong>
+                <span>Probá modificando la búsqueda o el estado.</span>
+            </div>
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML = contacts.map(contact=>`
+        <article class="member-contact-card">
+            <div class="member-contact-main">
+                <div class="member-contact-avatar">
+                    ${escapeHTML(getInitials(contact.name))}
+                </div>
+                <div>
+                    <strong>${escapeHTML(contact.name)}</strong>
+                    <span>${escapeHTML(contact.company || "Sin empresa")}</span>
+                </div>
+            </div>
+
+            <div class="member-contact-meta">
+                <span>${escapeHTML(contact.interest || "Sin interés registrado")}</span>
+                <small>${escapeHTML(contact.source || "Formulario")} · ${formatContactDate(contact.createdAt)}</small>
+            </div>
+
+            <span class="status ${statusClass(contact.status)}">
+                ${escapeHTML(contact.status)}
+            </span>
+
+            <div class="member-contact-actions">
+                ${contact.phone ? `<a href="tel:${escapeHTML(contact.phone)}" aria-label="Llamar a ${escapeHTML(contact.name)}">Llamar</a>` : ""}
+                ${contact.email ? `<a href="mailto:${escapeHTML(contact.email)}" aria-label="Enviar email a ${escapeHTML(contact.name)}">Email</a>` : ""}
+            </div>
+        </article>
+    `).join("");
+
+}
+
+
+function csvCell(value){
+
+    return `"${String(value ?? "").replaceAll('"','""')}"`;
+
+}
+
+
+function exportMemberContacts(){
+
+    if(!activeMemberName) return;
+
+    const rows = getMemberContacts(activeMemberName);
+    const header = [
+        "Contacto",
+        "Empresa",
+        "Email",
+        "Teléfono",
+        "Interés",
+        "Origen",
+        "Estado",
+        "Fecha",
+        "Responsable"
+    ];
+
+    const csv = [
+        header,
+        ...rows.map(contact=>[
+            contact.name,
+            contact.company,
+            contact.email,
+            contact.phone,
+            contact.interest,
+            contact.source,
+            contact.status,
+            formatContactDate(contact.createdAt),
+            contact.owner
+        ])
+    ]
+    .map(row=>row.map(csvCell).join(","))
+    .join("\n");
+
+    const blob = new Blob(["\uFEFF" + csv],{
+        type:"text/csv;charset=utf-8"
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `PresentAR-${activeMemberName.replaceAll(" ","-")}-contactos.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
 
 }
 
@@ -2520,31 +3040,10 @@ function customPeriod(){
     });
 
 
-    /*
-    IMPORTANTE:
-
-    Todavía estamos usando
-    información demo.
-
-    Cuando integremos Supabase,
-    este punto consultará:
-
-    visitas.created_at
-    contactos.created_at
-
-    entre from y to.
-    */
-
-
-    alert(
-        "Período personalizado aplicado en modo demo: "
-        +
-        from
-        +
-        " → "
-        +
-        to
-    );
+    const start = new Date(`${from}T00:00:00`);
+    const end = new Date(`${to}T23:59:59.999`);
+    periodData.custom = buildRangeData(companyVisits,companyContacts,start.getTime(),end.getTime());
+    changePeriod("custom");
 
 }
 
@@ -2813,6 +3312,40 @@ document
 );
 
 
+document
+.getElementById("memberDetailClose")
+.addEventListener("click",closeMemberDetail);
+
+
+document
+.getElementById("memberDetailBackdrop")
+.addEventListener("click",closeMemberDetail);
+
+
+document
+.getElementById("memberContactSearch")
+.addEventListener("input",renderMemberContacts);
+
+
+document
+.getElementById("memberContactStatus")
+.addEventListener("change",renderMemberContacts);
+
+
+document
+.getElementById("memberExportButton")
+.addEventListener("click",exportMemberContacts);
+
+
+document.addEventListener("keydown",event=>{
+
+    if(event.key === "Escape"){
+        closeMemberDetail();
+    }
+
+});
+
+
 /* BOTÓN REPORTE */
 
 const reportButton =
@@ -2835,13 +3368,167 @@ if(reportButton){
    INICIO
 ========================================= */
 
-renderTeam();
+function normalizeCompanyStatus(value){
+    const status = String(value || 'new').toLowerCase();
+    if(status === 'new' || status === 'nuevo') return 'Nuevo';
+    if(status === 'contactado' || status === 'active' || status === 'en gestión') return 'Contactado';
+    if(status === 'oportunidad' || status === 'interesado') return 'Oportunidad';
+    if(status === 'convertido' || status === 'ganado') return 'Ganado';
+    return 'Nuevo';
+}
 
-renderDashboardTeam();
+function buildPeriodData(visits,contacts){
+    const result = {};
+    [7,30,90].forEach(days=>{
+        const since = Date.now() - days * 86400000;
+        const filteredVisits = visits.filter(item=>new Date(item.created_at).getTime() >= since);
+        const filteredContacts = contacts.filter(item=>new Date(item.created_at).getTime() >= since);
+        const saved = filteredVisits.filter(item=>/guardar|vcard|save/i.test(String(item.tipo || ''))).length;
+        const opportunities = filteredContacts.filter(item=>normalizeCompanyStatus(item.estado)==='Oportunidad').length;
+        const bars = Array(8).fill(0);
+        filteredVisits.forEach(item=>{
+            const age = Math.max(0,Date.now()-new Date(item.created_at).getTime());
+            const bucket = Math.min(7,Math.floor(age / Math.max(1,(days*86400000/8))));
+            bars[7-bucket] += 1;
+        });
+        const max = Math.max(1,...bars);
+        result[days] = {
+            kpis:[filteredVisits.length,saved,filteredContacts.length,opportunities],
+            bars:bars.map(value=>Math.round((value/max)*100))
+        };
+    });
+    return result;
+}
 
-renderLeads();
+function buildRangeData(visits,contacts,start,end=Date.now()){
+    const filteredVisits = visits.filter(item=>{
+        const value = new Date(item.created_at).getTime();
+        return value >= start && value <= end;
+    });
+    const filteredContacts = contacts.filter(item=>{
+        const value = new Date(item.created_at).getTime();
+        return value >= start && value <= end;
+    });
+    const saved = filteredVisits.filter(item=>/guardar|vcard|save/i.test(String(item.tipo || ''))).length;
+    const opportunities = filteredContacts.filter(item=>normalizeCompanyStatus(item.estado)==='Oportunidad').length;
+    const bars = Array(8).fill(0);
+    const duration = Math.max(1,end-start);
+    filteredVisits.forEach(item=>{
+        const offset = Math.max(0,new Date(item.created_at).getTime()-start);
+        const bucket = Math.min(7,Math.floor(offset/(duration/8)));
+        bars[bucket] += 1;
+    });
+    const max = Math.max(1,...bars);
+    return {kpis:[filteredVisits.length,saved,filteredContacts.length,opportunities],bars:bars.map(value=>Math.round((value/max)*100))};
+}
 
-changePeriod(30);
+let companyVisits = [];
+let companyContacts = [];
+
+async function loadCompanyData(){
+    const session = JSON.parse(localStorage.getItem('presentar_user') || 'null');
+    const role = String(session?.rol || session?.role || '').toLowerCase();
+    if(!session || !companyAccessToken() || !['empresa_admin','empresa_gerencia'].includes(role)){
+        localStorage.removeItem('presentar_user');
+        window.location.replace('login.html');
+        return;
+    }
+
+    team = [];
+    leads = [];
+    periodData = buildPeriodData([],[]);
+    renderTeam();
+    renderDashboardTeam();
+    renderLeads();
+    changePeriod(30);
+
+    try{
+        const headers = companyHeaders();
+        const organizationResponse = await fetch(
+            `${SUPABASE_URL}/rest/v1/organizaciones?select=id,nombre&limit=1`,
+            {headers}
+        );
+        const organizations = await organizationResponse.json();
+        if(!organizationResponse.ok) throw new Error(organizations?.message || 'No se pudo cargar la empresa');
+        const organization = organizations?.[0];
+        if(!organization) throw new Error('La cuenta todavía no está vinculada a una organización');
+
+        const companyName = document.getElementById('companyName');
+        if(companyName) companyName.textContent = organization.nombre;
+
+        const memberResponse = await fetch(
+            `${SUPABASE_URL}/rest/v1/organizacion_miembros?organizacion_id=eq.${encodeURIComponent(organization.id)}&select=id,usuario_id,tarjeta_id,nombre,email,rol,area,estado`,
+            {headers}
+        );
+        const members = await memberResponse.json();
+        if(!memberResponse.ok) throw new Error(members?.message || 'No se pudo cargar el equipo');
+
+        const cardIds = members.map(member=>member.tarjeta_id).filter(Boolean);
+        let cards = [], visits = [], contacts = [];
+        if(cardIds.length){
+            const filter = `in.(${cardIds.join(',')})`;
+            const [cardResponse,visitResponse,contactResponse] = await Promise.all([
+                fetch(`${SUPABASE_URL}/rest/v1/tarjetas?id=${filter}&select=id,nombre,cargo,empresa,email,logo_url,usuario_id`,{headers}),
+                fetch(`${SUPABASE_URL}/rest/v1/visitas?tarjeta_id=${filter}&select=id,tarjeta_id,tipo,created_at&order=created_at.desc`,{headers}),
+                fetch(`${SUPABASE_URL}/rest/v1/contactos?tarjeta_id=${filter}&select=*&order=created_at.desc`,{headers})
+            ]);
+            [cards,visits,contacts] = await Promise.all([
+                cardResponse.json(),visitResponse.json(),contactResponse.json()
+            ]);
+            if(!cardResponse.ok || !visitResponse.ok || !contactResponse.ok){
+                throw new Error('No se pudieron cargar las métricas del equipo');
+            }
+        }
+
+        const cardsById = new Map(cards.map(card=>[String(card.id),card]));
+        const membersByCard = new Map();
+        team = members.map(member=>{
+            const card = cardsById.get(String(member.tarjeta_id)) || {};
+            const memberVisits = visits.filter(item=>String(item.tarjeta_id)===String(member.tarjeta_id));
+            const memberContacts = contacts.filter(item=>String(item.tarjeta_id)===String(member.tarjeta_id));
+            const name = member.nombre || card.nombre || member.email;
+            membersByCard.set(String(member.tarjeta_id),name);
+            return {
+                id:member.id,
+                name,
+                role:member.area || card.cargo || String(member.rol || 'Colaborador').replaceAll('_',' '),
+                status:String(member.estado || 'activo').toLowerCase()==='activo'?'Activo':'Inactivo',
+                email:member.email || card.email || '',
+                visits:memberVisits.length,
+                saved:memberVisits.filter(item=>/guardar|vcard|save/i.test(String(item.tipo || ''))).length,
+                leads:memberContacts.length,
+                photo:card.logo_url || ''
+            };
+        });
+
+        leads = contacts.map(contact=>({
+            id:contact.id,
+            name:contact.nombre || 'Sin nombre',
+            company:contact.empresa || 'Sin empresa',
+            interest:contact.interes || contact.notas || contact.origen || 'Contacto desde PresentAR',
+            email:contact.email || '',
+            phone:contact.celular || contact.telefono || '',
+            createdAt:contact.created_at,
+            owner:membersByCard.get(String(contact.tarjeta_id)) || 'Sin asignar',
+            source:contact.origen || 'Tarjeta',
+            status:normalizeCompanyStatus(contact.estado)
+        }));
+        companyVisits = visits;
+        companyContacts = contacts;
+        periodData = buildPeriodData(visits,contacts);
+
+        renderTeam();
+        renderDashboardTeam();
+        renderLeads();
+        changePeriod(30);
+    }catch(error){
+        console.error('PresentAR Empresas:',error);
+        const table = document.getElementById('teamTable');
+        if(table) table.innerHTML = `<tr><td colspan="6"><strong>No pudimos cargar el equipo.</strong><br><small>${escapeHTML(error.message)}</small></td></tr>`;
+    }
+}
+
+loadCompanyData();
 
 </script>
 
