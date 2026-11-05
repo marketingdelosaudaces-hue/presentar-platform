@@ -3,6 +3,10 @@
   "framework": null,
   "rewrites": [
     {
+      "source": "/tarjetas/:slug/inicio.html",
+      "destination": "/api/tarjeta-inicio?slug=:slug"
+    },
+    {
       "source": "/comprar",
       "destination": "/comprar_presentar.html"
     },
@@ -25,5 +29,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/tarjeta-inicio.js": {
+      "includeFiles": "tarjeta.html"
+    }
+  }
 }
