@@ -22,8 +22,15 @@
     .pc-summary > button:focus-visible {outline:3px solid #4321ab;outline-offset:-4px}
   .pc-history{padding:24px;border-top:1px solid #e5e5ef}.pc-history h3{margin:0 0 12px}.pc-history ol{padding:0;list-style:none}.pc-history li{border-left:2px solid #8964ff;padding:0 0 22px 16px;margin-left:4px}.pc-history time,.pc-history small{display:block;color:#7c8598;font-size:12px}.pc-history p{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0}.pc-history textarea{box-sizing:border-box;width:100%;padding:12px;border:1px solid #ddd;border-radius:12px;font:inherit}.pc-history button{margin-top:10px}.pc-history-value{font-size:13px}
 </style>
+<link rel="stylesheet" href="mobile-v9.css">
+<style>
+#page-dashboard .pd-account .pd-avatar{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;flex:0 0 40px!important;aspect-ratio:1!important;border-radius:50%!important;overflow:hidden!important;padding:0!important;line-height:1!important}
+#page-dashboard .pd-account .pd-avatar img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border-radius:50%!important;display:block!important;margin:0!important;padding:0!important}
+#page-dashboard .pd-account>button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;flex:0 0 auto!important;min-height:44px!important;padding:8px 10px!important;font-size:12px!important;white-space:nowrap!important;width:auto!important;border-radius:10px!important}
+#page-dashboard .pd-account>button:hover{background:#f1edff!important;color:#7658f6!important}
+</style><link rel="stylesheet" href="presentar-mobile.css?v=1">
 </head>
-<body>
+<body data-pm-page="contactos">
   <div id="page-dashboard" class="page show">
     <svg width="0" height="0" class="pc-symbols" aria-hidden="true"><defs>
       <symbol id="p-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
@@ -53,7 +60,7 @@
           <div class="pd-nav-sep"></div>
           <button onclick="window.open('https://presentarstudio.com/#contacto','_blank')"><svg class="pd-icon"><use href="#p-help"/></svg>Ayuda</button>
         </nav>
-        <div class="pd-account"><div class="pd-avatar" id="userAvatar">?</div><div class="pd-account-copy"><strong id="userName">Usuario</strong><span>Mi cuenta</span></div><button onclick="logout()" aria-label="Cerrar sesión" title="Salir">→</button></div>
+        <div class="pd-account"><div class="pd-avatar" id="userAvatar">?</div><div class="pd-account-copy"><strong id="userName">Usuario</strong><span>Mi cuenta</span></div><button onclick="logout()" aria-label="Cerrar sesión" title="Salir">Salir <span aria-hidden="true">→</span></button></div>
       </aside>
 
       <main class="pd-main pc-main">
@@ -107,13 +114,12 @@
     let contacts=[],filtered=[],selectedContact=null,activeCardId=null,toastTimer=null;
 
     if(!session?.email)location.replace('login.html');
-    else if(session.plan==='basic'||session.rol==='cliente_basic'){sessionStorage.setItem('presentar_plan_notice','Contactos está disponible desde el plan Pro.');location.replace('index.html')}
     else{document.getElementById('userName').textContent=session.nombre||session.email;document.getElementById('userAvatar').textContent=(session.nombre||session.email||'?').charAt(0).toUpperCase();loadContacts()}
 
     async function apiHeaders(extra={}){let token=SUPABASE_KEY;try{const {data}=await authClient?.auth.getSession();token=data?.session?.access_token||SUPABASE_KEY}catch(_){}return{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${token}`,...extra}}
     async function loadContacts(){
       const loading=document.getElementById('loading'),empty=document.getElementById('empty'),table=document.getElementById('tableWrap'),footer=document.getElementById('tableFooter');loading.hidden=false;empty.hidden=true;table.hidden=true;footer.hidden=true;
-      try{const headers=await apiHeaders();let cards=[];if(session.slug){const response=await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?slug=eq.${encodeURIComponent(session.slug)}&select=id&limit=1`,{headers});cards=await response.json()}if(!cards?.length&&session.id){const response=await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?usuario_id=eq.${encodeURIComponent(session.id)}&select=id&limit=1`,{headers});cards=await response.json()}if(!cards?.length)throw new Error('No se encontró la tarjeta');activeCardId=cards[0].id;const response=await fetch(`${SUPABASE_URL}/rest/v1/contactos?tarjeta_id=eq.${encodeURIComponent(activeCardId)}&select=*&order=created_at.desc`,{headers});const data=await response.json();if(!response.ok)throw new Error(data?.message||'No se pudieron cargar los contactos');contacts=Array.isArray(data)?data.map(normalizeContact):[];applyFilters();openRequestedContact();showToast('Contactos actualizados')}
+      try{const headers=await apiHeaders();let cards=[];if(session.slug){const response=await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?slug=eq.${encodeURIComponent(session.slug)}&select=id,nombre,logo_url,plan&limit=1`,{headers});cards=await response.json()}if(!cards?.length&&session.id){const response=await fetch(`${SUPABASE_URL}/rest/v1/tarjetas?usuario_id=eq.${encodeURIComponent(session.id)}&select=id,nombre,logo_url,plan&limit=1`,{headers});cards=await response.json()}if(!cards?.length)throw new Error('No se encontró la tarjeta');if(cards[0].plan==='basic'){sessionStorage.setItem('presentar_plan_notice','Contactos está disponible desde el plan Pro.');location.replace('index.html');return}session.plan=cards[0].plan;localStorage.setItem('presentar_user',JSON.stringify(session));activeCardId=cards[0].id;renderAccountPhoto('userAvatar',cards[0].logo_url,cards[0].nombre||session.nombre||session.email);const response=await fetch(`${SUPABASE_URL}/rest/v1/contactos?tarjeta_id=eq.${encodeURIComponent(activeCardId)}&select=*&order=created_at.desc`,{headers});const data=await response.json();if(!response.ok)throw new Error(data?.message||'No se pudieron cargar los contactos');contacts=Array.isArray(data)?data.map(normalizeContact):[];applyFilters();openRequestedContact();showToast('Contactos actualizados')}
       catch(error){console.error(error);contacts=[];applyFilters();showToast(error.message||'Error al cargar contactos')}finally{loading.hidden=true}
     }
     function normalizeContact(contact){return{id:contact.id,nombre:contact.nombre||'',empresa:contact.empresa||'',email:contact.email||'',cargo:contact.cargo||'',celular:contact.celular||'',estado:(contact.estado||'new').toLowerCase(),origen:contact.origen||'Formulario',created_at:contact.created_at||null,web:contact.web||'',pais:contact.pais||'',direccion:contact.direccion||'',ciudad:contact.ciudad||'',provincia:contact.provincia||'',codigo_postal:contact.codigo_postal||'',etiquetas:Array.isArray(contact.etiquetas)?contact.etiquetas:[],notas:contact.notas||''}}
@@ -156,5 +162,18 @@
     function showToast(message){const toast=document.getElementById('toast');toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2400)}
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('contactDrawer').classList.contains('open'))closeContact()});
   </script>
+<script>
+function renderAccountPhoto(id,photo,name){
+ const avatar=document.getElementById(id);if(!avatar)return;
+ const initial=String(name||'?').trim().charAt(0).toUpperCase()||'?';
+ avatar.dataset.photo='';avatar.textContent=initial;
+ const raw=String(photo||'').trim();if(!raw)return;
+ let url;try{url=new URL(raw,location.href);if(!['https:','http:'].includes(url.protocol)&&!/^data:image\/(png|jpeg|webp|gif);base64,/i.test(raw))return}catch(_){return}
+ const image=document.createElement('img');image.alt='';image.decoding='async';image.referrerPolicy='no-referrer';image.style.cssText='width:100%;height:100%;object-fit:cover;display:block;border-radius:50%';
+ image.onload=()=>{if(avatar.dataset.photo===raw)avatar.replaceChildren(image)};
+ image.onerror=()=>{if(avatar.dataset.photo===raw)avatar.textContent=initial};
+ avatar.dataset.photo=raw;image.src=url.href;
+}
+</script><script src="presentar-mobile.js?v=1"></script>
 </body>
 </html>

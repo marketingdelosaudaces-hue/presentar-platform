@@ -527,8 +527,10 @@ button[onclick="addProject()"]:hover{
 </style>
 
 <link rel="stylesheet" href="editor-v8.css">
+<link rel="stylesheet" href="mobile-v9.css">
+<link rel="stylesheet" href="presentar-mobile.css?v=1">
 </head>
-<body>
+<body data-pm-page="editor">
 <svg class="editor-svg-sprite" aria-hidden="true" focusable="false">
   <defs>
     <symbol id="editor-icon-info" viewBox="0 0 24 24">
@@ -1647,5 +1649,6 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
+<script src="presentar-mobile.js?v=1"></script>
 </body>
 </html>

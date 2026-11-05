@@ -1451,8 +1451,36 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 </style>
 
 <link rel="stylesheet" href="dashboard-v8.css">
-<style>.dash-link-row[data-contact-url]{cursor:pointer}.dash-link-row[data-contact-url]:focus-visible{outline:2px solid #8964ff;outline-offset:2px}.pd-contact-menu{position:relative}.pd-contact-menu summary{list-style:none;cursor:pointer;font-weight:800;padding:8px;color:#53617a}.pd-contact-menu summary::-webkit-details-marker{display:none}.pd-contact-menu[open]{z-index:20}.pd-contact-menu>div{position:absolute;right:0;top:100%;min-width:170px;background:white;border:1px solid #e5e5ef;border-radius:12px;padding:6px;box-shadow:0 8px 24px #17132522}.pd-contact-menu a{display:block;padding:10px;text-decoration:none;color:#171325;font:500 13px 'DM Sans',sans-serif;border-radius:8px}.pd-contact-menu a:hover,.pd-contact-menu a:focus-visible{background:#f1edff}</style></head>
-<body>
+<style>.dash-link-row[data-contact-url]{cursor:pointer}.dash-link-row[data-contact-url]:focus-visible{outline:2px solid #8964ff;outline-offset:2px}.pd-contact-menu{position:relative}.pd-contact-menu summary{list-style:none;cursor:pointer;font-weight:800;padding:8px;color:#53617a}.pd-contact-menu summary::-webkit-details-marker{display:none}.pd-contact-menu[open]{z-index:20}.pd-contact-menu>div{position:absolute;right:0;top:100%;min-width:170px;background:white;border:1px solid #e5e5ef;border-radius:12px;padding:6px;box-shadow:0 8px 24px #17132522}.pd-contact-menu a{display:block;padding:10px;text-decoration:none;color:#171325;font:500 13px 'DM Sans',sans-serif;border-radius:8px}.pd-contact-menu a:hover,.pd-contact-menu a:focus-visible{background:#f1edff}</style><link rel="stylesheet" href="mobile-v9.css">
+<style>
+#page-dashboard .pd-account .pd-avatar{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;flex:0 0 40px!important;aspect-ratio:1!important;border-radius:50%!important;overflow:hidden!important;padding:0!important;line-height:1!important}
+#page-dashboard .pd-account .pd-avatar img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border-radius:50%!important;display:block!important;margin:0!important;padding:0!important}
+#page-dashboard .pd-account>button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;flex:0 0 auto!important;min-height:44px!important;padding:8px 10px!important;font-size:12px!important;white-space:nowrap!important;width:auto!important;border-radius:10px!important}
+#page-dashboard .pd-account>button:hover{background:#f1edff!important;color:#7658f6!important}
+</style>
+<style id="presentar-banner-responsive">
+#page-dashboard .pd-hero-new-banner{background:#7450f5!important;height:auto!important;min-height:332px;aspect-ratio:3/1;padding:32px!important;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+#page-dashboard .pd-hero-new-banner:before,#page-dashboard .pd-hero-new-banner:after{display:none!important}
+.pd-banner-art{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.pd-banner-art img{display:block;width:100%;height:100%;object-fit:fill;max-width:none}
+.pd-banner-info{width:38%;min-width:0}
+#page-dashboard .pd-hero-new-banner .pd-hero-name{font-size:clamp(26px,3vw,44px);max-width:100%;line-height:1.05;overflow-wrap:anywhere}
+#page-dashboard .pd-hero-new-banner .pd-hero-role{overflow-wrap:anywhere}
+#page-dashboard .pd-hero-new-banner .pd-hero-actions{position:static!important;display:flex!important;flex-wrap:wrap;max-width:40%;gap:8px}
+#page-dashboard .pd-hero-new-banner .pd-hero-actions button{padding:0 16px!important;justify-content:center}
+@media(max-width:1100px){
+ #page-dashboard .pd-hero-new-banner{aspect-ratio:auto;min-height:0!important;padding:0!important;gap:0;display:flex!important}
+ .pd-banner-info{width:100%;padding:24px 24px 0;box-sizing:border-box}
+ #page-dashboard .pd-hero-new-banner .pd-hero-name{font-size:32px!important}
+ #page-dashboard .pd-hero-new-banner .pd-hero-actions{order:1;max-width:none;width:auto;margin:24px;flex-wrap:wrap!important}
+ #page-dashboard .pd-hero-new-banner .pd-hero-actions button{flex:1 1 130px!important;font-size:12px!important}
+ .pd-banner-art{position:relative;inset:auto;z-index:auto;order:2;width:100%;aspect-ratio:1.8;flex-shrink:0}
+ .pd-banner-art img{width:166.6667%;height:auto;max-width:none;margin-left:-66.6667%;object-fit:contain}
+}
+</style>
+<link rel="stylesheet" href="presentar-mobile.css?v=1">
+</head>
+<body data-pm-page="index">
 
 <!-- NAVBAR -->
 <nav class="nav" id="main-nav">
@@ -2033,7 +2061,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
       <div class="pd-account">
         <div class="pd-avatar" id="dash-av">?</div>
         <div class="pd-account-copy"><strong id="dash-nav-name">Usuario</strong><span>Mi cuenta</span></div>
-        <button onclick="doLogout()" aria-label="Cerrar sesión" title="Salir">→</button>
+        <button onclick="doLogout()" aria-label="Cerrar sesión" title="Salir">Salir <span aria-hidden="true">→</span></button>
       </div>
     </aside>
 
@@ -2045,8 +2073,11 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 
       <div class="pd-grid">
         <div class="pd-column">
-          <section class="pd-hero" id="client-card-section">
+          <section class="pd-hero pd-hero-new-banner" id="client-card-section">
+            <div class="pd-banner-art"><img src="presentar-conexion-banner.webp" alt="Tu próxima conexión empieza acá. Mapache con anteojos y camisa." width="1920" height="640" decoding="async"></div>
+            <div class="pd-banner-info">
             <div class="pd-hero-kicker">Tu tarjeta digital</div><h3 class="pd-hero-name" id="pd-hero-name">Tu nombre</h3><div class="pd-hero-role"><strong id="pd-hero-position">Tu profesión</strong><span id="pd-hero-company">Profesional independiente</span></div>
+            </div>
             <div class="pd-hero-actions"><button class="primary" onclick="openEditorTab('info')"><svg class="pd-icon"><use href="#p-edit"/></svg>Editar tarjeta</button><button id="btn-ver-tarjeta" onclick="abrirTarjeta()"><svg class="pd-icon"><use href="#p-eye"/></svg>Ver perfil</button></div>
           </section>
 
@@ -2494,6 +2525,7 @@ function openEditorTab(tab) {
 }
 
 function updateSetupDashboard(card) {
+  renderAccountPhoto('dash-av',card.logo_url,card.nombre||currentUser?.name);
   const hasValue = value => {
     if (value === null || value === undefined) return false;
     const normalized = String(value).trim().toLowerCase();
@@ -3069,4 +3101,17 @@ window.addEventListener('DOMContentLoaded', async function () {
 })();
 </script>
 
+<script>
+function renderAccountPhoto(id,photo,name){
+ const avatar=document.getElementById(id);if(!avatar)return;
+ const initial=String(name||'?').trim().charAt(0).toUpperCase()||'?';
+ avatar.dataset.photo='';avatar.textContent=initial;
+ const raw=String(photo||'').trim();if(!raw)return;
+ let url;try{url=new URL(raw,location.href);if(!['https:','http:'].includes(url.protocol)&&!/^data:image\/(png|jpeg|webp|gif);base64,/i.test(raw))return}catch(_){return}
+ const image=document.createElement('img');image.alt='';image.decoding='async';image.referrerPolicy='no-referrer';image.style.cssText='width:100%;height:100%;object-fit:cover;display:block;border-radius:50%';
+ image.onload=()=>{if(avatar.dataset.photo===raw)avatar.replaceChildren(image)};
+ image.onerror=()=>{if(avatar.dataset.photo===raw)avatar.textContent=initial};
+ avatar.dataset.photo=raw;image.src=url.href;
+}
+</script><script src="presentar-mobile.js?v=1"></script>
 </body></html>
