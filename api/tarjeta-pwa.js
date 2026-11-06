@@ -16,9 +16,9 @@ module.exports=async(req,res)=>{
  const color=/^#[0-9a-f]{6}$/i.test(card.color||'')?card.color:'#7953f4';const version=crypto.createHash('sha256').update(card.logo_url||'sin-foto').digest('hex').slice(0,16);
  res.setHeader('Cache-Control','public, max-age=0, s-maxage=300, stale-while-revalidate=60');
  if(mode==='manifest'){
- const start='/tarjeta.html?'+new URLSearchParams({slug:card.slug});
+ const scope='/tarjetas/'+encodeURIComponent(card.slug)+'/';const start=scope+'inicio.html';
  res.setHeader('Content-Type','application/manifest+json; charset=utf-8');
- return res.status(200).send(JSON.stringify({id:start,name:card.nombre||'PresentAR',short_name:(card.nombre||'PresentAR').slice(0,40),start_url:start,scope:'/',display:'standalone',background_color:'#fafaf9',theme_color:color,icons:[192,512].map(size=>({src:endpoint(card.slug,'icon',size,version),sizes:size+'x'+size,type:'image/png',purpose:'any'}))}));
+ return res.status(200).send(JSON.stringify({id:start,name:card.nombre||'PresentAR',short_name:(card.nombre||'PresentAR').slice(0,40),start_url:start,scope,display:'standalone',background_color:'#fafaf9',theme_color:color,icons:[192,512].map(size=>({src:endpoint(card.slug,'icon',size,version),sizes:size+'x'+size,type:'image/png',purpose:'any'}))}));
  }
  const size=Number(req.query.size||180);if(![180,192,512].includes(size))return res.status(400).json({error:'Tamaño inválido'});
  let bytes;try{bytes=await imageBytes(card.logo_url)}catch{bytes=null}
