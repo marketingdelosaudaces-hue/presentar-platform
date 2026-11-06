@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" id="pwa-apple-title" content="PresentAR">
 <meta name="mobile-web-app-capable" content="yes">
 <script>
-(function(){const cardSlug=new URLSearchParams(location.search).get('slug')||'maf-argentina';const query=new URLSearchParams({slug:cardSlug});document.getElementById('pwa-manifest').href='/api/tarjeta-pwa?'+query+'&mode=manifest';document.getElementById('pwa-apple-icon').href='/api/tarjeta-pwa?'+query+'&mode=icon&size=180';document.getElementById('pwa-favicon').href='/api/tarjeta-pwa?'+query+'&mode=icon&size=192';})();
+(function(){const cardSlug=new URLSearchParams(location.search).get('slug')||decodeURIComponent(location.pathname.match(/^\/tarjetas\/([^/]+)\/inicio\.html$/)?.[1]||'')||'maf-argentina';const query=new URLSearchParams({slug:cardSlug,install:'2'});document.getElementById('pwa-manifest').href='/api/tarjeta-pwa?'+query+'&mode=manifest';document.getElementById('pwa-apple-icon').href='/api/tarjeta-pwa?'+query+'&mode=icon&size=180';document.getElementById('pwa-favicon').href='/api/tarjeta-pwa?'+query+'&mode=icon&size=192';})();
 </script>
 
 <meta name="theme-color" content="#e8192c">
@@ -308,7 +308,7 @@ body{font-family:'Inter',sans-serif;min-height:100vh;display:flex;justify-conten
 </style>
 <style>
 #pwa-install-help{border:0;border-radius:24px;padding:28px 24px;width:calc(100% - 32px);max-width:420px;max-height:85dvh;overflow:auto;margin:auto;color:#191923;background:#fff;box-shadow:0 20px 80px #0003;font:15px Inter,system-ui,sans-serif}
-#pwa-install-help::backdrop{background:#14122399}#pwa-install-help h2{font-size:24px;margin:14px 0 8px}#pwa-help-icon{object-fit:contain;border-radius:17px;border:1px solid #eee}#pwa-help-steps{padding-left:22px;line-height:1.6;margin:20px 0}#pwa-help-steps li{margin:10px 0}#pwa-help-note{font-size:12px;line-height:1.5;color:#727586}#pwa-install-help button{border:0;border-radius:12px;padding:13px;font:600 15px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}#pwa-install-help .pwa-help-close{position:absolute;right:10px;top:10px;background:#f1eef8;color:#333}#pwa-install-help .pwa-help-ok{width:100%;margin-top:20px;background:var(--accent,#7953f4);color:#fff}
+#pwa-install-help::backdrop{background:#14122399}#pwa-install-help h2{font-size:24px;margin:14px 0 8px}#pwa-help-icon{object-fit:contain;border-radius:17px;border:1px solid #eee}#pwa-help-steps{padding-left:22px;line-height:1.6;margin:20px 0}#pwa-help-steps li{margin:10px 0}#pwa-help-note{font-size:12px;line-height:1.5;color:#727586}#pwa-install-help button{border:0;border-radius:12px;padding:13px;font:600 15px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}#pwa-install-help .pwa-help-close{position:absolute;right:10px;top:10px;background:#f1eef8;color:#333}#pwa-install-help .pwa-help-copy{width:100%;margin-top:18px;background:#f0ecff;color:#6742d1}#pwa-install-help .pwa-help-ok{width:100%;margin-top:20px;background:var(--accent,#7953f4);color:#fff}
 </style>
 </head>
 <body>
@@ -333,7 +333,7 @@ body{font-family:'Inter',sans-serif;min-height:100vh;display:flex;justify-conten
 const SUPABASE_URL = 'https://eldiuxxqqxjpwjtrxqfg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsZGl1eHhxcXhqcHdqdHJ4cWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYwMjcsImV4cCI6MjA4OTE2MjAyN30.HX35eqm_x_Yz83gXEDZ9q8Bq9Qdwt1ZC2CgKh1NWLFA';
 const params = new URLSearchParams(window.location.search);
-const slug = params.get('slug') || 'maf-argentina';
+const slug = params.get('slug') || decodeURIComponent(location.pathname.match(/^\/tarjetas\/([^/]+)\/inicio\.html$/)?.[1]||'') || 'maf-argentina';
 
 const I = {
   back:`<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>`,
@@ -896,27 +896,30 @@ function generatePWAManifest(d) {
   const color=/^#[0-9a-f]{6}$/i.test(d.color||'')?d.color:'#7953f4';
   document.querySelector('meta[name="theme-color"]').content=color;
   let hash=2166136261;for(const char of (d.logo_url||'sin-foto'))hash=Math.imul(hash^char.charCodeAt(0),16777619);
-  const query=new URLSearchParams({slug:d.slug||slug,v:(hash>>>0).toString(16)});
+  const query=new URLSearchParams({slug:d.slug||slug,v:(hash>>>0).toString(16),install:'2'});
   document.getElementById('pwa-manifest').href='/api/tarjeta-pwa?'+query+'&mode=manifest';
   document.getElementById('pwa-apple-icon').href='/api/tarjeta-pwa?'+query+'&mode=icon&size=180';
   document.getElementById('pwa-favicon').href='/api/tarjeta-pwa?'+query+'&mode=icon&size=192';
+  if(params.get('instalar')==='1')setTimeout(()=>showHomeInstructions(),0);
 }
 
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredPrompt=event});
 window.addEventListener('appinstalled',()=>{deferredPrompt=null;showToast('✓ Tarjeta agregada a tu pantalla de inicio')});
-function showHomeInstructions(){
+function showHomeInstructions(fromStandalone=false){
  const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
  let dialog=document.getElementById('pwa-install-help');
- if(!dialog){dialog=document.createElement('dialog');dialog.id='pwa-install-help';dialog.setAttribute('aria-labelledby','pwa-help-title');dialog.innerHTML='<button type="button" class="pwa-help-close" aria-label="Cerrar">✕</button><img id="pwa-help-icon" width="76" height="76" alt="Ícono de tu tarjeta"><h2 id="pwa-help-title">Agregar a inicio</h2><strong id="pwa-help-name"></strong><ol id="pwa-help-steps"></ol><p id="pwa-help-note"></p><button type="button" class="pwa-help-ok">Entendido</button>';document.body.append(dialog);dialog.querySelector('.pwa-help-close').onclick=()=>dialog.close();dialog.querySelector('.pwa-help-ok').onclick=()=>dialog.close();dialog.addEventListener('click',e=>{const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()})}
+ if(!dialog){dialog=document.createElement('dialog');dialog.id='pwa-install-help';dialog.setAttribute('aria-labelledby','pwa-help-title');dialog.innerHTML='<button type="button" class="pwa-help-close" aria-label="Cerrar">✕</button><img id="pwa-help-icon" width="76" height="76" alt="Ícono de tu tarjeta"><h2 id="pwa-help-title">Agregar a inicio</h2><strong id="pwa-help-name"></strong><ol id="pwa-help-steps"></ol><p id="pwa-help-note"></p><button type="button" class="pwa-help-copy">Copiar enlace para el navegador</button><button type="button" class="pwa-help-ok">Entendido</button>';document.body.append(dialog);dialog.querySelector('.pwa-help-close').onclick=()=>dialog.close();dialog.querySelector('.pwa-help-ok').onclick=()=>dialog.close();dialog.querySelector('.pwa-help-copy').onclick=async()=>{const link=new URL('/tarjetas/'+encodeURIComponent(pwaCardInfo?.slug||slug)+'/inicio.html',location.origin).href;try{await navigator.clipboard.writeText(link);showToast('Enlace copiado. Pegalo en '+(isIOS?'Safari':'Chrome')+'.')}catch{window.prompt('Copiá este enlace y abrilo en '+(isIOS?'Safari':'Chrome'),link)}};dialog.addEventListener('click',e=>{const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()})}
  document.getElementById('pwa-help-name').textContent=pwaCardInfo?.nombre||'PresentAR';
  document.getElementById('pwa-help-icon').src=document.getElementById('pwa-apple-icon').href;
  document.getElementById('pwa-help-steps').innerHTML=isIOS?'<li>Abrí esta tarjeta en <b>Safari</b>.</li><li>Tocá <b>Compartir</b> (el cuadrado con la flecha hacia arriba).</li><li>Elegí <b>Agregar a pantalla de inicio</b>.</li><li>Revisá la foto y el nombre, y tocá <b>Agregar</b>.</li>':'<li>Abrí esta tarjeta en <b>Chrome</b>.</li><li>Tocá el menú de <b>tres puntos ⋮</b>.</li><li>Elegí <b>Agregar a pantalla principal</b> o <b>Instalar aplicación</b>.</li><li>Confirmá con <b>Agregar</b> o <b>Instalar</b>.</li>';
- document.getElementById('pwa-help-note').textContent='Si estás dentro de WhatsApp, Instagram u otra app, abrí primero el enlace en el navegador. Si ya tenías un acceso con otra foto, eliminalo y volvé a agregarlo.';
+ document.getElementById('pwa-help-note').textContent=fromStandalone?'Esta tarjeta se abrió dentro de un acceso instalado. Para agregarla por separado, copiá su enlace y pegalo en '+(isIOS?'Safari':'Chrome')+'. Si el acceso anterior muestra la foto de otra tarjeta, desinstalalo y volvé a agregarlo después de esta actualización.':'Si estás dentro de WhatsApp, Instagram u otra app, abrí primero el enlace en el navegador. Cada tarjeta se agrega por separado. Si conservás el acceso antiguo, puede ser necesario desinstalarlo y volver a agregarlo.';
  dialog.showModal();
 }
 async function addToHomeScreen(){
- if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){showToast('Ya estás usando la tarjeta desde la pantalla de inicio');return}
+ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){showHomeInstructions(true);return}
+ const installPath='/tarjetas/'+encodeURIComponent(pwaCardInfo?.slug||slug)+'/inicio.html';
+ if(location.pathname!==installPath){location.assign(installPath+'?instalar=1');return}
  if(deferredPrompt){const prompt=deferredPrompt;deferredPrompt=null;try{await prompt.prompt();const choice=await prompt.userChoice;if(choice.outcome==='accepted')showToast('Confirmá la instalación en tu teléfono');return}catch{}}
  showHomeInstructions();
 }
@@ -974,8 +977,8 @@ function saveVCard() {
 }
 
 function shareCard() {
-  if (navigator.share) navigator.share({title:window._cardData?.nombre,url:window.location.href});
-  else { navigator.clipboard?.writeText(window.location.href); showToast('Link copiado'); }
+  if (navigator.share) navigator.share({title:window._cardData?.nombre,url:location.origin+'/tarjeta.html?'+new URLSearchParams({slug:window._cardData?.slug||slug})});
+  else { navigator.clipboard?.writeText(location.origin+'/tarjeta.html?'+new URLSearchParams({slug:window._cardData?.slug||slug})); showToast('Link copiado'); }
 }
 
 function revealBenefit() {
