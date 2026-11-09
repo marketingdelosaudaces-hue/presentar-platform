@@ -310,7 +310,7 @@ body{font-family:'Inter',sans-serif;min-height:100vh;display:flex;justify-conten
 #pwa-install-help{border:0;border-radius:24px;padding:28px 24px;width:calc(100% - 32px);max-width:420px;max-height:85dvh;overflow:auto;margin:auto;color:#191923;background:#fff;box-shadow:0 20px 80px #0003;font:15px Inter,system-ui,sans-serif}
 #pwa-install-help::backdrop{background:#14122399}#pwa-install-help h2{font-size:24px;margin:14px 0 8px}#pwa-help-icon{object-fit:contain;border-radius:17px;border:1px solid #eee}#pwa-help-steps{padding-left:22px;line-height:1.6;margin:20px 0}#pwa-help-steps li{margin:10px 0}#pwa-help-note{font-size:12px;line-height:1.5;color:#727586}#pwa-install-help button{border:0;border-radius:12px;padding:13px;font:600 15px Inter,system-ui,sans-serif;cursor:pointer;min-height:44px}#pwa-install-help .pwa-help-close{position:absolute;right:10px;top:10px;background:#f1eef8;color:#333}#pwa-install-help .pwa-help-copy{width:100%;margin-top:18px;background:#f0ecff;color:#6742d1}#pwa-install-help .pwa-help-ok{width:100%;margin-top:20px;background:var(--accent,#7953f4);color:#fff}
 </style>
-</head>
+<style>.psocials,.psocial,.psoc-row{flex-wrap:wrap}.psoc svg{width:22px;height:22px}</style></head>
 <body>
 
 <div class="loader" id="loader">
@@ -398,6 +398,18 @@ async function loadCard() {
   }, 900);
 }
 
+
+const CARD_EXTRA_SOCIALS = [{"key": "x", "name": "X", "paths": "<path d=\"M4 3h4l12 18h-4ZM20 3 4 21\"/>"}, {"key": "threads", "name": "Threads", "paths": "<path d=\"M19 8c-1-7-15-8-15 4s16 12 16 3c0-7-13-8-13-1 0 5 9 5 9-2 0-5-6-6-8-3\"/>"}, {"key": "youtube", "name": "YouTube", "paths": "<rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"5\"/><path d=\"m10 9 6 3-6 3Z\"/>"}, {"key": "tiktok", "name": "TikTok", "paths": "<path d=\"M14 3v13a5 5 0 1 1-5-5M14 3c0 4 3 6 7 6V6c-2 0-4-1-4-3Z\"/>"}, {"key": "twitch", "name": "Twitch", "paths": "<path d=\"M4 3h17v12l-5 5h-5l-4 3v-3H4ZM9 7v6M15 7v6\"/>"}, {"key": "discord", "name": "Discord", "paths": "<path d=\"M8 5 5 6 2 17l5 2 1-2h8l1 2 5-2-3-11-3-1-1 2H9ZM8 11v3M16 11v3\"/>"}, {"key": "telegram", "name": "Telegram", "paths": "<path d=\"m2 10 20-7-4 18-7-6-4 3v-7l15-8-11 12\"/>"}, {"key": "github", "name": "GitHub", "paths": "<path d=\"M9 21v-4c-5 1-5-2-7-3M15 21v-4c0-1 0-2-1-2 5-1 6-4 5-7l1-4-4 2a12 12 0 0 0-8 0L4 4l1 4c-1 3 0 6 5 7-1 0-1 1-1 2\"/>"}];
+function extraSocialsHtml(links) {
+  return links.filter(l => l.active && CARD_EXTRA_SOCIALS.some(n => n.key === l.social)).map(l => {
+    const n = CARD_EXTRA_SOCIALS.find(n => n.key === l.social);
+    let url; try { url = new URL(l.url); } catch { return ''; }
+    if (!['https:', 'http:'].includes(url.protocol)) return '';
+    const href = url.href.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    return `<a class="psoc" href="${href}" target="_blank" rel="noopener noreferrer" aria-label="${n.name}" title="${n.name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.paths}</svg></a>`;
+  }).join('');
+}
+
 function renderCard(d, links) {
   const color = d.color || '#e8192c';
   const canCaptureLeads = ['pro','business','corporate'].includes(String(d.plan || '').toLowerCase());
@@ -419,7 +431,8 @@ function renderCard(d, links) {
   if (!certs.length && d.certificaciones) {
     certs = d.certificaciones.split(',').map(c => c.trim()).filter(Boolean).map(name => ({name, logo: null}));
   }
-  const activeLnks = links.filter(l=>l.active);
+  const extraSocialHtml = extraSocialsHtml(links);
+  const activeLnks = links.filter(l=>l.active && !CARD_EXTRA_SOCIALS.some(n => n.key === l.social));
 
   const coverHtml = d.cover_url
     ? `<img class="cover-img" id="cover-img" src="${d.cover_url}" alt="">`
@@ -583,9 +596,10 @@ function renderCard(d, links) {
           ${d.tagline ? `<div class="profile-tagline">${d.tagline}</div>` : ''}
         </div>
       </div>
-      ${(d.instagram || d.linkedin || d.facebook || d.web) ? `
+      ${(d.instagram || d.linkedin || d.facebook || d.web || extraSocialHtml) ? `
       <div class="profile-bottom">
         <div class="profile-socials">
+          ${extraSocialHtml}
           ${d.instagram ? `<a class="psoc" href="${d.instagram}" target="_blank" aria-label="Instagram">${I.ig}</a>` : ''}
           ${d.linkedin  ? `<a class="psoc" href="${d.linkedin}"  target="_blank" aria-label="LinkedIn">${I.li}</a>` : ''}
           ${d.facebook  ? `<a class="psoc" href="${d.facebook}"  target="_blank" aria-label="Facebook">${I.fb}</a>` : ''}
