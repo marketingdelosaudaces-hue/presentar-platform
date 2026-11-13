@@ -1478,7 +1478,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
  .pd-banner-art img{width:166.6667%;height:auto;max-width:none;margin-left:-66.6667%;object-fit:contain}
 }
 </style>
-<link rel="stylesheet" href="presentar-mobile.css?v=1">
+<link rel="stylesheet" href="presentar-mobile.css?v=ux-20261113">
 </head>
 <body data-pm-page="index">
 
@@ -2525,6 +2525,7 @@ function openEditorTab(tab) {
 }
 
 function updateSetupDashboard(card) {
+  document.dispatchEvent(new CustomEvent("presentar:card-loaded",{detail:card}));
   renderAccountPhoto('dash-av',card.logo_url,card.nombre||currentUser?.name);
   const hasValue = value => {
     if (value === null || value === undefined) return false;
@@ -3113,5 +3114,5 @@ function renderAccountPhoto(id,photo,name){
  image.onerror=()=>{if(avatar.dataset.photo===raw)avatar.textContent=initial};
  avatar.dataset.photo=raw;image.src=url.href;
 }
-</script><script src="presentar-mobile.js?v=1"></script>
+</script><script src="presentar-mobile.js?v=ux-20261113"></script>
 </body></html>
