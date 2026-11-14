@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script id="presentar-mobile-router">(function(){try{const query=new URLSearchParams(location.search);const recovery=location.hash.includes('type=recovery')||query.has('code')||query.has('error_description');if(!matchMedia('(max-width:820px)').matches||query.get('desktop')==='1'||recovery)return;const target=new URL('app.html',location.href);const slug=query.get('slug'),contact=query.get('contacto');if(slug)target.searchParams.set('slug',slug);if(contact)target.searchParams.set('contacto',contact);target.searchParams.set('section','home');location.replace(target.href)}catch(_){}})();</script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -3896,7 +3897,7 @@ td,
 
 </style>
 
-<link rel="stylesheet" href="presentar-mobile.css?v=ux-20261113">
+<link rel="stylesheet" href="presentar-mobile.css?v=1">
 </head>
 
 <body data-pm-page="colaborador">
@@ -6860,7 +6861,7 @@ document.addEventListener("keydown", (event) => {
 
 </aside>
 
-<script src="presentar-mobile.js?v=ux-20261113"></script>
+<script src="presentar-mobile.js?v=1"></script>
 </body>
 
 </html>

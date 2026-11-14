@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script id="presentar-mobile-router">(function(){try{const query=new URLSearchParams(location.search);const recovery=location.hash.includes('type=recovery')||query.has('code')||query.has('error_description');if(!matchMedia('(max-width:820px)').matches||query.get('desktop')==='1'||recovery)return;const target=new URL('app.html',location.href);const slug=query.get('slug'),contact=query.get('contacto');if(slug)target.searchParams.set('slug',slug);if(contact)target.searchParams.set('contacto',contact);target.searchParams.set('section','home');location.replace(target.href)}catch(_){}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi PresentAR — Panel</title>
@@ -1478,7 +1479,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
  .pd-banner-art img{width:166.6667%;height:auto;max-width:none;margin-left:-66.6667%;object-fit:contain}
 }
 </style>
-<link rel="stylesheet" href="presentar-mobile.css?v=ux-20261113">
+<link rel="stylesheet" href="presentar-mobile.css?v=1">
 </head>
 <body data-pm-page="index">
 
@@ -2525,7 +2526,6 @@ function openEditorTab(tab) {
 }
 
 function updateSetupDashboard(card) {
-  document.dispatchEvent(new CustomEvent("presentar:card-loaded",{detail:card}));
   renderAccountPhoto('dash-av',card.logo_url,card.nombre||currentUser?.name);
   const hasValue = value => {
     if (value === null || value === undefined) return false;
@@ -3114,5 +3114,5 @@ function renderAccountPhoto(id,photo,name){
  image.onerror=()=>{if(avatar.dataset.photo===raw)avatar.textContent=initial};
  avatar.dataset.photo=raw;image.src=url.href;
 }
-</script><script src="presentar-mobile.js?v=ux-20261113"></script>
+</script><script src="presentar-mobile.js?v=1"></script>
 </body></html>
