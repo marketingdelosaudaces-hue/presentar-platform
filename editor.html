@@ -1679,10 +1679,14 @@ async function saveAll() {
 function goBack() {
   if (window._editorAdminMode) {
     if (history.length > 1) history.back();
-    else window.location.href = 'index.html';
+    else window.location.href = 'index.html?desktop=1';
     return;
   }
-  window.location.href = 'index.html';
+  const target = new URL('app.html', window.location.href);
+  target.searchParams.set('section', 'home');
+  const slug = window._cardSlug || window._sessionSlug;
+  if (slug) target.searchParams.set('slug', slug);
+  window.location.href = target.href;
 }
 
 function previewCard() {
