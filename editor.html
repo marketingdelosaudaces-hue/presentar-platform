@@ -528,7 +528,37 @@ button[onclick="addProject()"]:hover{
 
 <link rel="stylesheet" href="editor-v8.css">
 <link rel="stylesheet" href="mobile-v9.css">
-<link rel="stylesheet" href="presentar-mobile.css?v=1">
+<link rel="stylesheet" href="presentar-mobile.css?v=ux-20261113">
+
+<style id="editor-readable-controls">
+.field-vector{width:20px;height:20px;flex:0 0 20px;fill:none;stroke:#111;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;margin-right:9px}
+.field-label,.section-label{display:flex!important;align-items:center!important;line-height:1.5!important;letter-spacing:0!important;text-transform:none!important;color:#111!important}
+.field-label{font-size:14px!important;gap:0!important;margin-bottom:9px!important}
+.section-label{font-size:16px!important;font-weight:800!important;padding-bottom:12px!important}
+.nav-actions .nav-btn{min-height:48px!important;padding:12px 20px!important;font-size:15px!important;font-weight:800!important;line-height:1.3!important;white-space:nowrap;border-radius:14px!important}
+.preview-label button{min-height:44px!important;padding:10px 18px!important;font-size:13px!important;color:#111!important;background:#fff!important}
+.btn-add,button[onclick="addStory()"],button[onclick="addProject()"]{min-height:48px!important;font-size:14px!important;padding:12px 16px!important}
+.field-input,.field-textarea,.link-field{font-size:16px!important;min-height:48px;box-sizing:border-box}
+.nav button:focus-visible,.edit-panel button:focus-visible,.preview-label button:focus-visible{outline:3px solid #7953ff!important;outline-offset:3px}
+@media(max-width:600px){
+.nav{height:122px!important;display:flex!important;flex-wrap:wrap!important;align-content:center!important;gap:8px!important;padding:10px 12px!important;box-sizing:border-box!important}
+.nav .nav-brand{font-size:18px!important}.nav .nav-center{display:none!important}
+.nav-actions{width:100%!important;display:grid!important;grid-template-columns:.85fr 1.1fr 1.55fr!important;gap:6px!important}
+.nav-actions .nav-btn{min-width:0!important;min-height:48px!important;padding:10px 5px!important;font-size:13px!important}
+.editor-layout{margin-top:122px!important;height:auto!important}
+.tabs.editor-sidebar-nav{top:122px!important}
+}
+</style>
+<style id="editor-secondary-readable">
+/* Help text stays readable at desktop and mobile sizes. */
+.edit-panel .tab-content p,.edit-panel .upload-sub,.edit-panel .field-hint,.edit-panel .hint{font-size:15px!important;line-height:1.65!important;color:#50586b!important;letter-spacing:normal!important}
+.edit-panel .tab-content span[style*="font-size:9px"],.edit-panel .tab-content span[style*="font-size:10px"],.edit-panel .tab-content span[style*="font-size:11px"]{font-size:14px!important;line-height:1.5!important;color:#424b60!important;letter-spacing:normal!important}
+.edit-panel .tab-content div[style*="flex-wrap"]{row-gap:9px!important}
+.edit-panel .upload-text{font-size:16px!important;line-height:1.5!important;color:#202635!important}
+.preview-label{font-size:13px!important;color:#50586b!important;letter-spacing:.025em!important;flex-wrap:wrap!important}
+.preview-panel>div[style*="text-align:center"]{font-size:14px!important;line-height:1.6!important;color:#50586b!important}
+.editor-section-kicker,.sidebar-group-label{font-size:12px!important;color:#596176!important;line-height:1.5!important}
+</style>
 </head>
 <body data-pm-page="editor">
 <svg class="editor-svg-sprite" aria-hidden="true" focusable="false">
@@ -607,19 +637,19 @@ button[onclick="addProject()"]:hover{
         <h1>Información</h1>
         <p>Datos principales y de contacto de la tarjeta.</p>
       </div>
-      <div class="section-label">Datos personales</div>
-      <div class="field-group"><label class="field-label">Nombre completo</label><input class="field-input" id="f-name" oninput="liveUpdate()" placeholder="Tu nombre"></div>
-      <div class="field-group"><label class="field-label">Cargo / Profesión</label><input class="field-input" id="f-role" oninput="liveUpdate()" placeholder="Tu cargo"></div>
-      <div class="field-group"><label class="field-label">Empresa</label><input class="field-input" id="f-company" oninput="liveUpdate()" placeholder="Tu empresa"></div>
-      <div class="field-group"><label class="field-label">Tagline</label><textarea class="field-textarea" id="f-tagline" oninput="liveUpdate()" placeholder="Una frase que te describa..."></textarea></div>
-      <div class="section-label">Contacto</div>
-      <div class="field-group"><label class="field-label">WhatsApp</label><input class="field-input" id="f-phone" placeholder="+54 291 ..." oninput="liveUpdate()"></div>
-      <div class="field-group"><label class="field-label">Email</label><input class="field-input" id="f-email" placeholder="tu@email.com" oninput="liveUpdate()"></div>
-      <div class="field-group"><label class="field-label">Dirección</label><input class="field-input" id="f-address" placeholder="Ciudad, Provincia" oninput="liveUpdate()"></div>
-      <div class="field-group"><label class="field-label">Sitio web</label><input class="field-input" id="f-web" placeholder="https://..." oninput="liveUpdate()"></div>
-      <div class="field-group"><label class="field-label">Horarios</label><input class="field-input" id="f-hours" placeholder="Lunes a Viernes 9 a 18hs" oninput="liveUpdate()"></div>
-      <div class="field-group"><label class="field-label">Descripción de la empresa</label><textarea class="field-textarea" id="f-about" placeholder="Contá sobre tu empresa..." oninput="liveUpdate()"></textarea></div>
-      <div class="section-label">🛡️ Certificaciones</div>
+      <div class="section-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>Datos personales</div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>Nombre completo</label><input class="field-input" id="f-name" oninput="liveUpdate()" placeholder="Tu nombre"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12h18M10 12v3h4v-3"/></svg>Cargo / Profesión</label><input class="field-input" id="f-role" oninput="liveUpdate()" placeholder="Tu cargo"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 21V3h12v18M16 9h4v12M2 21h20M8 7h4M8 11h4M8 15h4"/></svg>Empresa</label><input class="field-input" id="f-company" oninput="liveUpdate()" placeholder="Tu empresa"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg>Tagline</label><textarea class="field-textarea" id="f-tagline" oninput="liveUpdate()" placeholder="Una frase que te describa..."></textarea></div>
+      <div class="section-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 3 3 5-3 3c2 3 3 4 6 6l3-3 5 3c-1 5-4 5-8 3C7 17 2 11 3 6c0-2 2-3 4-3Z"/></svg>Contacto</div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 3 3 5-3 3c2 3 3 4 6 6l3-3 5 3c-1 5-4 5-8 3C7 17 2 11 3 6c0-2 2-3 4-3Z"/></svg>WhatsApp</label><input class="field-input" id="f-phone" placeholder="+54 291 ..." oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg>Email</label><input class="field-input" id="f-email" placeholder="tu@email.com" oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>Dirección</label><input class="field-input" id="f-address" placeholder="Ciudad, Provincia" oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>Sitio web</label><input class="field-input" id="f-web" placeholder="https://..." oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Horarios</label><input class="field-input" id="f-hours" placeholder="Lunes a Viernes 9 a 18hs" oninput="liveUpdate()"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 21V3h12v18M16 9h4v12M2 21h20M8 7h4M8 11h4M8 15h4"/></svg>Descripción de la empresa</label><textarea class="field-textarea" id="f-about" placeholder="Contá sobre tu empresa..." oninput="liveUpdate()"></textarea></div>
+      <div class="section-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/></svg>Certificaciones</div>
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:#f0efeb;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 Logo 200 × 200 px</span>
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">PNG transparente</span>
@@ -629,13 +659,13 @@ button[onclick="addProject()"]:hover{
       <div id="certs-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px"></div>
       <button onclick="addCert()" style="width:100%;padding:11px;background:rgba(17,17,17,.035);border:1.5px dashed rgba(17,17,17,.28);color:var(--accent);border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s">+ Agregar certificación</button>
 
-      <div class="section-label">🎁 Beneficio / Código de descuento</div>
+      <div class="section-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8H8a3 3 0 1 1 3-3Zm0 0h4a3 3 0 1 0-3-3Z"/></svg>Beneficio / Código de descuento</div>
       <p style="font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.5">Configurá un beneficio que tu cliente puede revelar tocando un botón en la tarjeta. Ideal para captar leads.</p>
-      <div class="field-group"><label class="field-label">Título del beneficio</label><input class="field-input" id="f-ben-titulo" placeholder="¡10% de descuento en tu primera consulta!"></div>
-      <div class="field-group"><label class="field-label">Descripción</label><textarea class="field-textarea" id="f-ben-desc" placeholder="Por visitar nuestra tarjeta digital, te regalamos un descuento exclusivo." rows="2"></textarea></div>
-      <div class="field-group"><label class="field-label">Código de descuento</label><input class="field-input" id="f-ben-codigo" placeholder="PRESENTAR10" style="text-transform:uppercase;letter-spacing:2px;font-weight:600"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8H8a3 3 0 1 1 3-3Zm0 0h4a3 3 0 1 0-3-3Z"/></svg>Título del beneficio</label><input class="field-input" id="f-ben-titulo" placeholder="¡10% de descuento en tu primera consulta!"></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg>Descripción</label><textarea class="field-textarea" id="f-ben-desc" placeholder="Por visitar nuestra tarjeta digital, te regalamos un descuento exclusivo." rows="2"></textarea></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8H8a3 3 0 1 1 3-3Zm0 0h4a3 3 0 1 0-3-3Z"/></svg>Código de descuento</label><input class="field-input" id="f-ben-codigo" placeholder="PRESENTAR10" style="text-transform:uppercase;letter-spacing:2px;font-weight:600"></div>
       <div class="field-group">
-        <label class="field-label">Imagen del beneficio (opcional)</label>
+        <label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><use href="#editor-icon-images"/></svg>Imagen del beneficio (opcional)</label>
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
           <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:#f0efeb;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 800 × 600 px</span>
           <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">JPG · PNG</span>
@@ -649,6 +679,18 @@ button[onclick="addProject()"]:hover{
         </div>
         <button onclick="removeBenefitImage()" id="ben-img-remove" style="display:none;width:100%;margin-top:6px;padding:7px;background:rgba(17,17,17,.06);border:none;color:var(--accent);border-radius:7px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;cursor:pointer">✕ Quitar imagen</button>
       </div>
+      <div class="section-label" style="margin-top:24px"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>Redes sociales</div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/></svg>Instagram</label><input class="field-input" id="f-instagram" placeholder="https://instagram.com/..."></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7h.01M11 17v-7M11 13c0-4 6-4 6 0v4"/></svg>LinkedIn</label><input class="field-input" id="f-linkedin" placeholder="https://linkedin.com/..."></div>
+      <div class="field-group"><label class="field-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="M15 21v-8h3l1-4h-4V7c0-1 1-2 2-2h2V2h-3c-4 0-5 2-5 5v2H8v4h3v8"/></svg>Facebook</label><input class="field-input" id="f-facebook" placeholder="https://facebook.com/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-x"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h4l12 18h-4ZM20 3 4 21"/></svg>X</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-x" placeholder="https://x.com/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-threads"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 8c-1-7-15-8-15 4s16 12 16 3c0-7-13-8-13-1 0 5 9 5 9-2 0-5-6-6-8-3"/></svg>Threads</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-threads" placeholder="https://threads.net/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-youtube"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="5"/><path d="m10 9 6 3-6 3Z"/></svg>YouTube</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-youtube" placeholder="https://youtube.com/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-tiktok"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v13a5 5 0 1 1-5-5M14 3c0 4 3 6 7 6V6c-2 0-4-1-4-3Z"/></svg>TikTok</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-tiktok" placeholder="https://tiktok.com/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-twitch"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h17v12l-5 5h-5l-4 3v-3H4ZM9 7v6M15 7v6"/></svg>Twitch</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-twitch" placeholder="https://twitch.tv/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-discord"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 5 6 2 17l5 2 1-2h8l1 2 5-2-3-11-3-1-1 2H9ZM8 11v3M16 11v3"/></svg>Discord</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-discord" placeholder="https://discord.com/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-telegram"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 10 20-7-4 18-7-6-4 3v-7l15-8-11 12"/></svg>Telegram</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-telegram" placeholder="https://t.me/..."></div>
+<div class="field-group"><label class="field-label" for="f-social-github"><svg class="field-vector" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21v-4c-5 1-5-2-7-3M15 21v-4c0-1 0-2-1-2 5-1 6-4 5-7l1-4-4 2a12 12 0 0 0-8 0L4 4l1 4c-1 3 0 6 5 7-1 0-1 1-1 2"/></svg>GitHub</label><input type="url" inputmode="url" autocomplete="url" class="field-input" id="f-social-github" placeholder="https://github.com/..."></div>
     </div>
 
     <!-- TAB IMÁGENES -->
@@ -658,7 +700,7 @@ button[onclick="addProject()"]:hover{
         <h1>Imágenes</h1>
         <p>Foto de portada, avatar y recursos visuales.</p>
       </div>
-      <div class="section-label">Foto de portada</div>
+      <div class="section-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><use href="#editor-icon-images"/></svg>Foto de portada</div>
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:#f0efeb;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 1200 × 630 px</span>
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">JPG · PNG</span>
@@ -673,7 +715,7 @@ button[onclick="addProject()"]:hover{
       </div>
       <button class="btn-remove" onclick="removeImage('cover')">✕ Quitar portada</button>
 
-      <div class="section-label" style="margin-top:24px">Logo / Avatar</div>
+      <div class="section-label" style="margin-top:24px"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><use href="#editor-icon-images"/></svg>Logo / Avatar</div>
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:#f0efeb;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 400 × 400 px</span>
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">PNG transparente</span>
@@ -689,7 +731,7 @@ button[onclick="addProject()"]:hover{
       <button class="btn-remove" onclick="removeImage('logo')">✕ Quitar logo</button>
 
       <!-- STORIES EDITABLE -->
-      <div class="section-label" style="margin-top:24px">📸 Stories</div>
+      <div class="section-label" style="margin-top:24px"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><use href="#editor-icon-images"/></svg>Stories</div>
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:#f0efeb;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 1080 × 1920 px</span>
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Vertical</span>
@@ -700,7 +742,7 @@ button[onclick="addProject()"]:hover{
       <button onclick="addStory()" style="width:100%;padding:11px;background:rgba(17,17,17,.035);border:1.5px dashed rgba(17,17,17,.28);color:var(--accent);border-radius:9px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">+ Agregar story</button>
 
       <!-- PROYECTOS / TRABAJOS REALIZADOS -->
-      <div class="section-label" style="margin-top:24px">🏗️ Trabajos realizados</div>
+      <div class="section-label" style="margin-top:24px"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12h18M10 12v3h4v-3"/></svg>Trabajos realizados</div>
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:#f0efeb;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em">📐 800 × 1000 px</span>
         <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:50px;background:var(--surface2);color:var(--white);font-size:11px;font-weight:600">Vertical</span>
@@ -718,7 +760,7 @@ button[onclick="addProject()"]:hover{
         <h1>Apariencia</h1>
         <p>Personalizá el color y la identidad visual.</p>
       </div>
-      <div class="section-label">Color principal</div>
+      <div class="section-label"><svg class="field-vector" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18h2a2 2 0 0 0 1-4c-1-1 0-3 2-3h1c5 0 3-11-6-11Z"/><path d="M7 10h.01M10 6h.01M15 7h.01M6 15h.01"/></svg>Color principal</div>
       <div class="color-presets" id="color-presets">
         <div class="preset active" style="background:#e8192c" onclick="setColor('#e8192c',this)"></div>
         <div class="preset" style="background:#b01020" onclick="setColor('#b01020',this)"></div>
@@ -735,10 +777,7 @@ button[onclick="addProject()"]:hover{
         </div>
         <input class="field-input" id="color-hex" value="#e8192c" style="flex:1" oninput="setColor(this.value,null)">
       </div>
-      <div class="section-label" style="margin-top:24px">Redes sociales</div>
-      <div class="field-group"><label class="field-label">Instagram</label><input class="field-input" id="f-instagram" placeholder="https://instagram.com/..."></div>
-      <div class="field-group"><label class="field-label">LinkedIn</label><input class="field-input" id="f-linkedin" placeholder="https://linkedin.com/..."></div>
-      <div class="field-group"><label class="field-label">Facebook</label><input class="field-input" id="f-facebook" placeholder="https://facebook.com/..."></div>
+
     </div>
 
     <!-- TAB LINKS -->
@@ -988,6 +1027,7 @@ async function loadCard() {
       if (c.cover_url) { coverUrl = c.cover_url; showCoverPreview(coverUrl); }
       if (c.logo_url)  { logoUrl  = c.logo_url;  showLogoPreview(logoUrl); }
       if (c.links) { try { links = JSON.parse(c.links) || []; } catch { links = []; } }
+      loadExtraSocials();
       liveUpdate();
       renderLinks();
       reloadPreview();
@@ -1193,9 +1233,32 @@ function applyColor() {
 }
 
 // ── LINKS ──
+
+const EXTRA_SOCIALS = [{"key": "x", "name": "X", "paths": "<path d=\"M4 3h4l12 18h-4ZM20 3 4 21\"/>"}, {"key": "threads", "name": "Threads", "paths": "<path d=\"M19 8c-1-7-15-8-15 4s16 12 16 3c0-7-13-8-13-1 0 5 9 5 9-2 0-5-6-6-8-3\"/>"}, {"key": "youtube", "name": "YouTube", "paths": "<rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"5\"/><path d=\"m10 9 6 3-6 3Z\"/>"}, {"key": "tiktok", "name": "TikTok", "paths": "<path d=\"M14 3v13a5 5 0 1 1-5-5M14 3c0 4 3 6 7 6V6c-2 0-4-1-4-3Z\"/>"}, {"key": "twitch", "name": "Twitch", "paths": "<path d=\"M4 3h17v12l-5 5h-5l-4 3v-3H4ZM9 7v6M15 7v6\"/>"}, {"key": "discord", "name": "Discord", "paths": "<path d=\"M8 5 5 6 2 17l5 2 1-2h8l1 2 5-2-3-11-3-1-1 2H9ZM8 11v3M16 11v3\"/>"}, {"key": "telegram", "name": "Telegram", "paths": "<path d=\"m2 10 20-7-4 18-7-6-4 3v-7l15-8-11 12\"/>"}, {"key": "github", "name": "GitHub", "paths": "<path d=\"M9 21v-4c-5 1-5-2-7-3M15 21v-4c0-1 0-2-1-2 5-1 6-4 5-7l1-4-4 2a12 12 0 0 0-8 0L4 4l1 4c-1 3 0 6 5 7-1 0-1 1-1 2\"/>"}];
+function loadExtraSocials() {
+  EXTRA_SOCIALS.forEach(n => {
+    const saved = links.find(l => l.social === n.key);
+    document.getElementById('f-social-' + n.key).value = saved ? saved.url : '';
+  });
+}
+function linksWithExtraSocials() {
+  const result = links.filter(l => !EXTRA_SOCIALS.some(n => n.key === l.social));
+  EXTRA_SOCIALS.forEach(n => {
+    const raw = document.getElementById('f-social-' + n.key).value.trim();
+    if (!raw) return;
+    let url;
+    try { url = new URL(/^https?:\/\//i.test(raw) ? raw : 'https://' + raw); }
+    catch { throw new Error('Revisá el enlace de ' + n.name); }
+    if (!['http:', 'https:'].includes(url.protocol)) throw new Error('Revisá el enlace de ' + n.name);
+    const old = links.find(l => l.social === n.key);
+    result.push({...(old || {}), id: old ? old.id : 'social-' + n.key, social:n.key, label:n.name, url:url.href, active:true});
+  });
+  return result;
+}
+
 function renderLinks() {
   const list = document.getElementById('links-list');
-  list.innerHTML = links.map(l => `
+  list.innerHTML = links.filter(l => !EXTRA_SOCIALS.some(n => n.key === l.social)).map(l => `
     <div class="link-item">
       <div class="link-fields">
         <input class="link-field" placeholder="Nombre del botón" value="${l.label}" oninput="updateLink(${l.id},'label',this.value)">
@@ -1531,6 +1594,8 @@ function toggleSection(id, btn) {
 
 // ── SAVE ──
 async function saveAll() {
+  let savedLinks;
+  try { savedLinks = linksWithExtraSocials(); } catch (e) { showToast(e.message); return; }
   const btn = document.getElementById('btn-save');
   btn.disabled = true; btn.textContent = 'Guardando...';
   showLoading('Guardando en Supabase...');
@@ -1552,7 +1617,7 @@ async function saveAll() {
     color:     cardColor,
     cover_url: coverUrl,
     logo_url:  logoUrl,
-    links:     JSON.stringify(links),
+    links:     JSON.stringify(savedLinks),
     certificaciones: certsList.map(c => c.name).filter(Boolean).join(', '),
     certs_json: JSON.stringify(certsList.filter(c => c.name)),
     beneficio_titulo: document.getElementById('f-ben-titulo').value,
@@ -1596,6 +1661,8 @@ async function saveAll() {
     const ind = document.getElementById('save-ind');
     ind.classList.add('show');
     setTimeout(() => ind.classList.remove('show'), 2500);
+    links = savedLinks;
+    renderLinks();
     showToast('✓ Cambios guardados en Supabase');
     
     // Recargar el iframe con los cambios nuevos
@@ -1649,6 +1716,6 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
-<script src="presentar-mobile.js?v=1"></script>
+<script src="presentar-mobile.js?v=ux-20261113"></script>
 </body>
 </html>
